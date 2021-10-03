@@ -15,7 +15,7 @@ const ArrowIcon = () => {
     )
 
 }
-const CustomHeader = () => {
+const CustomHeader = (props) => {
     return (
         <SafeAreaView>
             <View>
@@ -25,7 +25,7 @@ const CustomHeader = () => {
                     barStyle="light-content"
                     leftComponent={<ArrowIcon />}
                     centerComponent={{ 
-                        text: 'profile', 
+                        text: 'Sleeping', 
                         style: { color: '#f5d745',fontSize:20, fontWeight:"bold" } 
                     }}
                     containerStyle={{

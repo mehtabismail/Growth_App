@@ -22,8 +22,8 @@ export default function App() {
         {/* <SignUpScreen /> */}
         {/* <PumpingScreen /> */}
         {/* <CustomHeader /> */}
-        {/* <SleepingScreen /> */}
-        <PumpingMannual />
+        <SleepingScreen />
+        {/* <PumpingMannual /> */}
       </View>
   );
 }
