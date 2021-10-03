@@ -8,36 +8,59 @@ import CustomHeader from '../components/CustomHeader'
 const PumpingMannual = () => {
     return (
         <SafeAreaView>
-            
+
             <View style={styles.container}>
-            <StatusBar backgroundColor="#285E29"/>
                 <View>
                     <View>
                         <CustomHeader />
                     </View>
-                    <View style={{ margin: 30, alignItems: "center" }}>
+                    <View style={styles.beginDateContainer}>
                         <View>
                             <Text>Begin Date</Text>
                             <View style={{ flexDirection: "row" }}>
-                                <View style={{ width: "50%" }}>
+                                <View style={{ width: "50%", flexDirection: "row" }}>
                                     <Input
                                         placeholder='Today'
+                                        rightIcon={
+                                            <TouchableOpacity>
+                                                <Icon
+                                                    name='caret-down'
+                                                    type='font-awesome'
+                                                />
+                                            </TouchableOpacity>
+                                        }
                                     />
                                 </View>
                                 <View style={{ width: "50%" }}>
                                     <Input
                                         placeholder='Begin Time'
+                                        rightIcon={
+                                            <TouchableOpacity>
+                                                <Icon
+                                                    name='caret-down'
+                                                    type='font-awesome'
+                                                />
+                                            </TouchableOpacity>
+                                        }
                                     />
                                 </View>
                             </View>
                             <View>
                                 <Input
                                     placeholder='Duration (Optional)'
+                                    rightIcon={
+                                        <TouchableOpacity>
+                                            <Icon
+                                                name='caret-down'
+                                                type='font-awesome'
+                                            />
+                                        </TouchableOpacity>
+                                    }
                                 />
                             </View>
                         </View>
                         <TouchableOpacity style={{ margin: 10, flexDirection: "row" }}>
-                            <View style={{marginRight:5}}>
+                            <View style={{ marginRight: 5 }}>
                                 <Icon
                                     name="stopwatch"
                                     type="fontisto"
@@ -46,20 +69,26 @@ const PumpingMannual = () => {
                                 />
                             </View>
                             <View>
-                                <Text style={{ color: "#63815c", fontSize: 15, fontWeight: "bold" }}>or Start Time</Text>
+                                <Text style={styles.textContainer}>or Start Time</Text>
                             </View>
                         </TouchableOpacity>
                         <View>
                             <Text>Side(s) & Amount (optional)</Text>
                         </View>
-                        <View style={{ flexDirection: "row", width: "100%", margin: 20, justifyContent: "space-around" }}>
+                        <View style={styles.buttonContainer}>
                             <Button
+                                icon={
+                                    <Icon
+                                        name='square-o'
+                                        type='font-awesome'
+                                        style={{ margin: 10 }}
+                                    />
+                                }
                                 title="Left"
                                 type="outline"
                                 titleStyle={{
                                     fontSize: 20,
                                     color: "black"
-
                                 }}
                                 buttonStyle={{
                                     borderColor: "#63815c",
@@ -70,6 +99,13 @@ const PumpingMannual = () => {
                                 }}
                             />
                             <Button
+                                icon={
+                                    <Icon
+                                        name='square-o'
+                                        type='font-awesome'
+                                        style={{ margin: 10 }}
+                                    />
+                                }
                                 title="Right"
                                 type="outline"
                                 titleStyle={{
@@ -86,9 +122,17 @@ const PumpingMannual = () => {
                                 }}
                             />
                         </View>
-                        <View style={{ width: "100%" }}>
+                        <View style={{ width: "100%", marginTop: 5 }}>
                             <Input
                                 placeholder="Total amount (optional)"
+                                rightIcon={
+                                    <TouchableOpacity>
+                                        <Icon
+                                            name='caret-down'
+                                            type='font-awesome'
+                                        />
+                                    </TouchableOpacity>
+                                }
                             />
                         </View>
                     </View>
@@ -122,5 +166,22 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: "space-between",
         height: "100%"
+    },
+    beginDateContainer: {
+        margin: 30,
+        alignItems: "center"
+    },
+    textContainer: {
+        color: "#63815c",
+        fontSize: 15,
+        fontWeight: "bold"
+    },
+    buttonContainer: {
+        flexDirection: "row",
+        width: "100%",
+        margin: 20,
+        justifyContent: "space-around"
     }
+
+
 })
