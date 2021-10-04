@@ -11,6 +11,7 @@ import PumpingScreen from './screens/PumpingScreen';
 import CustomHeader from './components/CustomHeader';
 import SleepingScreen from './screens/SleepingScreen';
 import PumpingMannual from './screens/PumpingMannual'
+import Sleeping2 from './screens/Sleeping2';
 
 export default function App() {
   return (
@@ -22,7 +23,8 @@ export default function App() {
         {/* <SignUpScreen /> */}
         {/* <PumpingScreen /> */}
         {/* <CustomHeader /> */}
-        <SleepingScreen />
+        {/* <SleepingScreen /> */}
+        <Sleeping2 />
         {/* <PumpingMannual /> */}
       </View>
   );

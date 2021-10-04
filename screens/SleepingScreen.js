@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import CustomHeader from '../components/CustomHeader'
 import { Button, Text, Icon } from 'react-native-elements'
 
-const PumpingScreen = () => {
+const SleepingScreen = () => {
     return (
         <SafeAreaView>
             <View style={styles.container}>
@@ -46,7 +46,7 @@ const PumpingScreen = () => {
     )
 }
 
-export default PumpingScreen
+export default SleepingScreen
 
 const styles = StyleSheet.create({
     container: {
