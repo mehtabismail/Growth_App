@@ -1,38 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import CustomHeader from './App/components/CustomHeader';
+import Front from './App/Screens/Front/Front';
+import LoginScreen from './App/Screens/Login/LoginScreen';
+import PumpingMannual from './App/Screens/PumpingScreen/PumpingMannual';
+import PumpingScreen from './App/Screens/PumpingScreen/PumpingScreen';
+import Sleeping from './App/Screens/Sleeping/Sleeping';
+import Sleeping2 from './App/Screens/Sleeping/Sleeping2';
+import Splash from './App/Screens/Splash/Splash';
+import SignUpScreen from './App/Screens/Login/SignUpScreen';
 
-
-import SplashScreen from './screens/SplashScreen';
-import FrontScreen from './screens/FrontScreen';
-import LoginScreen from './screens/LoginScreen';
-import SignUpScreen from './screens/SignUpScreen'
-import PumpingScreen from './screens/PumpingScreen';
-import CustomHeader from './components/CustomHeader';
-import SleepingScreen from './screens/SleepingScreen';
-import PumpingMannual from './screens/PumpingMannual'
-import Sleeping2 from './screens/Sleeping2';
-
-export default function App() {
+const App = () => {
   return (
-      <View style={styles.container}>
-        <StatusBar style="auto" />
-        {/* <SplashScreen /> */}
-        {/* <FrontScreen /> */}
-        {/* <LoginScreen /> */}
-        {/* <SignUpScreen /> */}
-        {/* <PumpingScreen /> */}
-        {/* <CustomHeader /> */}
-        {/* <SleepingScreen /> */}
-        <Sleeping2 />
-        {/* <PumpingMannual /> */}
-      </View>
+    <SafeAreaProvider>
+    <SignUpScreen />
+    </SafeAreaProvider>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+export default App;
 
-});
