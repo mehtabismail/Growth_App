@@ -8,12 +8,12 @@ import {
   ScrollView,
 } from 'react-native';
 import {Image, Input, Text} from 'react-native-elements';
-import Colors from '../../themes/Colors';
-import ApplicationStyles from '../../themes/ApplicationStyles';
-import Fonts from '../../themes/Fonts';
-import metrics from '../../themes/Metrics';
+import Colors from '../../Themes/Colors';
+import ApplicationStyles from '../../Themes/ApplicationStyles';
+import Fonts from '../../Themes/Fonts';
+import metrics from '../../Themes/Metrics';
 
-const LoginScreen = () => {
+const SignUp = () => {
   const {height, width} = useWindowDimensions();
   return (
     <SafeAreaView style={{height: height, width: width}}>
@@ -201,7 +201,7 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default SignUp;
 
 const styles = StyleSheet.create({
   gradient: {

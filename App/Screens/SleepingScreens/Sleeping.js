@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, TouchableOpacity, SafeAreaView } from 'react-native'
-import CustomHeader from '../../components/CustomHeader'
+import CustomHeader from '../../Components/CustomHeader'
 import { Button, Text, Icon } from 'react-native-elements'
 
 const Sleeping = () => {

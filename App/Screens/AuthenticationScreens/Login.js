@@ -1,28 +1,32 @@
 import React from 'react';
-import {View, StyleSheet, SafeAreaView, TouchableOpacity} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import {Input, Text, Button, Image} from 'react-native-elements';
 
-const LoginScreen = () => {
+const Login = () => {
   return (
-    <SafeAreaView>
-      <View style={{flex: 1}}>
-        <View>
-          <View style={styles.gradient}>
-            <View style={{padding: 5, marginTop: '50%', marginLeft: '20%'}}>
-              <Text
-                style={{fontSize: 20, color: '#f5d745', fontWeight: 'bold'}}>
-                Growth
-              </Text>
-              <View
-                style={{
-                  borderWidth: 2,
-                  borderColor: '#f5d745',
-                  marginTop: 10,
-                }}></View>
-            </View>
+    <View style={{flex: 1}}>
+      <View>
+        <View style={styles.gradient}>
+          <View style={{padding: 5, marginTop: '50%', marginLeft: '20%'}}>
+            <Text style={{fontSize: 20, color: '#f5d745', fontWeight: 'bold'}}>
+              Growth
+            </Text>
+            <View
+              style={{
+                borderWidth: 2,
+                borderColor: '#f5d745',
+                marginTop: 10,
+              }}></View>
           </View>
         </View>
-
+      </View>
+      <ScrollView>
         <View style={{flexDirection: 'row-reverse', marginTop: -10}}>
           <TouchableOpacity style={{margin: 20}}>
             <Text style={{fontWeight: '300', fontSize: 20, color: '#63815c'}}>
@@ -130,12 +134,12 @@ const LoginScreen = () => {
             </TouchableOpacity>
           </View>
         </View>
-      </View>
-    </SafeAreaView>
+      </ScrollView>
+    </View>
   );
 };
 
-export default LoginScreen;
+export default Login;
 
 const styles = StyleSheet.create({
   gradient: {

@@ -4,7 +4,7 @@ import {Button} from 'react-native-elements';
 import {useSelector, useDispatch} from 'react-redux';
 import CounterSlice, {decrement, increment, incrementByAmount} from './App/Redux/Reducers/CounterSlice';
 
-const Test = () => {
+const Test = ({navigation}) => {
   const {count} = useSelector(state => state.counter);
   const dispatch = useDispatch();
   return (
@@ -42,6 +42,15 @@ const Test = () => {
               }}
             />
           </View>
+          <View>
+            <Button
+              title="Navigation"
+              containerStyle={{margin: 10}}
+              onPress={() => {
+                navigation.navigate("SignIn")
+              }}
+            />
+          </View>
         </View>
       </View>
     </View>
@@ -57,8 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-{
-  /* <View><Text style={{ fontSize: 55, color: "yellow", fontWeight: "bold" }}>Growth</Text></View>
-<View><Text style={{ fontSize: 40, color: "white", fontWeight: "500" }}>Parrenting Made Easy</Text></View>
-<View style={{ borderWidth: 2, borderColor: "yellow", width: 250,marginTop: 20 }}></View> */
-}
+

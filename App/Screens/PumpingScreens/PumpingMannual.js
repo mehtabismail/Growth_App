@@ -2,7 +2,7 @@
 import React from 'react'
 import { StyleSheet, View, TouchableOpacity, SafeAreaView } from 'react-native'
 import { Button, Icon, Input, Text } from 'react-native-elements'
-import CustomHeader from '../../components/CustomHeader'
+import CustomHeader from '../../Components/CustomHeader'
 
 const PumpingMannual = () => {
     return (

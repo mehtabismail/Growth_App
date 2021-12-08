@@ -1,10 +1,10 @@
 import React from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import CustomHeader from '../../components/CustomHeader'
+import CustomHeader from '../../Components/CustomHeader'
 import { Button, Text, Icon } from 'react-native-elements'
 
-const PumpingScreen = () => {
+const Pumping = () => {
     return (
         <SafeAreaView>
             <View style={styles.container}>
@@ -44,7 +44,7 @@ const PumpingScreen = () => {
     )
 }
 
-export default PumpingScreen
+export default Pumping;
 
 const styles = StyleSheet.create({
     container: {
