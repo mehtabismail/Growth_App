@@ -1,80 +1,64 @@
-import React from 'react'
-import { StyleSheet, Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native'
+import React from 'react';
+import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {Button} from 'react-native-elements';
+import navigationStrings from '../../Constants/navigationStrings';
+import Colors from '../../Themes/Colors';
+import Fonts from '../../Themes/Fonts';
+import FrontScreenStyles from './FrontScreenStyles';
 
+const Front = ({navigation}) => {
+  return (
+    <View style={FrontScreenStyles.container}>
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+        }}>
+        <View>
+          <Text style={FrontScreenStyles.headingTextContainer}>Growth</Text>
+        </View>
+        <View>
+          <Image
+            style={FrontScreenStyles.imageContainer}
+            source={require('../../assets/mother-family2.png')}
+          />
+        </View>
+        <View style={{alignItems: 'center'}}>
+          <Text style={FrontScreenStyles.subHeadingTextContainer}>
+            Tracking Everything
+          </Text>
+        </View>
+        <View style={{width: '70%'}}>
+          <Text style={FrontScreenStyles.textContainer}>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's
+          </Text>
+        </View>
+      </View>
+      <View style={{width: '100%'}}>
+        <View style={FrontScreenStyles.buttonContainerStyle}>
+          <Button
+            title="Log In"
+            type="solid"
+            containerStyle={{width: '60%'}}
+            buttonStyle={{borderRadius: 50, backgroundColor: Colors.secondary}}
+            titleStyle={[Fonts.style.buttonText, {color: Colors.primary}]}
+            onPress={() => {
+              navigation.navigate(navigationStrings.SIGN_IN)
+            }}
+          />
+        </View>
+        <TouchableOpacity 
+        onPress={() => {navigation.navigate(navigationStrings.SIGN_UP)}} 
+        style={{alignItems: 'center'}}>
+          <Text style={FrontScreenStyles.labelStyle}>
+            New to Growth? Sign Up{' '}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
 
-const Front = () => {
-    return (
-        <SafeAreaView>
-            <View style={styles.container}>
-                <View style={{ alignItems: "center", marginTop: "20%" }}>
-                    <View>
-                        <Text style={{ fontSize: 40, color: "#f5d745", fontWeight: "bold" }}>
-                            Growth
-                        </Text>
-                    </View>
-                    <View>
-                        <Image
-                            style={{
-                                width: 250,
-                                height: 250,
-                                resizeMode: 'contain'
-                            }}
-                            source={require('../../assets/mother-family.png')} 
-                        />
-                        
-                    </View>
-                    <View style={{ alignItems: "center", }}>
-                        <Text style={{ fontSize: 30, color: "#f5d745", fontWeight: "bold" }}>
-                            Tracking Everything
-                        </Text>
-                        <View style={{ marginLeft: "20%", marginRight: "20%" }}>
-                            <Text style={{ fontSize: 20, color: "white", fontWeight: "100" }}>
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                Lorem Ipsum has been the industry's
-                            </Text>
-                        </View>
-                    </View>
-                </View>
-                <View style={{ alignItems: "center", marginBottom: 40 }}>
-                    <TouchableOpacity style={{
-                        bottom: 20,
-                        left: 10,
-                        right: 10,
-                        elevation: 5,
-                        borderRadius: 15,
-                        backgroundColor: "#f5d745",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        width: "80%", height: 50,
-                        shadowColor: "#7F5DF0",
-                        shadowOffset: {
-                            width: 0,
-                            height: 10
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 3.5,
-                        elevation: 5,
-                    }}>
-                        <Text style={{ fontWeight: "bold", fontSize: 30, color: "#63815c" }}>Login</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Text style={{ fontWeight: "100", fontSize: 20, color: "#f5d745" }}>New to Growth? Sign Up </Text>
-                    </TouchableOpacity>
-                </View>
-
-            </View>
-
-        </SafeAreaView>
-    )
-}
-
-export default Front
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#63815c',
-        width: "100%",
-        height: "100%",
-        justifyContent: "space-between"
-    },
-})
+export default Front;

@@ -25,6 +25,7 @@ const size = {
   small: 12,
   tiny: 8.5,
   label: 11,
+  
 }
 
 const style = {
@@ -71,6 +72,7 @@ const style = {
   buttonText: {
     fontFamily: type.base,
     fontWeight: 'bold',
+    fontSize: 20,
   }
 }
 
