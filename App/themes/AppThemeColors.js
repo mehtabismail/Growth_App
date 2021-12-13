@@ -1,8 +1,8 @@
-const theme_id = 1;
+const theme_id = "theme_1";
 var primary, secondary, tertiary, background, inactive_primary, inactive_secondary = '';
 switch (theme_id) {
   case 'theme_1':
-    primary = '#396F81';
+    primary = "#396F81";
     secondary = '#ECDD80';
     tertiary= '#98B9C4';
     background = '#D4B2B2';

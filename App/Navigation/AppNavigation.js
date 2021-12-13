@@ -19,12 +19,11 @@ const Stack = createNativeStackNavigator();
 const AppNavigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Test">
-        <Stack.Screen name="Testing" component={Test} />
-        <Stack.Screen name={navigationStrings.SPLASH} component={Splash} />
-        <Stack.Screen name={navigationStrings.FRONT} component={Front} />
-        <Stack.Screen name={navigationStrings.SIGN_UP} component={SignUp} />
-        <Stack.Screen name={navigationStrings.SIGN_IN} component={SignIn} />
+      <Stack.Navigator initialRouteName={navigationStrings.SPLASH}>
+        <Stack.Screen name={navigationStrings.SPLASH} component={Splash} options={{headerShown: false }} />
+        <Stack.Screen name={navigationStrings.FRONT} component={Front} options={{headerShown: false }} />
+        <Stack.Screen name={navigationStrings.SIGN_UP} component={SignUp} options={{headerShown: false }} />
+        <Stack.Screen name={navigationStrings.SIGN_IN} component={SignIn} options={{headerShown: false }} />
         <Stack.Screen name={navigationStrings.SLEEPING} component={Sleeping} />
         <Stack.Screen
           name={navigationStrings.SLEEPING2}
@@ -35,6 +34,7 @@ const AppNavigation = () => {
           name={navigationStrings.PUMPING_MANNUAL}
           component={PumpingMannual}
         />
+        <Stack.Screen name="Testing" component={Test} />
       </Stack.Navigator>
     </NavigationContainer>
   );
