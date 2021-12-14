@@ -2,7 +2,6 @@ import React from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
 import {Input, Image, Button} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {FullWindowOverlay} from 'react-native-screens';
 import Colors from '../../../Themes/Colors';
 import Fonts from '../../../Themes/Fonts';
 import metrics from '../../../Themes/Metrics';
@@ -128,7 +127,6 @@ const BreastMannual = () => {
                 type="solid"
                 containerStyle={{width: '100%'}}
                 buttonStyle={{
-                  borderRadius: 50,
                   backgroundColor: Colors.primary,
                 }}
                 titleStyle={[Fonts.style.buttonText, {color: Colors.secondary}]}
