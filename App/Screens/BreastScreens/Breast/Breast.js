@@ -2,9 +2,9 @@ import React from 'react';
 import {TouchableOpacity, Text, View} from 'react-native';
 import {Button, Image} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import Colors from '../../Themes/Colors';
-import Fonts from '../../Themes/Fonts';
-import metrics from '../../Themes/Metrics';
+import Colors from '../../../Themes/Colors';
+import Fonts from '../../../Themes/Fonts';
+import metrics from '../../../Themes/Metrics';
 import BreastStyles from './BreastStyles';
 
 const Breast = () => {
@@ -46,7 +46,7 @@ const Breast = () => {
                       marginRight: metrics.smallMargin,
                       tintColor: Colors.primary,
                     }}
-                    source={require('../../assets/play-button.png')}
+                    source={require('../../../assets/play-button.png')}
                   />
                 }
                 buttonStyle={[BreastStyles.playButton, {marginRight: -1}]}
@@ -65,7 +65,7 @@ const Breast = () => {
                       marginRight: metrics.smallMargin,
                       tintColor: Colors.primary,
                     }}
-                    source={require('../../assets/play-button.png')}
+                    source={require('../../../assets/play-button.png')}
                   />
                 }
                 buttonStyle={[BreastStyles.playButton, {marginLeft: -1}]}
@@ -84,7 +84,7 @@ const Breast = () => {
                   alignSelf: 'flex-start',
                   tintColor: Colors.primary,
                 }}
-                source={require('../../assets/keyboard.png')}
+                source={require('../../../assets/keyboard.png')}
               />
               <Text
                 style={{

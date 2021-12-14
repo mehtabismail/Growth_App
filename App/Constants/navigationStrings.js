@@ -8,5 +8,6 @@ export default {
     SLEEPING : "Sleeping",
     SLEEPING2 : "Sleeping2",
     BREAST : "Breast",
+    BREASTMANNUAL : "BreastMannual",
     
 }

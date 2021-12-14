@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     color: Colors.primary,
-    fontSize: 15,
+    fontSize: Fonts.size.medium,
     fontWeight: 'bold',
   },
   buttonContainer: {
