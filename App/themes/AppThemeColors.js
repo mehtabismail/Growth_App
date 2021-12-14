@@ -5,7 +5,7 @@ switch (theme_id) {
     primary = "#396F81";
     secondary = '#ECDD80';
     tertiary= '#98B9C4';
-    background = '#D4B2B2';
+    background = '#e5e7eb';
     inactive_primary = '#D8D8D8';
     inactive_secondary = '#9E9E9E';
     break;

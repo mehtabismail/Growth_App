@@ -7,5 +7,6 @@ export default {
     PUMPING_MANNUAL : "PumpingMannual",
     SLEEPING : "Sleeping",
     SLEEPING2 : "Sleeping2",
-
+    BREAST : "Breast",
+    
 }

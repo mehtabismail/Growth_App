@@ -41,17 +41,19 @@ const Front = ({navigation}) => {
           <Button
             title="Log In"
             type="solid"
-            containerStyle={{width: '60%'}}
+            containerStyle={{width: '80%'}}
             buttonStyle={{borderRadius: 50, backgroundColor: Colors.secondary}}
             titleStyle={[Fonts.style.buttonText, {color: Colors.primary}]}
             onPress={() => {
-              navigation.navigate(navigationStrings.SIGN_IN)
+              navigation.navigate(navigationStrings.SIGN_IN);
             }}
           />
         </View>
-        <TouchableOpacity 
-        onPress={() => {navigation.navigate(navigationStrings.SIGN_UP)}} 
-        style={{alignItems: 'center'}}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate(navigationStrings.SIGN_UP);
+          }}
+          style={{alignItems: 'center'}}>
           <Text style={FrontScreenStyles.labelStyle}>
             New to Growth? Sign Up{' '}
           </Text>
