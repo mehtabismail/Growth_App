@@ -13,6 +13,8 @@ import {
   Sleeping2,
   Breast,
   BreastMannual,
+  ProfilePage,
+  BottomTabs
 } from '../Screens';
 import Test from '../../Test';
 import Colors from '../Themes/Colors';
@@ -22,7 +24,7 @@ const Stack = createNativeStackNavigator();
 const AppNavigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={navigationStrings.BREASTMANNUAL}>
+      <Stack.Navigator initialRouteName={navigationStrings.BOTTOM_TABS}>
         <Stack.Screen
           name={navigationStrings.SPLASH}
           component={Splash}
@@ -41,6 +43,16 @@ const AppNavigation = () => {
         <Stack.Screen
           name={navigationStrings.SIGN_IN}
           component={SignIn}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={navigationStrings.BOTTOM_TABS}
+          component={BottomTabs}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={navigationStrings.PROFILEPAGE}
+          component={ProfilePage}
           options={{headerShown: false}}
         />
         <Stack.Screen

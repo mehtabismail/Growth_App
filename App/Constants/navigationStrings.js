@@ -9,5 +9,7 @@ export default {
     SLEEPING2 : "Sleeping2",
     BREAST : "Breast",
     BREASTMANNUAL : "BreastMannual",
+    PROFILEPAGE : 'ProfilePage',
+    BOTTOM_TABS : 'BottomTabs,'
     
 }

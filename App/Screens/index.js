@@ -7,4 +7,6 @@ export {default as PumpingMannual} from './PumpingScreens/PumpingMannual';
 export {default as Sleeping} from './SleepingScreens/Sleeping';
 export {default as Sleeping2} from './SleepingScreens/Sleeping2';
 export {default as Breast} from './BreastScreens/Breast/Breast';
-export {default as BreastMannual} from './/BreastScreens/BreastMannual/BreastMannual';
+export {default as BreastMannual} from './BreastScreens/BreastMannual/BreastMannual';
+export {default as ProfilePage} from './ProfilePages/ProfilePage';
+export {default as BottomTabs} from '../Navigation/TabNavigation';
