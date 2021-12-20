@@ -50,7 +50,7 @@ const Breast = () => {
                   />
                 }
                 buttonStyle={[BreastStyles.playButton, {marginRight: -1}]}
-                containerStyle={{width:"40%"}}
+                containerStyle={{width: '40%'}}
                 type="outline"
                 title="Left"
                 titleStyle={[Fonts.style.buttonText, {color: Colors.primary}]}
@@ -69,7 +69,7 @@ const Breast = () => {
                   />
                 }
                 buttonStyle={[BreastStyles.playButton, {marginLeft: -1}]}
-                containerStyle={{width:"40%"}}
+                containerStyle={{width: '40%'}}
                 type="outline"
                 title="Right"
                 titleStyle={[Fonts.style.buttonText, {color: Colors.primary}]}

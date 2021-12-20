@@ -1,10 +1,11 @@
 const theme_id = "theme_1";
-var primary, secondary, tertiary, background, inactive_primary, inactive_secondary = '';
+var primary, secondary, tertiary, quaternary, background, inactive_primary, inactive_secondary = '';
 switch (theme_id) {
   case 'theme_1':
     primary = "#396F81";
     secondary = '#ECDD80';
     tertiary= '#98B9C4';
+    quaternary= '#E8B2C9';
     background = '#e5e7eb';
     inactive_primary = '#D8D8D8';
     inactive_secondary = '#9E9E9E';
@@ -69,6 +70,7 @@ export default {
   primary,
   secondary,
   tertiary,
+  quaternary,
   background,
   inactive_primary,
   inactive_secondary,

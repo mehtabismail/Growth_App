@@ -10,3 +10,6 @@ export {default as Breast} from './BreastScreens/Breast/Breast';
 export {default as BreastMannual} from './BreastScreens/BreastMannual/BreastMannual';
 export {default as ProfilePage} from './ProfilePages/ProfilePage';
 export {default as BottomTabs} from '../Navigation/TabNavigation';
+export {default as Settings} from '../Screens/SettingsScreen/settings';
+export {default as Profile} from './ProfileScreen/Profile';
+export {default as Community} from './CommunityScreen/Community';

@@ -1,5 +1,5 @@
 import AppThemeColors from './AppThemeColors';
-const {primary, secondary, tertiary, background, inactive_primary, inactive_secondary} = AppThemeColors;
+const {primary, secondary, tertiary, quaternary, background, inactive_primary, inactive_secondary} = AppThemeColors;
 
 // Export colors
 const Colors = {
@@ -11,6 +11,7 @@ const Colors = {
   primary,
   secondary,
   tertiary,
+  quaternary,
   background,
   inactive_primary,
   inactive_secondary,

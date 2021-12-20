@@ -10,6 +10,9 @@ export default {
     BREAST : "Breast",
     BREASTMANNUAL : "BreastMannual",
     PROFILEPAGE : 'ProfilePage',
-    BOTTOM_TABS : 'BottomTabs,'
+    BOTTOM_TABS : 'BottomTabs',
+    SETTINGS : 'Settings',
+    PROFILE : 'Profile',
+    COMMUNITY : 'Community',
     
 }
