@@ -13,3 +13,4 @@ export {default as BottomTabs} from '../Navigation/TabNavigation';
 export {default as Settings} from '../Screens/SettingsScreen/settings';
 export {default as Profile} from './ProfileScreen/Profile';
 export {default as Community} from './CommunityScreen/Community';
+export {default as Bottle} from './BottleScreen/Bottle';

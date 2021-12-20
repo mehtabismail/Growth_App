@@ -9,11 +9,12 @@ import {
 import {Avatar, Image} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Shadow from '../../Components/Shadow';
+import navigationStrings from '../../Constants/navigationStrings';
 import Colors from '../../Themes/Colors';
 import Fonts from '../../Themes/Fonts';
 import metrics from '../../Themes/Metrics';
 
-const ProfilePage = () => {
+const ProfilePage = ({navigation}) => {
   return (
     <SafeAreaView style={styles.SafeAreaViewContainer}>
       <View style={styles.container}>
@@ -84,7 +85,9 @@ const ProfilePage = () => {
                 style={[
                   Shadow.shadow,
                   styles.feedButtons
-                ]}>
+                ]}
+                onPress={()=>navigation.navigate(navigationStrings.BOTTLE)}
+                >
                 <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
                   Bottle
                 </Text>

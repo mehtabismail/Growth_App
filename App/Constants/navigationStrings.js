@@ -14,5 +14,6 @@ export default {
     SETTINGS : 'Settings',
     PROFILE : 'Profile',
     COMMUNITY : 'Community',
-    
+    BOTTLE : 'Bottle',
+        
 }

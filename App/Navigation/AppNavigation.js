@@ -14,7 +14,8 @@ import {
   Breast,
   BreastMannual,
   ProfilePage,
-  BottomTabs
+  BottomTabs,
+  Bottle
 } from '../Screens';
 import Test from '../../Test';
 import Colors from '../Themes/Colors';
@@ -123,6 +124,20 @@ const AppNavigation = () => {
         <Stack.Screen
           name={navigationStrings.BREASTMANNUAL}
           component={BreastMannual}
+          options={{
+            headerStyle: {
+              backgroundColor: Colors.primary,
+            },
+            headerTintColor: Colors.secondary,
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+        {/* BOTTLE SCREEN STACK */}
+        <Stack.Screen
+          name={navigationStrings.BOTTLE}
+          component={Bottle}
           options={{
             headerStyle: {
               backgroundColor: Colors.primary,
