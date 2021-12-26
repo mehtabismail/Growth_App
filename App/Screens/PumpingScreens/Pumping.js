@@ -5,8 +5,9 @@ import {Button, Text, Image} from 'react-native-elements';
 import metrics from '../../Themes/Metrics';
 import Colors from '../../Themes/Colors';
 import Fonts from '../../Themes/Fonts';
+import navigationStrings from '../../Constants/navigationStrings';
 
-const Pumping = () => {
+const Pumping = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: Colors.backgroundColor}}>
       <View style={styles.container}>
@@ -16,7 +17,9 @@ const Pumping = () => {
           </View>
         </View>
         <View style={styles.buttonView}>
-          <TouchableOpacity style={styles.containerLast}>
+          <TouchableOpacity style={styles.containerLast}
+          onPress={()=>navigation.navigate(navigationStrings.PUMPING_MANNUAL)}
+          >
             <Image
               style={{
                 width: 30,

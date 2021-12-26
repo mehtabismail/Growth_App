@@ -5,16 +5,19 @@ import {Button, Text, Icon, Image} from 'react-native-elements';
 import metrics from '../../Themes/Metrics';
 import Fonts from '../../Themes/Fonts';
 import Colors from '../../Themes/Colors';
+import navigationStrings from '../../Constants/navigationStrings';
 
-const Sleeping = () => {
+const Sleeping = ({navigation}) => {
   return (
     <SafeAreaView>
       <View style={styles.container}>
+        <View style={{height:"70%", justifyContent:"center"}}>
         <View style={styles.timeCircleView}>
           <Text style={styles.timeText}>00:00</Text>
         </View>
+        </View>
         <View style={styles.buttonView}>
-          <TouchableOpacity style={styles.containerLast}>
+          <TouchableOpacity style={styles.containerLast} onPress={()=>navigation.navigate(navigationStrings.SLEEPING2)} >
             <Image
               style={{
                 width: 30,
@@ -87,7 +90,11 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   buttonView: {
+    flex:1,
     alignItems: 'center',
+    justifyContent:"flex-end",
+    // backgroundColor:"red"
+    paddingBottom:metrics.doubleBasePadding
   },
   timeText: {
     fontSize: 50,
@@ -95,8 +102,10 @@ const styles = StyleSheet.create({
   },
   containerLast: {
     flexDirection: 'row',
+    padding:5,
   },
   button: {
-    margin: 10,
+    // margin: 10,
+    // paddingBottom:10
   },
 });

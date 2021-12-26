@@ -96,7 +96,9 @@ const ProfilePage = ({navigation}) => {
                 style={[
                   Shadow.shadow,
                   styles.feedButtons
-                ]}>
+                ]}
+                onPress={() => navigation.navigate(navigationStrings.BREAST)}
+                >
                 <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
                   Breasts
                 </Text>
@@ -114,7 +116,9 @@ const ProfilePage = ({navigation}) => {
                 style={[
                   Shadow.shadow,
                   styles.feedButtons
-                ]}>
+                ]}
+                onPress={()=>navigation.navigate(navigationStrings.PUMPING)}
+                >
                 <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
                   Pumping
                 </Text>
@@ -147,7 +151,9 @@ const ProfilePage = ({navigation}) => {
                 style={[
                   Shadow.shadow,
                   styles.otherButtons
-                ]}>
+                ]}
+                onPress={()=>navigation.navigate(navigationStrings.SLEEPING)}
+                >
                 <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
                   Sleeping
                 </Text>

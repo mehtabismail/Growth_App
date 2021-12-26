@@ -2,12 +2,13 @@ import React from 'react';
 import {TouchableOpacity, Text, View} from 'react-native';
 import {Button, Image} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import navigationStrings from '../../../Constants/navigationStrings';
 import Colors from '../../../Themes/Colors';
 import Fonts from '../../../Themes/Fonts';
 import metrics from '../../../Themes/Metrics';
 import BreastStyles from './BreastStyles';
 
-const Breast = () => {
+const Breast = ({navigation}) => {
   return (
     <SafeAreaView
       style={{
@@ -68,14 +69,16 @@ const Breast = () => {
                     source={require('../../../assets/play-button.png')}
                   />
                 }
-                buttonStyle={[BreastStyles.playButton, {marginLeft: -1}]}
+                buttonStyle={[BreastStyles.playButton,]}
                 containerStyle={{width: '40%'}}
                 type="outline"
                 title="Right"
                 titleStyle={[Fonts.style.buttonText, {color: Colors.primary}]}
               />
             </View>
-            <TouchableOpacity style={{flexDirection: 'row'}}>
+            <TouchableOpacity style={{flexDirection: 'row', padding:metrics.basePadding}} 
+            onPress={()=>navigation.navigate(navigationStrings.BREASTMANNUAL)}
+            >
               <Image
                 style={{
                   width: 30,

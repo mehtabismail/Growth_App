@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     alignItems: 'center',
+    marginBottom:-metrics.baseMargin
   },
   timeText: {
     fontSize: 50,
@@ -138,8 +139,9 @@ const styles = StyleSheet.create({
   },
   containerLast: {
     flexDirection: 'row',
+    padding:metrics.basePadding
   },
   button: {
-    margin: 10,
+    // margin: 10,
   },
 });

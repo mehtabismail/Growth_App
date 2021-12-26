@@ -19,13 +19,14 @@ import {
 } from '../Screens';
 import Test from '../../Test';
 import Colors from '../Themes/Colors';
+import Test2 from '../../Test2';
 
 const Stack = createNativeStackNavigator();
 
 const AppNavigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={navigationStrings.BOTTOM_TABS}>
+      <Stack.Navigator initialRouteName={navigationStrings.SIGN_IN}>
         <Stack.Screen
           name={navigationStrings.SPLASH}
           component={Splash}
@@ -73,6 +74,7 @@ const AppNavigation = () => {
           name={navigationStrings.SLEEPING2}
           component={Sleeping2}
           options={{
+            title: 'Sleeping Mannual',
             headerStyle: {
               backgroundColor: Colors.primary,
             },
@@ -125,6 +127,7 @@ const AppNavigation = () => {
           name={navigationStrings.BREASTMANNUAL}
           component={BreastMannual}
           options={{
+            title:"Breast Mannual",
             headerStyle: {
               backgroundColor: Colors.primary,
             },
@@ -149,6 +152,7 @@ const AppNavigation = () => {
           }}
         />
         <Stack.Screen name="Testing" component={Test} />
+        <Stack.Screen name="Testing2" component={Test2} />
       </Stack.Navigator>
     </NavigationContainer>
   );
