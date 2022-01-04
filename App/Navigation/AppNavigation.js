@@ -15,7 +15,8 @@ import {
   BreastMannual,
   ProfilePage,
   BottomTabs,
-  Bottle
+  Bottle,
+  Settings
 } from '../Screens';
 import Test from '../../Test';
 import Colors from '../Themes/Colors';
@@ -25,9 +26,9 @@ const Stack = createNativeStackNavigator();
 
 const AppNavigation = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName={navigationStrings.SIGN_IN}>
-        <Stack.Screen
+    <NavigationContainer initialRouteName="testing">
+      <Stack.Navigator>
+      <Stack.Screen
           name={navigationStrings.SPLASH}
           component={Splash}
           options={{headerShown: false}}

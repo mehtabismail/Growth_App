@@ -13,10 +13,45 @@ import Colors from '../../../Themes/Colors';
 import Fonts from '../../../Themes/Fonts';
 import metrics from '../../../Themes/Metrics';
 
+import DeviceInfo from 'react-native-device-info';
+// import { getUniqueId, getManufacturer, getDeviceName } from 'react-native-device-info';
+const deviceName = DeviceInfo.getDeviceName();
 const SignUp = ({navigation}) => {
+  // getDeviceName().then((deviceName) => {
+  //   // iOS: "Becca's iPhone 6"
+  //   // Android: ?
+  //   // Windows: ?
+  //   console.log(deviceName);
+  // });
+
+  const fetchSignUpApi = async () => {
+    return await fetch('http://grow-backend.herokuapp.com/api/register', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        first_name: 'hello',
+        last_name: 'world',
+        email: 'hello@world.com',
+        device_name: deviceName._W,
+        password: '12345678',
+        password_confirmation: '12345678',
+      }),
+    })
+      .then(async response => response.json())
+      .then(async json => {
+        console.log(json);
+        alert('User Created');
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: Colors.background}}>
-      <KeyboardAvoidingView style={{flex:1}}>
+      <KeyboardAvoidingView style={{flex: 1}}>
         <View
           style={{
             flex: 1,
@@ -214,7 +249,7 @@ const SignUp = ({navigation}) => {
                   paddingVertical: 5,
                 }}>
                 <Button
-                  title="Log In"
+                  title="Sign Up"
                   type="solid"
                   containerStyle={{width: '90%'}}
                   buttonStyle={{
@@ -226,12 +261,15 @@ const SignUp = ({navigation}) => {
                     {color: Colors.secondary},
                   ]}
                   onPress={() => {
-                    navigation.navigate(navigationStrings.SIGN_IN);
+                    fetchSignUpApi();
                   }}
                 />
               </View>
               <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate(navigationStrings.SIGN_IN);
+                  }}>
                   <Text
                     style={{
                       fontWeight: '100',

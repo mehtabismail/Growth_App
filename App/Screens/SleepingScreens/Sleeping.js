@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import {StyleSheet, View, TouchableOpacity, SafeAreaView} from 'react-native';
 import CustomHeader from '../../Components/CustomHeader';
 import {Button, Text, Icon, Image} from 'react-native-elements';
@@ -7,65 +7,101 @@ import Fonts from '../../Themes/Fonts';
 import Colors from '../../Themes/Colors';
 import navigationStrings from '../../Constants/navigationStrings';
 
-const Sleeping = ({navigation}) => {
-  return (
-    <SafeAreaView>
-      <View style={styles.container}>
-        <View style={{height:"70%", justifyContent:"center"}}>
-        <View style={styles.timeCircleView}>
-          <Text style={styles.timeText}>00:00</Text>
-        </View>
-        </View>
-        <View style={styles.buttonView}>
-          <TouchableOpacity style={styles.containerLast} onPress={()=>navigation.navigate(navigationStrings.SLEEPING2)} >
-            <Image
-              style={{
-                width: 30,
-                height: 30,
-                resizeMode: 'contain',
-                alignSelf: 'flex-start',
-                tintColor: Colors.primary,
-              }}
-              source={require('../../assets/keyboard.png')}
-            />
-            <Text
-              style={{
-                fontSize: Fonts.size.medium,
-                color: Colors.primary,
-                marginLeft: metrics.smallMargin,
-                marginTop: metrics.smallMargin,
-              }}>
-              or Enter Manually
-            </Text>
-          </TouchableOpacity>
-          <View style={styles.button}>
-            <Button
-              icon={
-                <Image
-                  style={{
-                    width: 30,
-                    height: 30,
-                    resizeMode: 'contain',
-                    marginRight: metrics.baseMargin,
-                    tintColor: Colors.primary,
-                  }}
-                  source={require('../../assets/play-button.png')}
-                />
-              }
-              buttonStyle={{
-                borderColor: Colors.primary,
-                borderWidth: 2,
-                paddingHorizontal: metrics.doubleBasePadding,
-              }}
-              type="outline"
-              title="Sleeps"
-              titleStyle={[Fonts.style.buttonText, {color: Colors.primary}]}
-            />
+class Sleeping extends Component{
+
+constructor( props ) {
+  super( props );
+  this.state={
+    minute: 0,
+    second: 0,
+    pressed:false,
+  }
+}
+intervalID = 0;
+secTime=0;
+stopWatch(){
+  if(this.state.pressed==false){
+    this.setState({pressed:true})
+    this.intervalID=setInterval(() => {
+      return this.setState((state, props) => {
+        return{
+          second: state.second==59?0:state.second+1,
+          minute: state.second==59?state.minute+1:state.minute
+        }
+      })
+    }, 1000);
+  }else if(this.state.pressed==true){
+    this.setState({pressed:false})
+    clearInterval(this.intervalID)
+    this.secTime=this.state.second
+    console.log(this.secTime)
+    this.minTime=this.state.minute
+    console.log(this.minTime)
+  }
+  
+  
+}
+  render(){
+    return (
+      <SafeAreaView>
+        <View style={styles.container}>
+          <View style={{height:"70%", justifyContent:"center"}}>
+          <View style={styles.timeCircleView}>
+            <Text style={styles.timeText}>{this.state.minute}:{this.state.second}</Text>
+          </View>
+          </View>
+          <View style={styles.buttonView}>
+            <TouchableOpacity style={styles.containerLast} onPress={()=>navigation.navigate(navigationStrings.SLEEPING2)} >
+              <Image
+                style={{
+                  width: 30,
+                  height: 30,
+                  resizeMode: 'contain',
+                  alignSelf: 'flex-start',
+                  tintColor: Colors.primary,
+                }}
+                source={require('../../assets/keyboard.png')}
+              />
+              <Text
+                style={{
+                  fontSize: Fonts.size.medium,
+                  color: Colors.primary,
+                  marginLeft: metrics.smallMargin,
+                  marginTop: metrics.smallMargin,
+                }}>
+                or Enter Manually
+              </Text>
+            </TouchableOpacity>
+            <View style={styles.button}>
+              <Button
+                icon={
+                  <Image
+                    style={{
+                      width: 30,
+                      height: 30,
+                      resizeMode: 'contain',
+                      marginRight: metrics.baseMargin,
+                      tintColor: Colors.primary,
+                    }}
+                    source={require('../../assets/play-button.png')}
+                  />
+                }
+                buttonStyle={{
+                  borderColor: Colors.primary,
+                  borderWidth: 2,
+                  paddingHorizontal: metrics.doubleBasePadding,
+                }}
+                type="outline"
+                title={this.state.pressed==false?"Sleeps":"Wakes"}
+                titleStyle={[Fonts.style.buttonText, {color: Colors.primary}]}
+                onPress={()=>this.stopWatch()}
+              />
+            </View>
           </View>
         </View>
-      </View>
-    </SafeAreaView>
-  );
+      </SafeAreaView>
+    );
+  }
 };
 
 export default Sleeping;

@@ -10,7 +10,7 @@ const Sleeping2 = () => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: Colors.background}}>
       <View style={styles.container}>
-        <View style={{margin: metrics.baseMargin}}>
+        <View style={{marginHorizontal: metrics.baseMargin}}>
           <Text>Begin Date</Text>
           <View style={{flexDirection: 'row'}}>
             <View style={{width: '50%', flexDirection: 'row'}}>
@@ -57,27 +57,6 @@ const Sleeping2 = () => {
           <Text style={styles.timeText}>02:30</Text>
         </View>
         <View style={styles.buttonView}>
-          <TouchableOpacity style={styles.containerLast}>
-            <Image
-              style={{
-                width: 30,
-                height: 30,
-                resizeMode: 'contain',
-                alignSelf: 'flex-start',
-                tintColor: Colors.primary,
-              }}
-              source={require('../../assets/keyboard.png')}
-            />
-            <Text
-              style={{
-                fontSize: Fonts.size.medium,
-                color: Colors.primary,
-                marginLeft: metrics.smallMargin,
-                marginTop: metrics.smallMargin,
-              }}>
-              or Enter Manually
-            </Text>
-          </TouchableOpacity>
           <View style={styles.button}>
             <Button
               icon={
@@ -98,7 +77,7 @@ const Sleeping2 = () => {
                 paddingHorizontal: metrics.doubleBasePadding,
               }}
               type="outline"
-              title="Sleeps"
+              title="Wakes Up"
               titleStyle={[Fonts.style.buttonText, {color: Colors.primary}]}
             />
           </View>
@@ -143,5 +122,6 @@ const styles = StyleSheet.create({
   },
   button: {
     // margin: 10,
+    // marginBottom:metrics.baseMargin
   },
 });

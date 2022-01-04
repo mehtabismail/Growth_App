@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   ScrollView,
   KeyboardAvoidingView,
+  Alert,
 } from 'react-native';
 /* USE-SELECTOR & USE-DISPATCH HOOKS FOR REDUX */
 import {useSelector, useDispatch} from 'react-redux';
@@ -32,7 +33,7 @@ const SignUp = ({navigation}) => {
   /* USEDISPATCH & USESELECTOR USAGE */
   const dispatch = useDispatch();
   // const {loginApiData} = useSelector(state => state.login);
-  let data="";
+  let data = '';
 
   /* LOGIN API INTEGRATION WITH FETCH() */
   const fetchLoginApi = async () => {
@@ -44,10 +45,23 @@ const SignUp = ({navigation}) => {
       },
       body: JSON.stringify({email: email, password: password}),
     })
-      .then(response => response.json())
+      .then(async response => response.json()
+        // console.log(response)
+        // if (response.status == 200) {
+        //   // console.log(response.json)
+        //   navigation.navigate(navigationStrings.BOTTOM_TABS);
+        // } else if (response.status != 200) {
+        //   console.log("Wrong Credentials");
+        // }
+      )
       .then(async json => {
         console.log(json);
-        await dispatch(setApiData(json));
+        if(json.token){
+          navigation.navigate(navigationStrings.BOTTOM_TABS)
+        }else if(json.errors){
+          alert(json.message)
+        }
+        // await dispatch(setApiData(json));
         // await dispatchData(json);
         // console.log("after dispatching response");
         // console.log('Api :', json.token);
@@ -62,7 +76,7 @@ const SignUp = ({navigation}) => {
   };
 
   const dispatchData = async () => {
-    console.log("saving data to redux")
+    console.log('saving data to redux');
     return dispatch(setApiData(data));
   };
   // const storeData = async () => {
@@ -140,6 +154,7 @@ const SignUp = ({navigation}) => {
           style={{
             width: '90%',
             alignSelf: 'center',
+            marginBottomm: metrics.smallMargin
           }}>
           <Button
             icon={
@@ -241,7 +256,10 @@ const SignUp = ({navigation}) => {
           />
         </View>
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(navigationStrings.SIGN_UP);
+            }}>
             <Text
               style={{
                 fontWeight: '100',
