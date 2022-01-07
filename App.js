@@ -3,6 +3,9 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import AppNavigation from './App/Navigation/AppNavigation';
 import Store from './App/Redux/Store';
+import Untitled from './Test';
+import Test from './Test';
+import Test2 from './Test2';
 
 const App = () => {
   return (
