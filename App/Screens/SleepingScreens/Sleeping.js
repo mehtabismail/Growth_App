@@ -34,9 +34,7 @@ stopWatch(){
     this.setState({pressed:false})
     clearInterval(this.intervalID)
     this.secTime=this.state.second
-    console.log(this.secTime)
     this.minTime=this.state.minute
-    console.log(this.minTime)
   }
   
   

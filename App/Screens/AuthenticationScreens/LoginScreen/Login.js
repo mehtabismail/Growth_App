@@ -15,7 +15,7 @@ import {useSelector, useDispatch} from 'react-redux';
 
 import LoginReducer, {setApiData} from '../../../Redux/Reducers/LoginReducer';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /* REACT NATIVE ELEMENT COMPONENTS */
 import {Button, Image, Input, Icon, Text} from 'react-native-elements';
@@ -26,14 +26,13 @@ import Colors from '../../../Themes/Colors';
 import Fonts from '../../../Themes/Fonts';
 import metrics from '../../../Themes/Metrics';
 
-const SignUp = ({navigation}) => {
+const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   /* USEDISPATCH & USESELECTOR USAGE */
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // const {loginApiData} = useSelector(state => state.login);
-  let data = '';
 
   /* LOGIN API INTEGRATION WITH FETCH() */
   const fetchLoginApi = async () => {
@@ -45,21 +44,13 @@ const SignUp = ({navigation}) => {
       },
       body: JSON.stringify({email: email, password: password}),
     })
-      .then(async response => response.json()
-        // console.log(response)
-        // if (response.status == 200) {
-        //   // console.log(response.json)
-        //   navigation.navigate(navigationStrings.BOTTOM_TABS);
-        // } else if (response.status != 200) {
-        //   console.log("Wrong Credentials");
-        // }
-      )
+      .then(async response => response.json())
       .then(async json => {
         console.log(json);
-        if(json.token){
-          navigation.navigate(navigationStrings.BOTTOM_TABS)
-        }else if(json.errors){
-          alert(json.message)
+        if (json.token) {
+          navigation.navigate(navigationStrings.BOTTOM_TABS);
+        } else if (json.errors) {
+          alert(json.message);
         }
         // await dispatch(setApiData(json));
         // await dispatchData(json);
@@ -104,7 +95,8 @@ const SignUp = ({navigation}) => {
     return (
       <View
         style={{
-          paddingVertical: metrics.smallPadding,
+          paddingVertical: metrics.basePadding,
+          marginTop: metrics.doubleBaseMargin,
         }}>
         <Input
           placeholder="E-mail or Username"
@@ -154,7 +146,7 @@ const SignUp = ({navigation}) => {
           style={{
             width: '90%',
             alignSelf: 'center',
-            marginBottomm: metrics.smallMargin
+            marginBottom: metrics.smallMargin,
           }}>
           <Button
             icon={
@@ -227,16 +219,13 @@ const SignUp = ({navigation}) => {
       <View
         style={{
           flex: 1,
-          justifyContent: 'center',
-          marginTop: metrics.baseMargin,
-          // paddingVertical: metrics.basePadding,
+          justifyContent: 'flex-end',
         }}>
         <View
           style={{
             width: '100%',
             alignItems: 'center',
             paddingVertical: 5,
-            paddingTop: metrics.doubleBasePadding,
           }}>
           <Button
             title="Log In"
@@ -276,121 +265,107 @@ const SignUp = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: Colors.background}}>
-      <KeyboardAvoidingView style={{flex: 1}}>
-        <ScrollView style={{flex: 1}}>
+    <View style={{flex: 1}}>
+      <View
+        style={{
+          height: '60%',
+          width: '110%',
+          backgroundColor: Colors.tertiary,
+          // position: 'absolute',
+          top: -180,
+          left: 0,
+          right: 0,
+          borderBottomRightRadius: 600,
+        }}></View>
+      <View
+        style={{
+          height: '57%',
+          backgroundColor: Colors.primary,
+          width: '105%',
+          position: 'absolute',
+          top: -180,
+          left: 0,
+          right: 0,
+          borderBottomRightRadius: 600,
+        }}></View>
+      <View style={{position: 'absolute', top: '10%', left: '8%'}}>
+        <Text
+          style={{
+            fontSize: Fonts.size.h3,
+            color: Colors.secondary,
+            fontWeight: 'bold',
+          }}>
+          Growth
+        </Text>
+        <View
+          style={{
+            borderWidth: 2,
+            borderColor: Colors.secondary,
+            marginTop: 10,
+          }}></View>
+      </View>
+      <View style={{flex: 1, marginTop: '-60%'}}>
+        {/* SIGN IN SIGN UP TEXT */}
+        <View
+          style={{
+            // height:"30%",
+            justifyContent: 'flex-end',
+            alignItems: 'flex-end',
+          }}>
           <View
             style={{
-              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
             }}>
-            {/* GRADIENT AND HEADING VIEW */}
-            <View style={{height: '25%'}}>
-              <View style={styles.gradient}>
-                <View style={{marginTop: '50%', marginLeft: 10}}>
-                  <View>
-                    <Text
-                      style={{
-                        fontSize: Fonts.size.h5,
-                        color: Colors.secondary,
-                        fontWeight: 'bold',
-                      }}>
-                      Growth
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      borderWidth: 2,
-                      borderColor: Colors.secondary,
-                      marginTop: 10,
-                    }}></View>
-                </View>
-              </View>
-            </View>
-
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'space-between',
-              }}>
-              <View>
-                <View
-                  style={{
-                    marginBottom: metrics.baseMargin,
-                  }}>
-                  {/* SIGN IN SIGN UP TEXT */}
-                  <View
-                    style={{
-                      justifyContent: 'center',
-                      alignItems: 'flex-end',
-                    }}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                      }}>
-                      <TouchableOpacity>
-                        <Text
-                          style={{
-                            fontWeight: '200',
-                            fontSize: Fonts.size.h6,
-                            color: Colors.secondary,
-                          }}>
-                          Sign Up
-                        </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity>
-                        <Text
-                          style={{
-                            fontWeight: '700',
-                            fontSize: Fonts.size.h6,
-                            color: Colors.primary,
-                            marginLeft: metrics.baseMargin,
-                            marginRight: 5,
-                          }}>
-                          Sign In
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-
-                  {/* INPUT CONTAINER*/}
-                </View>
-                {TextInputs()}
-                {/* OR TEXT CONTAINER */}
-                <View
-                  style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    // marginBottom: metrics.baseMargin,
-                  }}>
-                  <Text style={{fontSize: Fonts.size.regular}}>or</Text>
-                </View>
-
-                {/* GOOGLE & FACEBOOK Button Views */}
-                {GoogleFacebookButtons()}
-              </View>
-              {/* LOGIN BUTTON CONTAINER */}
-              {LoginButtonContainer()}
-            </View>
+            <TouchableOpacity
+             onPress={() => {
+              navigation.navigate(navigationStrings.SIGN_UP);
+            }}
+            >
+              <Text
+                style={{
+                  fontWeight: '200',
+                  fontSize: Fonts.size.h6,
+                  color: Colors.secondary,
+                }}>
+                Sign Up
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Text
+                style={{
+                  fontWeight: '700',
+                  fontSize: Fonts.size.h6,
+                  color: Colors.primary,
+                  marginLeft: metrics.baseMargin,
+                  marginRight: 5,
+                }}>
+                Sign In
+              </Text>
+            </TouchableOpacity>
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+          }}>
+          {TextInputs()}
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginVertical: metrics.smallMargin,
+            }}>
+            <Text style={{fontSize: Fonts.size.regular}}>or</Text>
+          </View>
+          {GoogleFacebookButtons()}
+          {/* LOGIN BUTTON CONTAINER */}
+          {LoginButtonContainer()}
+        </View>
+      </View>
+    </View>
   );
 };
 
-export default SignUp;
-
-const styles = StyleSheet.create({
-  gradient: {
-    backgroundColor: Colors.primary,
-    width: 285,
-    height: 290,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 400 / 2,
-    marginTop: '-35%',
-    marginLeft: '-20%',
-    transform: [{scaleX: 2}],
-  },
-});
+export default Login;
