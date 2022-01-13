@@ -100,7 +100,7 @@ const ProfilePage = ({navigation}) => {
                 onPress={() => navigation.navigate(navigationStrings.BREAST)}
                 >
                 <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
-                  Breasts
+                  Breastfead
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity

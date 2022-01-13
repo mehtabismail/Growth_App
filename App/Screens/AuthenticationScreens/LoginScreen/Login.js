@@ -232,6 +232,7 @@ const Login = ({navigation}) => {
             type="solid"
             containerStyle={{width: '90%'}}
             buttonStyle={{
+
               borderRadius: 50,
               backgroundColor: Colors.primary,
             }}
@@ -240,7 +241,9 @@ const Login = ({navigation}) => {
               // navigation.navigate(navigationStrings.SIGN_IN);
               console.log(email);
               console.log(password);
-              fetchLoginApi();
+              // fetchLoginApi();
+              navigation.navigate(navigationStrings.BOTTOM_TABS)
+              
             }}
           />
         </View>

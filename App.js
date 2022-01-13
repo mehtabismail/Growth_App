@@ -3,15 +3,16 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import AppNavigation from './App/Navigation/AppNavigation';
 import Store from './App/Redux/Store';
-import Untitled from './Test';
-import Test from './Test';
-import Test2 from './Test2';
+import { Sleeping2 } from './App/Screens';
+import Example from './Example';
 
 const App = () => {
   return (
     <Provider store={Store}>
       <SafeAreaProvider>
         <AppNavigation />
+        {/* <Sleeping2/> */}
+        {/* <Example/> */}
       </SafeAreaProvider>
     </Provider>
   );

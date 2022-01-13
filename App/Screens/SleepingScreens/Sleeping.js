@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React, {Component} from 'react';
 import {StyleSheet, View, TouchableOpacity, SafeAreaView} from 'react-native';
 import CustomHeader from '../../Components/CustomHeader';
 import {Button, Text, Icon, Image} from 'react-native-elements';
@@ -6,50 +6,71 @@ import metrics from '../../Themes/Metrics';
 import Fonts from '../../Themes/Fonts';
 import Colors from '../../Themes/Colors';
 import navigationStrings from '../../Constants/navigationStrings';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
-class Sleeping extends Component{
+class Sleeping extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      minute: 0,
+      second: 0,
+      pressed: false,
+    };
+  }
+  intervalID = 0;
+  secTime = 0;
+  stopWatch() {
+    if (this.state.pressed == false) {
+      this.setState({pressed: true});
+      this.intervalID = setInterval(() => {
+        return this.setState((state, props) => {
+          return {
+            second: state.second == 59 ? 0 : state.second + 1,
+            minute: state.second == 59 ? state.minute + 1 : state.minute,
+          };
+        });
+      }, 1000);
+    } else if (this.state.pressed == true) {
+      this.setState({pressed: false});
+      clearInterval(this.intervalID);
+      this.secTime = this.state.second;
+      this.minTime = this.state.minute;
+    }
+  }
 
-constructor( props ) {
-  super( props );
-  this.state={
-    minute: 0,
-    second: 0,
-    pressed:false,
-  }
-}
-intervalID = 0;
-secTime=0;
-stopWatch(){
-  if(this.state.pressed==false){
-    this.setState({pressed:true})
-    this.intervalID=setInterval(() => {
-      return this.setState((state, props) => {
-        return{
-          second: state.second==59?0:state.second+1,
-          minute: state.second==59?state.minute+1:state.minute
-        }
-      })
-    }, 1000);
-  }else if(this.state.pressed==true){
-    this.setState({pressed:false})
-    clearInterval(this.intervalID)
-    this.secTime=this.state.second
-    this.minTime=this.state.minute
-  }
-  
-  
-}
-  render(){
+  render() {
+    const sleepingTime = () => {
+      this.state.pressed == true
+        ? this.props.navigation.navigate(navigationStrings.SLEEPING2, {
+            minute: this.state.minute,
+            second: this.state.second,
+          })
+        : 
+        this.stopWatch();
+    };
     return (
       <SafeAreaView>
         <View style={styles.container}>
-          <View style={{height:"70%", justifyContent:"center"}}>
-          <View style={styles.timeCircleView}>
-            <Text style={styles.timeText}>{this.state.minute}:{this.state.second}</Text>
-          </View>
+          <View style={{height: '70%', justifyContent: 'center'}}>
+            <View style={styles.timeCircleView}>
+              <Text style={styles.timeText}>
+                {this.state.minute < 10
+                  ? '0' + this.state.minute
+                  : this.state.minute}
+                :
+                {this.state.second < 10
+                  ? '0' + this.state.second
+                  : this.state.second}
+              </Text>
+            </View>
           </View>
           <View style={styles.buttonView}>
-            <TouchableOpacity style={styles.containerLast} onPress={()=>navigation.navigate(navigationStrings.SLEEPING2)} >
+            <TouchableOpacity
+              style={styles.containerLast}
+              onPress={() =>
+                this.props.navigation.navigate(navigationStrings.SLEEPING2)
+              }>
               <Image
                 style={{
                   width: 30,
@@ -90,9 +111,10 @@ stopWatch(){
                   paddingHorizontal: metrics.doubleBasePadding,
                 }}
                 type="outline"
-                title={this.state.pressed==false?"Sleeps":"Wakes"}
+                title={this.state.pressed == false ? 'Sleeps' : 'Wakes'}
                 titleStyle={[Fonts.style.buttonText, {color: Colors.primary}]}
-                onPress={()=>this.stopWatch()}
+                // onPress={()=>this.stopWatch()}
+                onPress={sleepingTime}
               />
             </View>
           </View>
@@ -100,7 +122,7 @@ stopWatch(){
       </SafeAreaView>
     );
   }
-};
+}
 
 export default Sleeping;
 
@@ -124,11 +146,11 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   buttonView: {
-    flex:1,
+    flex: 1,
     alignItems: 'center',
-    justifyContent:"flex-end",
+    justifyContent: 'flex-end',
     // backgroundColor:"red"
-    paddingBottom:metrics.doubleBasePadding
+    paddingBottom: metrics.doubleBasePadding,
   },
   timeText: {
     fontSize: 50,
@@ -136,7 +158,7 @@ const styles = StyleSheet.create({
   },
   containerLast: {
     flexDirection: 'row',
-    padding:5,
+    padding: 5,
   },
   button: {
     // margin: 10,
