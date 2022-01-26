@@ -232,18 +232,16 @@ const Login = ({navigation}) => {
             type="solid"
             containerStyle={{width: '90%'}}
             buttonStyle={{
-
               borderRadius: 50,
               backgroundColor: Colors.primary,
             }}
             titleStyle={[Fonts.style.buttonText, {color: Colors.secondary}]}
             onPress={() => {
               // navigation.navigate(navigationStrings.SIGN_IN);
-              console.log(email);
-              console.log(password);
+              // console.log(email);
+              // console.log(password);
               // fetchLoginApi();
               navigation.navigate(navigationStrings.BOTTOM_TABS)
-              
             }}
           />
         </View>
@@ -321,10 +319,9 @@ const Login = ({navigation}) => {
               justifyContent: 'space-between',
             }}>
             <TouchableOpacity
-             onPress={() => {
-              navigation.navigate(navigationStrings.SIGN_UP);
-            }}
-            >
+              onPress={() => {
+                navigation.navigate(navigationStrings.SIGN_UP);
+              }}>
               <Text
                 style={{
                   fontWeight: '200',

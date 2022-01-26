@@ -108,8 +108,14 @@ const Sleeping2 = ({route}) => {
         </View>
         <View style={styles.timeCircleView}>
           <Text style={styles.timeText}>
-            {(beginTime == '')
-              ? ((route.params.minute<10)?'0' + route.params.minute:route.params.minute)+':'+((route.params.second<10)?'0'+ route.params.second:route.params.second)
+            {beginTime == ''
+              ? (route.params.minute < 10
+                  ? '0' + route.params.minute
+                  : route.params.minute) +
+                ':' +
+                (route.params.second < 10
+                  ? '0' + route.params.second
+                  : route.params.second)
               : beginTime}
           </Text>
         </View>

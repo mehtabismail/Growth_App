@@ -16,7 +16,10 @@ import {
   ProfilePage,
   BottomTabs,
   Bottle,
-  Settings
+  Settings,
+  AddChild,
+  BornChild,
+  NotBornChild,
 } from '../Screens';
 import Test from '../../Test';
 import Colors from '../Themes/Colors';
@@ -26,9 +29,9 @@ const Stack = createNativeStackNavigator();
 
 const AppNavigation = () => {
   return (
-    <NavigationContainer >
-      <Stack.Navigator>
-      <Stack.Screen
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName={navigationStrings.ADDCHILD}>
+        <Stack.Screen
           name={navigationStrings.SPLASH}
           component={Splash}
           options={{headerShown: false}}
@@ -128,7 +131,7 @@ const AppNavigation = () => {
           name={navigationStrings.BREASTMANNUAL}
           component={BreastMannual}
           options={{
-            title:"Breast Mannual",
+            title: 'Breast Mannual',
             headerStyle: {
               backgroundColor: Colors.primary,
             },
@@ -152,7 +155,52 @@ const AppNavigation = () => {
             },
           }}
         />
-        <Stack.Screen name="Testing" component={Test} />
+        {/* ADD CHILD SCREEN STACK */}
+        <Stack.Screen
+          name={navigationStrings.ADDCHILD}
+          component={AddChild}
+          options={{
+            title: 'New baby',
+            headerStyle: {
+              backgroundColor: Colors.primary,
+            },
+            headerTintColor: Colors.secondary,
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+        {/* ADD BORN CHILD SCREEN STACK */}
+        <Stack.Screen
+          name={navigationStrings.BORNCHILD}
+          component={BornChild}
+          options={{
+            title: 'New baby',
+            headerStyle: {
+              backgroundColor: Colors.primary,
+            },
+            headerTintColor: Colors.secondary,
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+        {/* ADD NOT CHILD SCREEN STACK */}
+        <Stack.Screen
+          name={navigationStrings.NOTBORNCHILD}
+          component={NotBornChild}
+          options={{
+            title: 'New baby',
+            headerStyle: {
+              backgroundColor: Colors.primary,
+            },
+            headerTintColor: Colors.secondary,
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+        <Stack.Screen name="Testing" component={Test2} />
         {/* <Stack.Screen name="Testing2" component={Tes} /> */}
       </Stack.Navigator>
     </NavigationContainer>
@@ -160,5 +208,3 @@ const AppNavigation = () => {
 };
 
 export default AppNavigation;
-
-

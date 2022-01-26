@@ -24,7 +24,7 @@ export default function BottomTabs() {
   return (
     <Tab.Navigator
       initialRouteName={navigationStrings.PROFILEPAGE}
-      screenOptions={{headerShown: true, tabBarVisible: true}}>
+      screenOptions={{headerShown: false, tabBarVisible: true}}>
       {/* SURVIVAL/PROFILE_PAGE SCREEN */}
       <Tab.Screen
         name={navigationStrings.PROFILEPAGE}

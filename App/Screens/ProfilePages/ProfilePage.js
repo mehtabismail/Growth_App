@@ -13,6 +13,36 @@ import navigationStrings from '../../Constants/navigationStrings';
 import Colors from '../../Themes/Colors';
 import Fonts from '../../Themes/Fonts';
 import metrics from '../../Themes/Metrics';
+import SelectDropdown from 'react-native-select-dropdown';
+
+const countries = ['Egypt', 'Canada', 'Australia', 'Ireland'];
+
+const dropDown = () => {
+  console.log('pressed');
+  return (
+    <View>
+    {
+      console.log("pressed again")
+    }
+      <SelectDropdown
+        data={countries}
+        onSelect={(selectedItem, index) => {
+          console.log(selectedItem, index);
+        }}
+        buttonTextAfterSelection={(selectedItem, index) => {
+          // text represented after item is selected
+          // if data array is an array of objects then return selectedItem.property to render after item is selected
+          return selectedItem;
+        }}
+        rowTextForSelection={(item, index) => {
+          // text represented for each item in dropdown
+          // if data array is an array of objects then return item.property to represent item in dropdown
+          return item;
+        }}
+      />
+    </View>
+  );
+};
 
 const ProfilePage = ({navigation}) => {
   return (
@@ -28,24 +58,28 @@ const ProfilePage = ({navigation}) => {
               source={require('../../assets/google.png')}
             />
           </View>
-          {/* PROFILE NAME & MONTH */}
-          <View style={{flexDirection: 'column'}}>
-            <View style={{alignItems: 'center'}}>
-              <Text style={styles.profileNameTextStyle}>John</Text>
+          <TouchableOpacity
+            onPress={() => dropDown()}
+            style={{flexDirection: 'row'}}>
+            {/* PROFILE NAME & MONTH */}
+            <View style={{flexDirection: 'column'}}>
+              <View style={{alignItems: 'center'}}>
+                <Text style={styles.profileNameTextStyle}>John</Text>
+              </View>
+              <View style={{margin: metrics.smallMargin}}>
+                <Text style={{fontSize: Fonts.size.medium}}>3 Months</Text>
+              </View>
             </View>
-            <View style={{margin: metrics.smallMargin}}>
-              <Text style={{fontSize: Fonts.size.medium}}>3 Months</Text>
+            {/* DROPDOWN ICON */}
+            <View style={{justifyContent: 'center'}}>
+              <TouchableOpacity onPress={() => dropDown()}>
+                <Image
+                  style={styles.caretDownImage}
+                  source={require('../../assets/caret-down.png')}
+                />
+              </TouchableOpacity>
             </View>
-          </View>
-          {/* DROPDOWN ICON */}
-          <View>
-            <TouchableOpacity>
-              <Image
-                style={styles.caretDownImage}
-                source={require('../../assets/caret-down.png')}
-              />
-            </TouchableOpacity>
-          </View>
+          </TouchableOpacity>
         </View>
 
         {/* HOME & ANALYSIS PART */}
@@ -82,43 +116,27 @@ const ProfilePage = ({navigation}) => {
                 </Text>
               </View>
               <TouchableOpacity
-                style={[
-                  Shadow.shadow,
-                  styles.feedButtons
-                ]}
-                onPress={()=>navigation.navigate(navigationStrings.BOTTLE)}
-                >
+                style={[Shadow.shadow, styles.feedButtons]}
+                onPress={() => navigation.navigate(navigationStrings.BOTTLE)}>
                 <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
                   Bottle
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[
-                  Shadow.shadow,
-                  styles.feedButtons
-                ]}
-                onPress={() => navigation.navigate(navigationStrings.BREAST)}
-                >
+                style={[Shadow.shadow, styles.feedButtons]}
+                onPress={() => navigation.navigate(navigationStrings.BREAST)}>
                 <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
                   Breastfead
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  Shadow.shadow,
-                  styles.feedButtons
-                ]}>
+              <TouchableOpacity style={[Shadow.shadow, styles.feedButtons]}>
                 <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
                   Solids
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[
-                  Shadow.shadow,
-                  styles.feedButtons
-                ]}
-                onPress={()=>navigation.navigate(navigationStrings.PUMPING)}
-                >
+                style={[Shadow.shadow, styles.feedButtons]}
+                onPress={() => navigation.navigate(navigationStrings.PUMPING)}>
                 <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
                   Pumping
                 </Text>
@@ -148,21 +166,13 @@ const ProfilePage = ({navigation}) => {
                 </Text>
               </View>
               <TouchableOpacity
-                style={[
-                  Shadow.shadow,
-                  styles.otherButtons
-                ]}
-                onPress={()=>navigation.navigate(navigationStrings.SLEEPING)}
-                >
+                style={[Shadow.shadow, styles.otherButtons]}
+                onPress={() => navigation.navigate(navigationStrings.SLEEPING)}>
                 <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
                   Sleeping
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  Shadow.shadow,
-                  styles.otherButtons
-                ]}>
+              <TouchableOpacity style={[Shadow.shadow, styles.otherButtons]}>
                 <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
                   Diaper
                 </Text>
