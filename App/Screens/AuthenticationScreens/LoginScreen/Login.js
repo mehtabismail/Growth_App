@@ -241,7 +241,7 @@ const Login = ({navigation}) => {
               // console.log(email);
               // console.log(password);
               // fetchLoginApi();
-              navigation.navigate(navigationStrings.BOTTOM_TABS)
+              navigation.navigate(navigationStrings.BOTTOM_TABS);
             }}
           />
         </View>

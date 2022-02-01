@@ -24,13 +24,15 @@ import {
 import Test from '../../Test';
 import Colors from '../Themes/Colors';
 import Test2 from '../../Test2';
+import Testprofile from '../Screens/ProfilePages/testProfile';
+import SleepingMannual from '../Screens/SleepingScreens/SleepingMannual';
 
 const Stack = createNativeStackNavigator();
 
 const AppNavigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={navigationStrings.ADDCHILD}>
+      <Stack.Navigator initialRouteName={navigationStrings.PROFILEPAGE} >
         <Stack.Screen
           name={navigationStrings.SPLASH}
           component={Splash}
@@ -77,6 +79,20 @@ const AppNavigation = () => {
         <Stack.Screen
           name={navigationStrings.SLEEPING2}
           component={Sleeping2}
+          options={{
+            title: 'Sleeping Mannual',
+            headerStyle: {
+              backgroundColor: Colors.primary,
+            },
+            headerTintColor: Colors.secondary,
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+        <Stack.Screen
+          name="SleepingMannual"
+          component={SleepingMannual}
           options={{
             title: 'Sleeping Mannual',
             headerStyle: {
@@ -200,8 +216,8 @@ const AppNavigation = () => {
             },
           }}
         />
-        <Stack.Screen name="Testing" component={Test2} />
-        {/* <Stack.Screen name="Testing2" component={Tes} /> */}
+        <Stack.Screen name="Testing" component={Test} />
+        <Stack.Screen name="Testing2" component={Testprofile} options={{headerShown: false}} />
       </Stack.Navigator>
     </NavigationContainer>
   );

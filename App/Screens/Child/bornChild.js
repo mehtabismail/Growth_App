@@ -1,39 +1,38 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  StyleSheet,
+  ActivityIndicator,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Button, Input} from 'react-native-elements';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import SelectDropdown from 'react-native-select-dropdown';
 import Colors from '../../Themes/Colors';
 import metrics from '../../Themes/Metrics';
+import navigationStrings from '../../Constants/navigationStrings';
 
-const BornChild = () => {
+const BornChild = ({navigation}) => {
   const countries = [
     'Mother',
     'Father',
     'family Member',
-    'Nany/Babysitter',
+    'Nanny/Babysitter',
     'Other',
   ];
-
-  const gender = [
-    'Boy',
-    'Girl'
-  ];
+  const gender = ['Boy', 'Girl'];
 
   const [name, setName] = useState('');
-  var [mode, setMode] = useState('date');
+  var [mode, setMode] = useState('');
   var [dueDate, setDueDate] = useState('');
+  var [birthDate, setBirthDate] = useState('');
   var [sex, setSex] = useState('');
   var [relation, setRelation] = useState('');
+  var [isLoading, setLoading] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   const selectDate = () => {
-    setMode((mode = 'date'));
-    showDatePicker();
-  };
-
-  const selectTime = () => {
-    setMode((mode = 'time'));
     showDatePicker();
   };
 
@@ -46,12 +45,53 @@ const BornChild = () => {
   };
 
   const handleConfirm = date => {
-    setDueDate((dueDate = date.toString().substring(0, 15)));
+    mode == 'date'
+      ? setBirthDate((birthDate = date.toString().substring(0, 15)))
+      : setDueDate((dueDate = date.toString().substring(0, 15)));
+    setMode((mode = ''));
     hideDatePicker();
+  };
+
+  const fetchApi = async () => {
+    setLoading((isLoading = true));
+    return await fetch('http://grow-backend.herokuapp.com/api/child', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer 1|0nLjVlSaKyTJyPqY9gECwiGv21gFrkVSdE93JwJF',
+      },
+      body: JSON.stringify({
+        name: name,
+        gender: sex,
+        date_of_birth: birthDate,
+        due_date: dueDate,
+        relationship: 'NANNY/BABYSITTER',
+      }),
+    })
+      .then(async response => response.json())
+      .then(async json => {
+        setLoading((isLoading = false));
+        console.log(json);
+        if (json.errors) {
+          alert(json.message);
+        } else {
+          navigation.navigate(navigationStrings.PROFILEPAGE);
+        }
+      })
+      .catch(error => {
+        setLoading((isLoading = false));
+        alert(error);
+      });
   };
 
   return (
     <View style={{flex: 1, backgroundColor: Colors.background}}>
+      <ActivityIndicator
+        animating={isLoading}
+        size="large"
+        style={{position: 'absolute', top: '40%', left: '40%'}}
+      />
       {/* DATE PICKER MODAL */}
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
@@ -75,14 +115,30 @@ const BornChild = () => {
         />
       </View>
 
-     
-
       {/* BIRTHDAY CONTAINER */}
       <View>
-        <TouchableOpacity onPress={() => selectDate()}>
+        <TouchableOpacity
+          onPress={() => {
+            setMode((mode = 'date'));
+            selectDate();
+          }}>
           <Input
             label="what's your baby's birthday?"
             placeholder="Select birthday?"
+            editable={false}
+            value={birthDate}
+            inputContainerStyle={{borderColor: Colors.primary}}
+            labelStyle={{color: Colors.primary}}
+          />
+        </TouchableOpacity>
+      </View>
+
+      {/* DUE-DATE CONTAINER */}
+      <View>
+        <TouchableOpacity onPress={() => selectDate()}>
+          <Input
+            label="what's your baby's Due Date?"
+            placeholder="Select due date?"
             editable={false}
             value={dueDate}
             inputContainerStyle={{borderColor: Colors.primary}}
@@ -91,10 +147,15 @@ const BornChild = () => {
         </TouchableOpacity>
       </View>
 
-       {/* SEX/GENDER DROPDOWN CONTAINER */}
-       <View>
+      {/* SEX/GENDER DROPDOWN CONTAINER */}
+      <View>
         <SelectDropdown
-          buttonTextStyle={{color: Colors.primary, fontWeight:"bold",paddingVertical:10, textAlign:"auto"}}
+          buttonTextStyle={{
+            color: Colors.primary,
+            fontWeight: 'bold',
+            paddingVertical: 10,
+            textAlign: 'auto',
+          }}
           buttonStyle={{
             backgroundColor: Colors.background,
             width: '95%',
@@ -123,9 +184,14 @@ const BornChild = () => {
       </View>
 
       {/* RELATIONSHIP DROPDOWN CONTAINER */}
-      <View>
+      <View style={{marginTop: metrics.doubleBaseMargin}}>
         <SelectDropdown
-          buttonTextStyle={{color: Colors.primary, fontWeight:"bold",paddingVertical:10, textAlign:"auto"}}
+          buttonTextStyle={{
+            color: Colors.primary,
+            fontWeight: 'bold',
+            paddingVertical: 10,
+            textAlign: 'auto',
+          }}
           buttonStyle={{
             backgroundColor: Colors.background,
             width: '95%',
@@ -156,8 +222,7 @@ const BornChild = () => {
       {/* BUTTON COMPONENT CONTAINER */}
       <View
         style={{
-          position: "absolute",
-          bottom: 0,
+          position: 'relative',
           alignSelf: 'center',
           padding: metrics.basePadding,
         }}>
@@ -177,7 +242,9 @@ const BornChild = () => {
             marginHorizontal: 50,
             marginVertical: 10,
           }}
-          onPress={() => {}}
+          onPress={() => {
+            fetchApi();
+          }}
         />
       </View>
     </View>

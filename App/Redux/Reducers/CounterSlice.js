@@ -27,15 +27,15 @@ import { createSlice, PayloadAction} from "@reduxjs/toolkit";
 export const CounterSlice = createSlice({
     name : "Counter",
     initialState: {
-        count: "hello"
+        count: null
     },
     reducers: {
-        // increment : (state) => {
-        //     state.count += 1; 
-        // },
-        // decrement: (state) => {
-        //     state.count -=1;
-        // },
+        increment : (state) => {
+            state.count += 1; 
+        },
+        decrement: (state) => {
+            state.count -=1;
+        },
         incrementByAmount : (state, action) =>{
             state.count = action.payload;
         }

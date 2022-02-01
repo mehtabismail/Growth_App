@@ -10,10 +10,13 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 const Sleeping2 = ({route}) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   var [beginDate, setBeginDate] = useState('');
+  var [endDate, setEndDate] = useState('');
   var [beginTime, setBeginTime] = useState('');
+  var [endTime, setEndTime] = useState('');
   var [mode, setMode] = useState('date');
-
-  useEffect(() => console.log(route));
+  var [first, setFirst] = useState(false);
+  var [second, setSecond] = useState(false);
+  var [beginTime2, setBeginTime2] = useState('');
 
   const selectDate = () => {
     setMode((mode = 'date'));
@@ -33,13 +36,182 @@ const Sleeping2 = ({route}) => {
     setDatePickerVisibility(false);
   };
 
+  const logicFun = () =>{
+    console.log("running")
+  }
+
   const handleConfirm = date => {
     // beginDate = date;
-    mode == 'date'
-      ? setBeginDate((beginDate = date.toString().substring(0, 15)))
-      : setBeginTime((beginTime = date.toString().substring(16, 21)));
+
+    first == true
+      ? mode == 'date'
+        ? setBeginDate((beginDate = date.toString().substring(0, 15)))
+        : setBeginTime((beginTime = date.toString().substring(16, 21)))
+      : null;
+
+    (first == true && mode == 'time')?logicFun():null;
+    // mode == 'time' ? setBeginTime2((beginTime2 = parseInt(beginTime))) : null;
+
+    setFirst((first = false));
+    console.log(beginTime2);
+
+    second == true
+      ? mode == 'date'
+        ? setEndDate((endDate = date.toString().substring(0, 15)))
+        : setEndTime((endTime = date.toString().substring(16, 21)))
+      : null;
+
+    setSecond((second = false));
     setMode((mode = ''));
     hideDatePicker();
+  };
+
+ 
+
+  const BeginDateAndTime = () => {
+    return (
+      <View>
+        <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity
+            style={{
+              width: '50%',
+              flexDirection: 'row',
+            }}
+            onPress={() => {
+              setFirst((first = true));
+              selectDate();
+            }}>
+            <Input
+              placeholder={
+                beginDate == ''
+                  ? 'Begin Date'
+                  : beginDate.toString().substring(0, 7)
+              }
+              editable={false}
+              rightIcon={
+                <TouchableOpacity
+                  onPress={() => {
+                    setFirst((first = true));
+                    selectDate();
+                  }}>
+                  <Image
+                    style={{
+                      width: 25,
+                      height: 25,
+                      resizeMode: 'contain',
+                      alignSelf: 'flex-start',
+                      marginLeft: 20,
+                    }}
+                    source={require('../../assets/caret-down.png')}
+                  />
+                </TouchableOpacity>
+              }
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setFirst((first = true));
+              selectTime();
+            }}
+            style={{width: '50%'}}>
+            <Input
+              placeholder={beginTime == '' ? 'Begin Time' : beginTime}
+              editable={false}
+              rightIcon={
+                <TouchableOpacity
+                  onPress={() => {
+                    setFirst((first = true));
+                    selectTime();
+                  }}>
+                  <Image
+                    style={{
+                      width: 25,
+                      height: 25,
+                      resizeMode: 'contain',
+                      alignSelf: 'flex-start',
+                      marginLeft: 20,
+                    }}
+                    source={require('../../assets/caret-down.png')}
+                  />
+                </TouchableOpacity>
+              }
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
+
+  const EndDateAndTime = () => {
+    return (
+      <View>
+        <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity
+            style={{
+              width: '50%',
+              flexDirection: 'row',
+            }}
+            onPress={() => {
+              setSecond((second = true));
+              selectDate();
+            }}>
+            <Input
+              placeholder={
+                endDate == '' ? 'End Date' : endDate.toString().substring(0, 7)
+              }
+              editable={false}
+              rightIcon={
+                <TouchableOpacity
+                  onPress={() => {
+                    setSecond((second = true));
+                    selectDate();
+                  }}>
+                  <Image
+                    style={{
+                      width: 25,
+                      height: 25,
+                      resizeMode: 'contain',
+                      alignSelf: 'flex-start',
+                      marginLeft: 20,
+                    }}
+                    source={require('../../assets/caret-down.png')}
+                  />
+                </TouchableOpacity>
+              }
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setSecond((second = true));
+              selectTime();
+            }}
+            style={{width: '50%'}}>
+            <Input
+              placeholder={endTime == '' ? 'End Time' : endTime}
+              editable={false}
+              rightIcon={
+                <TouchableOpacity
+                  onPress={() => {
+                    setSecond((second = true));
+                    selectTime();
+                  }}>
+                  <Image
+                    style={{
+                      width: 25,
+                      height: 25,
+                      resizeMode: 'contain',
+                      alignSelf: 'flex-start',
+                      marginLeft: 20,
+                    }}
+                    source={require('../../assets/caret-down.png')}
+                  />
+                </TouchableOpacity>
+              }
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
   };
 
   return (
@@ -55,56 +227,10 @@ const Sleeping2 = ({route}) => {
           onCancel={hideDatePicker}
         />
         <View style={{marginHorizontal: metrics.baseMargin}}>
-          <Text>Begin Date</Text>
-          <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity
-              style={{
-                width: '50%',
-                flexDirection: 'row',
-              }}
-              onPress={selectDate}>
-              <Input
-                placeholder={
-                  beginDate == ''
-                    ? 'Today'
-                    : beginDate.toString().substring(0, 7)
-                }
-                rightIcon={
-                  <TouchableOpacity onPress={selectDate}>
-                    <Image
-                      style={{
-                        width: 25,
-                        height: 25,
-                        resizeMode: 'contain',
-                        alignSelf: 'flex-start',
-                        marginLeft: 20,
-                      }}
-                      source={require('../../assets/caret-down.png')}
-                    />
-                  </TouchableOpacity>
-                }
-              />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={selectTime} style={{width: '50%'}}>
-              <Input
-                placeholder={beginTime == '' ? 'Begin Time' : beginTime}
-                rightIcon={
-                  <TouchableOpacity>
-                    <Image
-                      style={{
-                        width: 25,
-                        height: 25,
-                        resizeMode: 'contain',
-                        alignSelf: 'flex-start',
-                        marginLeft: 20,
-                      }}
-                      source={require('../../assets/caret-down.png')}
-                    />
-                  </TouchableOpacity>
-                }
-              />
-            </TouchableOpacity>
-          </View>
+          {/* BEGIN DATE / BEGIN TIME */}
+          {BeginDateAndTime()}
+          {/* END DATE / END TIME */}
+          {EndDateAndTime()}
         </View>
         <View style={styles.timeCircleView}>
           <Text style={styles.timeText}>
