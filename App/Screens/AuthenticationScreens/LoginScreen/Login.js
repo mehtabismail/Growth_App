@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 /* REACT NATIVE BUILT IN LIBRARY COMPONENTS */
 import {
@@ -15,7 +15,7 @@ import {useSelector, useDispatch} from 'react-redux';
 
 import LoginReducer, {setApiData} from '../../../Redux/Reducers/LoginReducer';
 
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /* REACT NATIVE ELEMENT COMPONENTS */
 import {Button, Image, Input, Icon, Text} from 'react-native-elements';
@@ -34,6 +34,7 @@ const Login = ({navigation}) => {
   // const dispatch = useDispatch();
   // const {loginApiData} = useSelector(state => state.login);
 
+
   /* LOGIN API INTEGRATION WITH FETCH() */
   const fetchLoginApi = async () => {
     return await fetch('http://grow-backend.herokuapp.com/api/login', {
@@ -48,7 +49,9 @@ const Login = ({navigation}) => {
       .then(async json => {
         console.log(json);
         if (json.token) {
-          navigation.navigate(navigationStrings.BOTTOM_TABS);
+          await AsyncStorage.setItem('session_token', json.token);
+          await AsyncStorage.setItem('isLogin', 'true');
+          navigation.replace(navigationStrings.BOTTOM_TABS);
         } else if (json.errors) {
           alert(json.message);
         }
@@ -240,8 +243,7 @@ const Login = ({navigation}) => {
               // navigation.navigate(navigationStrings.SIGN_IN);
               // console.log(email);
               // console.log(password);
-              // fetchLoginApi();
-              navigation.navigate(navigationStrings.BOTTOM_TABS);
+              fetchLoginApi();
             }}
           />
         </View>

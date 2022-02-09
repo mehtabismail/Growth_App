@@ -45,13 +45,13 @@ const Front = ({navigation}) => {
             buttonStyle={{borderRadius: 50, backgroundColor: Colors.secondary}}
             titleStyle={[Fonts.style.buttonText, {color: Colors.primary}]}
             onPress={() => {
-              navigation.navigate(navigationStrings.SIGN_IN);
+              navigation.replace(navigationStrings.SIGN_IN);
             }}
           />
         </View>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate(navigationStrings.SIGN_UP);
+            navigation.replace(navigationStrings.SIGN_UP);
           }}
           style={{alignItems: 'center'}}>
           <Text style={FrontScreenStyles.labelStyle}>

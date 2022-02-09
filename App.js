@@ -11,8 +11,6 @@ const App = () => {
     <Provider store={Store}>
       <SafeAreaProvider>
         <AppNavigation />
-        {/* <Sleeping2/> */}
-        {/* <Example/> */}
       </SafeAreaProvider>
     </Provider>
   );

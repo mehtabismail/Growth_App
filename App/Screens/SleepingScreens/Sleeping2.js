@@ -37,7 +37,8 @@ const Sleeping2 = ({route}) => {
   };
 
   const logicFun = () =>{
-    console.log("running")
+    console.log("running ");
+
   }
 
   const handleConfirm = date => {
@@ -53,7 +54,6 @@ const Sleeping2 = ({route}) => {
     // mode == 'time' ? setBeginTime2((beginTime2 = parseInt(beginTime))) : null;
 
     setFirst((first = false));
-    console.log(beginTime2);
 
     second == true
       ? mode == 'date'

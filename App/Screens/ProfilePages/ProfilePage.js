@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 // IMPORT FROM REACT NATIVE
 import {
   ScrollView,
@@ -25,6 +25,8 @@ import metrics from '../../Themes/Metrics';
 // IMPORT FROM REDUX REDUCERS
 import UserDataReducer, {userData} from '../../Redux/Reducers/UserDataReducer';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 /* PROFILE CONTAINER */
 const ProfileContainer = (navigation, profileName) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -46,7 +48,8 @@ const ProfileContainer = (navigation, profileName) => {
         <View style={{flexDirection: 'column'}}>
           <View style={{alignItems: 'center'}}>
             <Text style={styles.profileNameTextStyle}>
-              {profileName == '' ? 'loading' : profileName}
+              {/* {profileName == '' ? 'loading' : profileName} */}
+              {profileName}
             </Text>
           </View>
           <View style={{margin: metrics.smallMargin}}>
@@ -199,45 +202,40 @@ const HomeAnalysis = navigation => {
 // EXPORT FUNCTION / MAIN FUNCTION
 const ProfilePage = ({navigation}) => {
   var [profileName, setProfileName] = useState('');
+  let dataGot;
+  // const [dataGot, setDataGot] = useState();
   // const dispatch = useDispatch();
   // const {userApiData} = useSelector(state => state.userData);
   // USEFFECT / COMPONENT-DID-MOUNT
 
-  useEffect(() => {
-    // USER DATA API FETCH METHOD
+  useLayoutEffect(() => {
     async function fetchUserData() {
-      var err = false;
-      return await fetch('http://grow-backend.herokuapp.com/api/profile', {
+      let auth_token = await AsyncStorage.getItem('session_token');
+      console.log(`token : ${auth_token}`)
+      dataGot = await fetch('http://grow-backend.herokuapp.com/api/profile', {
         method: 'GET',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          Authorization: 'Bearer 120|IXMyAylsLKvxHiJgPulx7L2ffeFRIFVO2ZwJs7Vw',
+          Authorization: `Bearer ${auth_token}`,
         },
       })
-        .then(async response =>
-          response.status === 200
-            ? response.json()
-            : (err = true && response.json()),
-        )
-        .then(async json => {
-          if (json.message) {
-            console.log(json);
-          } else {
-            console.log(json);
-            setProfileName((profileName = json.data.first_name));
-            console.log(`name : ${profileName}`);
-          }
-        })
+        .then(async response => response.json())
         .catch(error => {
           alert(error);
         });
+
+      // console.log(dataGot);
+      setProfileName((profileName = dataGot.data.first_name));
     }
 
-    return () => {
-      fetchUserData();
-    };
-  }, []);
+    fetchUserData();
+
+    [];
+  });
+
+
+
   return (
     <SafeAreaView style={styles.SafeAreaViewContainer}>
       <View style={styles.container}>
@@ -361,3 +359,47 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+
+
+
+
+
+
+
+
+  // useEffect(() => {
+  //   // USER DATA API FETCH METHOD
+  //   async function fetchUserData() {
+  //     var err = false;
+  //     return await fetch('http://grow-backend.herokuapp.com/api/profile', {
+  //       method: 'GET',
+  //       headers: {
+  //         Accept: 'application/json',
+  //         'Content-Type': 'application/json',
+  //         Authorization: 'Bearer 120|IXMyAylsLKvxHiJgPulx7L2ffeFRIFVO2ZwJs7Vw',
+  //       },
+  //     })
+  //       .then(async response =>
+  //         response.status === 200
+  //           ? response.json()
+  //           : (err = true && response.json()),
+  //       )
+  //       .then(async json => {
+  //         if (json.message) {
+  //           console.log(json);
+  //         } else {
+  //           console.log(json);
+  //           setProfileName((profileName = json.data.first_name));
+  //           console.log(`name : ${profileName}`);
+  //         }
+  //       })
+  //       .catch(error => {
+  //         alert(error);
+  //       });
+  //   }
+
+  //   return () => {
+  //     fetchUserData();
+  //   };
+  // }, []);

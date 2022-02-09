@@ -4,8 +4,10 @@ import {Image} from 'react-native-elements';
 import Colors from '../../Themes/Colors';
 import Fonts from '../../Themes/Fonts';
 import metrics from '../../Themes/Metrics';
+import navigationStrings from '../../Constants/navigationStrings';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const settings = () => {
+const settings = ({navigation}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.touchableContainers}>
@@ -39,6 +41,22 @@ const settings = () => {
         </View>
         <View style={{paddingLeft: metrics.smallPadding}}>
           <Text style={styles.textContainer}>Security</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity 
+      onPress={async ()=>{
+        await AsyncStorage.setItem('isLogin', 'false');
+        navigation.replace(navigationStrings.SIGN_IN)
+      }}
+      style={styles.touchableContainers}>
+        <View style={{paddingRight: metrics.smallPadding}}>
+          <Image
+            source={require('../../assets/signOut.png')}
+            style={[styles.iconStyles, {tintColor:"white", height:32, width:32}]}
+          />
+        </View>
+        <View style={{paddingLeft: metrics.smallPadding}}>
+          <Text style={styles.textContainer}>Log Out</Text>
         </View>
       </TouchableOpacity>
     </View>
