@@ -31,7 +31,8 @@
     "react-native-svg-uri": "^1.2.3",
     "react-native-vector-icons": "^9.0.0",
     "react-redux": "^7.2.6",
-    "redux": "^4.1.2"
+    "redux": "^4.1.2",
+    "rn-vertical-slider": "^2.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",

@@ -6573,6 +6573,11 @@
   "resolved" "https://registry.npmjs.org/rimraf/-/rimraf-2.2.8.tgz"
   "version" "2.2.8"
 
+"rn-vertical-slider@^2.0.2":
+  "integrity" "sha512-wCQVrFAJ8p1gIwf5mGsLMlBhmVlMbK5WK/CRd0CM4+u7R7OfM7AiozVIpSLCBHfUFMK5A1HiyNWcyPhVMAeK6w=="
+  "resolved" "https://registry.npmjs.org/rn-vertical-slider/-/rn-vertical-slider-2.0.2.tgz"
+  "version" "2.0.2"
+
 "rsvp@^4.8.4":
   "integrity" "sha512-nfMOlASu9OnRJo1mbEk2cz0D56a1MBNrJ7orjRZQG10XDyuvwksKbuXNp6qa+kbn839HwjwhBzhFmdsaEAfauA=="
   "resolved" "https://registry.npmjs.org/rsvp/-/rsvp-4.8.5.tgz"

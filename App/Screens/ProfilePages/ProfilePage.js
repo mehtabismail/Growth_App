@@ -211,7 +211,6 @@ const ProfilePage = ({navigation}) => {
   useLayoutEffect(() => {
     async function fetchUserData() {
       let auth_token = await AsyncStorage.getItem('session_token');
-      console.log(`token : ${auth_token}`)
       dataGot = await fetch('http://grow-backend.herokuapp.com/api/profile', {
         method: 'GET',
         headers: {
