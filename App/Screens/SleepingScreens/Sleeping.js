@@ -41,12 +41,23 @@ class Sleeping extends Component {
 
   render() {
     const sleepingTime = () => {
-      this.state.pressed == true
-        ? this.props.navigation.navigate("SleepingMannual", {
-            minute: this.state.minute,
-            second: this.state.second,
-          })
-        : this.stopWatch();
+      // this.state.pressed == true
+      //   ? this.stopWatch() &&
+      //     this.props.navigation.navigate('SleepingMannual', {
+      //       minute: this.state.minute,
+      //       second: this.state.second,
+      //     })
+      //   : this.stopWatch();
+
+      if (this.state.pressed == true) {
+        this.stopWatch();
+        this.props.navigation.navigate('SleepingMannual', {
+          minute: this.state.minute,
+          second: this.state.second,
+        });
+      } else {
+        this.stopWatch();
+      }
     };
     return (
       <SafeAreaView>
@@ -68,7 +79,7 @@ class Sleeping extends Component {
             <TouchableOpacity
               style={styles.containerLast}
               onPress={() =>
-                this.props.navigation.navigate("SleepingMannual", {
+                this.props.navigation.navigate('SleepingMannual', {
                   minute: this.state.minute,
                   second: this.state.second,
                 })

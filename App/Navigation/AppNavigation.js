@@ -16,6 +16,7 @@ import {
   ProfilePage,
   BottomTabs,
   Bottle,
+  Solids,
   Settings,
   AddChild,
   BornChild,
@@ -32,7 +33,7 @@ const Stack = createNativeStackNavigator();
 const AppNavigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={navigationStrings.PROFILEPAGE} >
+      <Stack.Navigator initialRouteName={navigationStrings.SPLASH}>
         <Stack.Screen
           name={navigationStrings.SPLASH}
           component={Splash}
@@ -62,6 +63,21 @@ const AppNavigation = () => {
           name={navigationStrings.PROFILEPAGE}
           component={ProfilePage}
           options={{headerShown: false}}
+        />
+        {/* SOLIDS SCREEN STACK */}
+        <Stack.Screen
+          name={navigationStrings.SOLIDS}
+          component={Solids}
+          options={{
+            title: 'Solids',
+            headerStyle: {
+              backgroundColor: Colors.primary,
+            },
+            headerTintColor: Colors.secondary,
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
         />
         <Stack.Screen
           name={navigationStrings.SLEEPING}
@@ -217,7 +233,11 @@ const AppNavigation = () => {
           }}
         />
         <Stack.Screen name="Testing" component={Test} />
-        <Stack.Screen name="Testing2" component={Testprofile} options={{headerShown: false}} />
+        <Stack.Screen
+          name="Testing2"
+          component={Testprofile}
+          options={{headerShown: false}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

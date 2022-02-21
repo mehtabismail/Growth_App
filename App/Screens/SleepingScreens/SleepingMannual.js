@@ -22,14 +22,10 @@ export default class SleepingMannual extends Component {
       first: false,
       second: false,
 
-      //These Variables used to convert String into numbers
-      beginHour: 0,
-      endHour: 0,
-      beginMinute: 0,
-      endMinute: 0,
+      time1: null,
+      time2: null,
 
-      date1: null,
-      date2: null,
+      overAllTime: null,
     };
   }
 
@@ -73,10 +69,7 @@ export default class SleepingMannual extends Component {
   logicFun = () => {
     console.log('running ');
 
-    const ms = Math.abs(this.state.date2 - this.state.date1);
-    // console.log(diffTime);
-    // const minutes = Math.floor((diffTime / (1000 * 60)) % 60)
-    // console.log(minutes);
+    const ms = Math.abs(this.state.time2 - this.state.time1);
 
     let minutes = (ms / (1000 * 60)).toFixed(1);
     let hours = (ms / (1000 * 60 * 60)).toFixed(1);
@@ -89,48 +82,46 @@ export default class SleepingMannual extends Component {
     } else {
       console.log(days + ' Days');
     }
+    console.log('minutes : ');
+    console.log(minutes);
+    let length = minutes.length;
+    console.log(`length : ${length}`);
 
-    // console.log(minutes);
+    this.setState({overAllTime: minutes.toString().substring(0, length - 2)});
+    console.log(`overall time in minutes : ${this.state.overAllTime}`);
   };
 
   handleConfirm = date => {
-    this.state.first == true && this.state.mode == 'time'
-      ? this.setState({date1: date})
-      : null;
-
-    // this.state.first == true
-    //   ? this.state.mode == 'date'
-    //     ? this.setState({beginDate: date.toString().substring(0, 15)})
-    //     : this.setState({beginTime: date.toString().substring(16, 21)})
-    //   : null;
-
-    // this.state.first == true && this.state.mode == 'time'
-    //   ? this.logicFun()
-    //   : null;
-    // // mode == 'time' ? setBeginTime2((beginTime2 = parseInt(beginTime))) : null;
-    console.log(this.state.date1.toString());
-    this.setState({first: false});
-
-    this.state.second == true && this.state.mode == 'time'
-      ? this.setState({date2: date})
-      : null;
-
-    // this.state.second == true
-    //   ? this.state.mode == 'date'
-    //     ? this.setState({endDate: date.toString().substring(0, 15)})
-    //     : this.setState({endTime: date.toString().substring(16, 21)})
-    //   : null;
-    this.state.second == true && this.state.mode == 'time'
-      ? console.log(this.state.date2.toString())
-      : null;
+    if (this.state.first == true) {
+      if (this.state.mode == 'date') {
+        this.setState({beginDate: date.toString().substring(0, 15)});
+      } else {
+        this.setState({
+          beginTime: date.toString().substring(16, 21),
+          time1: date,
+        });
+      }
+    } else {
+      if (this.state.mode == 'date') {
+        this.setState({endDate: date.toString().substring(0, 15)});
+      } else {
+        this.setState({
+          endTime: date.toString().substring(16, 21),
+          time2: date,
+        });
+      }
+    }
 
     this.setState({second: false});
+    this.setState({first: false});
     this.setState({mode: ''});
     this.hideDatePicker();
 
-    this.state.date1 != null && this.state.date2 != null
-      ? this.logicFun()
-      : null;
+    if (this.state.time1 != null && this.state.time2 != null) {
+      // const ms = Math.abs(this.state.time2 - this.state.time1);
+      // this.millisToMinutesAndSeconds(ms);
+      this.logicFun();
+    }
   };
 
   BeginDateAndTime = () => {
@@ -154,11 +145,7 @@ export default class SleepingMannual extends Component {
               }
               editable={false}
               rightIcon={
-                <TouchableOpacity
-                  onPress={() => {
-                    this.setState({first: true});
-                    this.selectDate();
-                  }}>
+                <TouchableOpacity>
                   <Image
                     style={{
                       width: 25,
@@ -185,11 +172,7 @@ export default class SleepingMannual extends Component {
               }
               editable={false}
               rightIcon={
-                <TouchableOpacity
-                  onPress={() => {
-                    this.setState({first: true});
-                    this.selectTime();
-                  }}>
+                <TouchableOpacity>
                   <Image
                     style={{
                       width: 25,
@@ -305,7 +288,7 @@ export default class SleepingMannual extends Component {
           </View>
           <View style={styles.timeCircleView}>
             <Text style={styles.timeText}>
-              {this.state.beginTime == ''
+              {this.state.overAllTime == null
                 ? (this.props.route.params.minute < 10
                     ? '0' + this.props.route.params.minute
                     : this.props.route.params.minute) +
@@ -313,7 +296,7 @@ export default class SleepingMannual extends Component {
                   (this.props.route.params.second < 10
                     ? '0' + this.props.route.params.second
                     : this.props.route.params.second)
-                : this.state.beginTime}
+                :`${this.state.overAllTime} minutes`}
             </Text>
           </View>
           <View style={styles.buttonView}>
@@ -359,9 +342,9 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   timeCircleView: {
-    width: 250,
-    height: 250,
-    borderRadius: 250 / 2,
+    width: 220,
+    height: 220,
+    borderRadius: 220 / 2,
     backgroundColor: 'lightblue',
     justifyContent: 'center',
     alignItems: 'center',
@@ -372,8 +355,9 @@ const styles = StyleSheet.create({
     marginBottom: -metrics.baseMargin,
   },
   timeText: {
-    fontSize: 50,
+    fontSize: Fonts.size.h5,
     fontWeight: 'bold',
+    padding:metrics.regularPadding
   },
   containerLast: {
     flexDirection: 'row',

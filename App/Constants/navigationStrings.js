@@ -15,6 +15,7 @@ export default {
   PROFILE: 'Profile',
   COMMUNITY: 'Community',
   BOTTLE: 'Bottle',
+  SOLIDS: 'Solids',
   ADDCHILD: 'AddChild',
   BORNCHILD: 'BornChild',
   NOTBORNCHILD: 'NotBornChild',

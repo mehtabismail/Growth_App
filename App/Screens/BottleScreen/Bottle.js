@@ -8,12 +8,58 @@ import Fonts from '../../Themes/Fonts';
 import Colors from '../../Themes/Colors';
 import Shadow from '../../Components/Shadow';
 import VerticalSlider from 'rn-vertical-slider';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const Bottle = () => {
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  var [beginDate, setBeginDate] = useState('');
+  var [beginTime, setBeginTime] = useState('');
+  var [mode, setMode] = useState('date');
   var [number, setNumber] = useState(0);
+
+  const selectDate = () => {
+    setMode((mode = 'date'));
+    showDatePicker();
+  };
+
+  const selectTime = () => {
+    setMode((mode = 'time'));
+    showDatePicker();
+  };
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = date => {
+    // beginDate = date;
+
+    mode == 'date'
+      ? setBeginDate((beginDate = date.toString().substring(0, 15)))
+      : setBeginTime((beginTime = date.toString().substring(16, 21)));
+
+    setMode((mode = ''));
+    hideDatePicker();
+  };
+
+  
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode={mode}
+          locale="en_GB" // Use "en_GB" here
+          // date={new Date()}
+          timePickerModeAndroid=""
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
+        />
         {/* DATE OF FEEDING CONTAINER / TOP CONTAINER */}
         <View style={BottleStyles.topContainer}>
           <Text
@@ -24,9 +70,18 @@ const Bottle = () => {
             Date of Feeding
           </Text>
           <View style={{flexDirection: 'row'}}>
-            <View style={{width: '50%', flexDirection: 'row'}}>
+            <TouchableOpacity
+              onPress={() => {
+                selectDate();
+              }}
+              style={{width: '50%', flexDirection: 'row'}}>
               <Input
-                placeholder="Today"
+                placeholder={
+                  beginDate == ''
+                    ? 'Today'
+                    : beginDate.toString().substring(0, 7)
+                }
+                editable={false}
                 inputStyle={{fontSize: Fonts.size.medium}}
                 rightIcon={
                   <TouchableOpacity>
@@ -37,11 +92,16 @@ const Bottle = () => {
                   </TouchableOpacity>
                 }
               />
-            </View>
-            <View style={{width: '50%'}}>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                selectTime();
+              }}
+              style={{width: '50%'}}>
               <Input
-                placeholder="Time of Feeding"
+                placeholder={beginTime == '' ? 'Time of Feeding' : beginTime}
                 inputStyle={{fontSize: Fonts.size.small}}
+                editable={false}
                 rightIcon={
                   <TouchableOpacity>
                     <Image
@@ -51,7 +111,7 @@ const Bottle = () => {
                   </TouchableOpacity>
                 }
               />
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
         {/* BOTTLE CONTAINER / CENTER CONTAINER */}
@@ -102,19 +162,41 @@ const Bottle = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <View>
-                <Text>
-                  {`${number}ml`}
-                </Text>
+              <View
+                style={{
+                  marginBottom: metrics.baseMargin,
+                  paddingRight: metrics.basePadding,
+                  height: 150,
+                  alignSelf: 'flex-end',
+                  justifyContent: 'center',
+                }}>
+                <View
+                  style={{
+                    height: 60,
+                    width: 60,
+                    borderRadius: 30,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: '#D3D3D3',
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                    elevation: 5,
+                  }}>
+                  <Text>{`${number}ml`}</Text>
+                </View>
               </View>
               <View
                 style={{
                   justifyContent: 'flex-end',
                   alignItems: 'flex-end',
                   height: 250,
-                  width: '30%',
                 }}>
-                <View style={{marginBottom:metrics.baseMargin}}>
+                <View style={{marginBottom: metrics.baseMargin}}>
                   <VerticalSlider
                     value={number}
                     disabled={false}
@@ -134,13 +216,13 @@ const Bottle = () => {
                     borderRadius={5}
                     minimumTrackTintColor={Colors.primary}
                     maximumTrackTintColor={Colors.secondary}
-                    renderIndicator={1}
+                    // renderIndicator={1}
                     // ballIndicatorColor={'gray'}
                     // ballIndicatorTextColor={'white'}
                   />
                 </View>
               </View>
-              <View>
+              <View style={{height: '100%'}}>
                 <Image
                   source={require('../../assets/bottle.png')}
                   style={{height: 250, width: 120}}
@@ -152,12 +234,12 @@ const Bottle = () => {
         {/* BUTTON CONTAINER / BOTTOM CONTAINER */}
         <View style={BottleStyles.bottomContainer}>
           <Button
-            title={`Save ${number}`}
+            title={`Save`}
             type="solid"
             containerStyle={{width: '100%'}}
             buttonStyle={(Shadow.shadow, BottleStyles.buttonContainer)}
             titleStyle={[Fonts.style.buttonText, {color: Colors.secondary}]}
-            onPress={() => {}}
+            onPress={() => {alert(`${number}ml added successfully`)}}
           />
         </View>
       </View>

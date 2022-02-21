@@ -12,7 +12,7 @@ import ArrowBack from '../Components/ArrowBack';
 function Resource() {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Resource!</Text>
+      <Text> No Resource yet!</Text>
     </View>
   );
 }

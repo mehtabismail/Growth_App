@@ -142,10 +142,12 @@ const HomeAnalysis = navigation => {
             style={[Shadow.shadow, styles.feedButtons]}
             onPress={() => navigation.navigate(navigationStrings.BREAST)}>
             <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
-              Breastfead
+              Breastfeed
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[Shadow.shadow, styles.feedButtons]}>
+          <TouchableOpacity
+            style={[Shadow.shadow, styles.feedButtons]}
+            onPress={() => navigation.navigate(navigationStrings.SOLIDS)}>
             <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
               Solids
             </Text>
@@ -232,8 +234,6 @@ const ProfilePage = ({navigation}) => {
 
     [];
   });
-
-
 
   return (
     <SafeAreaView style={styles.SafeAreaViewContainer}>
@@ -359,46 +359,38 @@ const styles = StyleSheet.create({
   },
 });
 
+// useEffect(() => {
+//   // USER DATA API FETCH METHOD
+//   async function fetchUserData() {
+//     var err = false;
+//     return await fetch('http://grow-backend.herokuapp.com/api/profile', {
+//       method: 'GET',
+//       headers: {
+//         Accept: 'application/json',
+//         'Content-Type': 'application/json',
+//         Authorization: 'Bearer 120|IXMyAylsLKvxHiJgPulx7L2ffeFRIFVO2ZwJs7Vw',
+//       },
+//     })
+//       .then(async response =>
+//         response.status === 200
+//           ? response.json()
+//           : (err = true && response.json()),
+//       )
+//       .then(async json => {
+//         if (json.message) {
+//           console.log(json);
+//         } else {
+//           console.log(json);
+//           setProfileName((profileName = json.data.first_name));
+//           console.log(`name : ${profileName}`);
+//         }
+//       })
+//       .catch(error => {
+//         alert(error);
+//       });
+//   }
 
-
-
-
-
-
-
-
-  // useEffect(() => {
-  //   // USER DATA API FETCH METHOD
-  //   async function fetchUserData() {
-  //     var err = false;
-  //     return await fetch('http://grow-backend.herokuapp.com/api/profile', {
-  //       method: 'GET',
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': 'application/json',
-  //         Authorization: 'Bearer 120|IXMyAylsLKvxHiJgPulx7L2ffeFRIFVO2ZwJs7Vw',
-  //       },
-  //     })
-  //       .then(async response =>
-  //         response.status === 200
-  //           ? response.json()
-  //           : (err = true && response.json()),
-  //       )
-  //       .then(async json => {
-  //         if (json.message) {
-  //           console.log(json);
-  //         } else {
-  //           console.log(json);
-  //           setProfileName((profileName = json.data.first_name));
-  //           console.log(`name : ${profileName}`);
-  //         }
-  //       })
-  //       .catch(error => {
-  //         alert(error);
-  //       });
-  //   }
-
-  //   return () => {
-  //     fetchUserData();
-  //   };
-  // }, []);
+//   return () => {
+//     fetchUserData();
+//   };
+// }, []);
