@@ -44,6 +44,8 @@ export default class Breast extends Component {
             return {
               lSecond: state.lSecond == 59 ? 0 : state.lSecond + 1,
               lMinute: state.lSecond == 59 ? state.lMinute + 1 : state.lMinute,
+              second: state.lSecond + state.rSecond,
+              minute: state.lMinute + state.rMinute,
             };
           });
         }, 1000);
@@ -68,6 +70,8 @@ export default class Breast extends Component {
             return {
               lSecond: state.lSecond == 59 ? 0 : state.lSecond + 1,
               lMinute: state.lSecond == 59 ? state.lMinute + 1 : state.lMinute,
+              second: state.lSecond + state.rSecond,
+              minute: state.lMinute + state.rMinute,
             };
           });
         }, 1000);
@@ -87,6 +91,8 @@ export default class Breast extends Component {
             return {
               rSecond: state.rSecond == 59 ? 0 : state.rSecond + 1,
               rMinute: state.rSecond == 59 ? state.rMinute + 1 : state.rMinute,
+              second: state.lSecond + state.rSecond,
+              minute: state.lMinute + state.rMinute,
             };
           });
         }, 1000);
@@ -110,6 +116,8 @@ export default class Breast extends Component {
             return {
               rSecond: state.rSecond == 59 ? 0 : state.rSecond + 1,
               rMinute: state.rSecond == 59 ? state.rMinute + 1 : state.rMinute,
+              second: state.lSecond + state.rSecond,
+              minute: state.lMinute + state.rMinute,
             };
           });
         }, 1000);
@@ -126,7 +134,15 @@ export default class Breast extends Component {
 
           <View style={BreastStyles.timeCircleView}>
             <Text style={BreastStyles.timeText}>
-              {this.state.minute + ':' + this.state.second}
+              {this.state.minute < 10
+                ? '0' + this.state.minute
+                : this.state.minute}
+              :
+              {this.state.second == 0 && this.state.minute == 0
+                ? '00'
+                : this.state.second < 9
+                ? '0' + (this.state.second + 1)
+                : this.state.second + 1}
             </Text>
           </View>
 
@@ -140,12 +156,24 @@ export default class Breast extends Component {
                 }}>
                 <View>
                   <Text style={{fontSize: Fonts.size.input}}>
-                    {this.state.lMinute + ':' + this.state.lSecond}
+                    {this.state.lMinute < 10
+                      ? '0' + this.state.lMinute
+                      : this.state.lMinute}
+                    :
+                    {this.state.lSecond < 10
+                      ? '0' + this.state.lSecond
+                      : this.state.lSecond}
                   </Text>
                 </View>
                 <View>
                   <Text style={{fontSize: Fonts.size.input}}>
-                    {this.state.rMinute + ':' + this.state.rSecond}
+                    {this.state.rMinute < 10
+                      ? '0' + this.state.rMinute
+                      : this.state.rMinute}
+                    :
+                    {this.state.rSecond < 10
+                      ? '0' + this.state.rSecond
+                      : this.state.rSecond}
                   </Text>
                 </View>
               </View>
@@ -308,7 +336,7 @@ export default class Breast extends Component {
               <TouchableOpacity
                 style={{flexDirection: 'row', padding: metrics.basePadding}}
                 onPress={() =>
-                  navigation.navigate(navigationStrings.BREASTMANNUAL)
+                  this.props.navigation.navigate(navigationStrings.BREASTMANNUAL)
                 }>
                 <Image
                   style={{
