@@ -9,7 +9,7 @@ export default styles = StyleSheet.create({
     backgroundColor: Colors.background,
     justifyContent: 'space-around',
     alignItems: 'center',
-    marginBottom: metrics.smallMargin
+    marginBottom: metrics.smallMargin,
   },
   timeCircleView: {
     width: 250,
@@ -18,7 +18,15 @@ export default styles = StyleSheet.create({
     backgroundColor: 'lightblue',
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 1,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
+
+    elevation: 24,
   },
   timeText: {
     fontSize: Fonts.size.timeCircleText,
@@ -31,17 +39,16 @@ export default styles = StyleSheet.create({
   },
   textMannual: {
     flexDirection: 'row',
-    justifyContent:"space-between"
-    // marginTop: metrics.doubleBaseMargin,
+    justifyContent: 'space-between',
   },
   button: {
     marginBottom: metrics.smallMargin,
     marginTop: metrics.smallMargin,
-    flexDirection:"row",
+    flexDirection: 'row',
   },
   playButton: {
     borderColor: Colors.primary,
     borderWidth: 1,
     paddingHorizontal: metrics.doubleBasePadding,
-  }
+  },
 });
