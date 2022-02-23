@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, TouchableOpacity, SafeAreaView} from 'react-native';
-import CustomHeader from '../../Components/CustomHeader';
-import {Button, Text, Icon, Image} from 'react-native-elements';
+import moment from 'moment';
+import {Button, Text, Icon, Input, Image} from 'react-native-elements';
 import metrics from '../../Themes/Metrics';
 import Fonts from '../../Themes/Fonts';
 import Colors from '../../Themes/Colors';
@@ -15,14 +15,27 @@ class Sleeping extends Component {
     this.state = {
       minute: 0,
       second: 0,
+      totalTime: 0,
+
+      beginDate: null,
+      endDate: null,
+
       pressed: false,
+      pressCount: 0,
+
+      currentDate: moment().utcOffset('+05:30').format('YYYY-MM-DD hh:mm:ss a'),
+
+      sleepButton: 'Sleeps',
+      wakeButton: 'Wakes Up',
     };
   }
   intervalID = 0;
   secTime = 0;
+
   stopWatch() {
     if (this.state.pressed == false) {
       this.setState({pressed: true});
+      this.setState({pressCount: this.state.pressCount + 1});
       this.intervalID = setInterval(() => {
         return this.setState((state, props) => {
           return {
@@ -33,6 +46,7 @@ class Sleeping extends Component {
       }, 1000);
     } else if (this.state.pressed == true) {
       this.setState({pressed: false});
+      this.setState({pressCount: this.state.pressCount + 1});
       clearInterval(this.intervalID);
       this.secTime = this.state.second;
       this.minTime = this.state.minute;
@@ -41,69 +55,206 @@ class Sleeping extends Component {
 
   render() {
     const sleepingTime = () => {
-      // this.state.pressed == true
-      //   ? this.stopWatch() &&
-      //     this.props.navigation.navigate('SleepingMannual', {
-      //       minute: this.state.minute,
-      //       second: this.state.second,
-      //     })
-      //   : this.stopWatch();
-
-      if (this.state.pressed == true) {
-        this.stopWatch();
-        this.props.navigation.navigate('SleepingMannual', {
-          minute: this.state.minute,
-          second: this.state.second,
-        });
-      } else {
-        this.stopWatch();
-      }
+      this.stopWatch();
+      // if (this.state.pressed == true) {
+      //   this.stopWatch();
+      //   this.props.navigation.navigate('SleepingMannual', {
+      //     minute: this.state.minute,
+      //     second: this.state.second,
+      //   });
+      // } else {
+      //   this.stopWatch();
+      // }
     };
     return (
       <SafeAreaView>
         <View style={styles.container}>
-          <View style={{height: '70%', justifyContent: 'center'}}>
+          {/* BEGIN DATE & Time */}
+          {this.state.pressed == true || this.state.pressCount >= 1 ? (
+            <View style={{padding: metrics.regularPadding}}>
+              <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity
+                  style={{
+                    width: '50%',
+                    flexDirection: 'row',
+                  }}
+                  onPress={() => {
+                    // this.selectDate();
+                  }}>
+                  <Input
+                    placeholder={
+                      this.state.currentDate.substring(0, 10) ==
+                      this.state.beginDate.substring(0, 10)
+                        ? 'Today'
+                        : this.state.beginDate.substring(0, 10)
+                    }
+                    editable={false}
+                    rightIcon={
+                      <TouchableOpacity>
+                        <Image
+                          style={{
+                            width: 25,
+                            height: 25,
+                            resizeMode: 'contain',
+                            alignSelf: 'flex-start',
+                            marginLeft: 20,
+                          }}
+                          source={require('../../assets/caret-down.png')}
+                        />
+                      </TouchableOpacity>
+                    }
+                  />
+                </TouchableOpacity>
+                {console.log(
+                  `begin Time : ${this.state.beginDate.substring(11, 19)}`,
+                )}
+                <TouchableOpacity style={{width: '50%'}}>
+                  <Input
+                    placeholder={this.state.beginDate.substring(11, 19)}
+                    editable={false}
+                    rightIcon={
+                      <TouchableOpacity>
+                        <Image
+                          style={{
+                            width: 25,
+                            height: 25,
+                            resizeMode: 'contain',
+                            alignSelf: 'flex-start',
+                            marginLeft: 20,
+                          }}
+                          source={require('../../assets/caret-down.png')}
+                        />
+                      </TouchableOpacity>
+                    }
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          ) : null}
+
+          {/* END DATE & Time */}
+          {this.state.pressed == false && this.state.pressCount >= 1 ? (
+            <View style={{padding: metrics.regularPadding}}>
+              <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity
+                  style={{
+                    width: '50%',
+                    flexDirection: 'row',
+                  }}
+                  onPress={() => {
+                    // this.selectDate();
+                  }}>
+                  <Input
+                    placeholder={
+                      this.state.currentDate.substring(0, 10) ==
+                      this.state.endDate.substring(0, 10)
+                        ? 'End Date'
+                        : this.state.endDate.substring(0, 10)
+                    }
+                    editable={false}
+                    rightIcon={
+                      <TouchableOpacity>
+                        <Image
+                          style={{
+                            width: 25,
+                            height: 25,
+                            resizeMode: 'contain',
+                            alignSelf: 'flex-start',
+                            marginLeft: 20,
+                          }}
+                          source={require('../../assets/caret-down.png')}
+                        />
+                      </TouchableOpacity>
+                    }
+                  />
+                </TouchableOpacity>
+                {console.log(
+                  `begin Time : ${this.state.endDate.substring(11, 19)}`,
+                )}
+                <TouchableOpacity style={{width: '50%'}}>
+                  <Input
+                    placeholder={this.state.endDate.substring(11, 19)}
+                    editable={false}
+                    rightIcon={
+                      <TouchableOpacity>
+                        <Image
+                          style={{
+                            width: 25,
+                            height: 25,
+                            resizeMode: 'contain',
+                            alignSelf: 'flex-start',
+                            marginLeft: 20,
+                          }}
+                          source={require('../../assets/caret-down.png')}
+                        />
+                      </TouchableOpacity>
+                    }
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          ) : null}
+          {this.state.pressed == false && this.state.pressCount == 0 ? (
+            <View style={{height: '20%'}}></View>
+          ) : null}
+
+          {/* TIME CIRCLE */}
+          <View>
             <View style={styles.timeCircleView}>
-              <Text style={styles.timeText}>
-                {this.state.minute < 10
-                  ? '0' + this.state.minute
-                  : this.state.minute}
-                :
-                {this.state.second < 10
-                  ? '0' + this.state.second
-                  : this.state.second}
-              </Text>
+              {this.state.pressCount >= 2 ? (
+                <View>
+                  <Text style={styles.timeText}>
+                    {this.state.second >= 31 ? (this.state.minute+1) + ' min': "0 min"}
+                  </Text>
+                </View>
+              ) : (
+                <Text style={styles.timeText}>
+                  {this.state.minute < 10
+                    ? '0' + this.state.minute
+                    : this.state.minute}
+                  :
+                  {this.state.second < 10
+                    ? '0' + this.state.second
+                    : this.state.second}
+                </Text>
+              )}
             </View>
           </View>
           <View style={styles.buttonView}>
-            <TouchableOpacity
-              style={styles.containerLast}
-              onPress={() =>
-                this.props.navigation.navigate('SleepingMannual', {
-                  minute: this.state.minute,
-                  second: this.state.second,
-                })
-              }>
-              <Image
-                style={{
-                  width: 30,
-                  height: 30,
-                  resizeMode: 'contain',
-                  alignSelf: 'flex-start',
-                  tintColor: Colors.primary,
-                }}
-                source={require('../../assets/keyboard.png')}
-              />
-              <Text
-                style={{
-                  fontSize: Fonts.size.medium,
-                  color: Colors.primary,
-                  marginLeft: metrics.smallMargin,
-                  marginTop: metrics.smallMargin,
-                }}>
-                or Enter Manually
-              </Text>
-            </TouchableOpacity>
+            {this.state.pressed == false && this.state.pressCount == 0 ? (
+              <TouchableOpacity
+                style={styles.containerLast}
+                onPress={() =>
+                  this.props.navigation.navigate(
+                    navigationStrings.SLEEPING_MANNUAL,
+                    {
+                      minute: this.state.minute,
+                      second: this.state.second,
+                    },
+                  )
+                }>
+                <Image
+                  style={{
+                    width: 30,
+                    height: 30,
+                    resizeMode: 'contain',
+                    alignSelf: 'flex-start',
+                    tintColor: Colors.primary,
+                  }}
+                  source={require('../../assets/keyboard.png')}
+                />
+                <Text
+                  style={{
+                    fontSize: Fonts.size.medium,
+                    color: Colors.primary,
+                    marginLeft: metrics.smallMargin,
+                    marginTop: metrics.smallMargin,
+                  }}>
+                  or Enter Manually
+                </Text>
+              </TouchableOpacity>
+            ) : null}
+
             <View style={styles.button}>
               <Button
                 icon={
@@ -124,10 +275,47 @@ class Sleeping extends Component {
                   paddingHorizontal: metrics.doubleBasePadding,
                 }}
                 type="outline"
-                title={this.state.pressed == false ? 'Sleeps' : 'Wakes'}
+                title={
+                  this.state.pressed == false && this.state.pressCount == 0
+                    ? 'Sleeps'
+                    : this.state.pressed == true && this.state.pressCount == 1
+                    ? 'Wakes Up'
+                    : 'Save'
+                }
                 titleStyle={[Fonts.style.buttonText, {color: Colors.primary}]}
-                // onPress={()=>this.stopWatch()}
-                onPress={sleepingTime}
+                onPress={() => {
+                  console.log('Count : ' + this.state.pressCount);
+                  if (
+                    this.state.pressed == false &&
+                    this.state.pressCount == 0
+                  ) {
+                    this.setState({
+                      beginDate: moment()
+                        .utcOffset('+05:00')
+                        .format('YYYY-MM-DD hh:mm a'),
+                    });
+                    return sleepingTime();
+                  }
+
+                  if (
+                    this.state.pressed == true &&
+                    this.state.pressCount == 1
+                  ) {
+                    this.setState({
+                      endDate: moment()
+                        .utcOffset('+05:00')
+                        .format('YYYY-MM-DD hh:mm a'),
+                    });
+                    return sleepingTime();
+                  }
+
+                  if (this.state.pressCount >= 2) {
+                    alert('Uploaded Successfully');
+                    this.props.navigation.replace(
+                      navigationStrings.BOTTOM_TABS,
+                    );
+                  }
+                }}
               />
             </View>
           </View>
@@ -162,7 +350,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-end',
-    // backgroundColor:"red"
+    // backgroundColor:"red",
     paddingBottom: metrics.doubleBasePadding,
   },
   timeText: {

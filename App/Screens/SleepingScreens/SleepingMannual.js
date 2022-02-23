@@ -6,6 +6,7 @@ import Colors from '../../Themes/Colors';
 import Fonts from '../../Themes/Fonts';
 import metrics from '../../Themes/Metrics';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import navigationStrings from '../../Constants/navigationStrings';
 
 export default class SleepingMannual extends Component {
   constructor(props) {
@@ -48,9 +49,6 @@ export default class SleepingMannual extends Component {
   };
 
   millisToMinutesAndSeconds = duration => {
-    // var minutes = Math.floor(millis / 60000);
-    // var seconds = ((millis % 60000) / 1000).toFixed(0);
-    // return console.log(`${minutes}:${(seconds < 10 ? "0" : "")}${seconds}`);
 
     var milliseconds = parseInt((duration % 1000) / 100),
       seconds = Math.floor((duration / 1000) % 60),
@@ -320,8 +318,12 @@ export default class SleepingMannual extends Component {
                   paddingHorizontal: metrics.doubleBasePadding,
                 }}
                 type="outline"
-                title="Wakes Up"
+                title="Save"
                 titleStyle={[Fonts.style.buttonText, {color: Colors.primary}]}
+                onPress={()=> {
+                  alert("Saved Selected Data");
+                  this.props.navigation.replace(navigationStrings.BOTTOM_TABS)
+                }}
               />
             </View>
           </View>

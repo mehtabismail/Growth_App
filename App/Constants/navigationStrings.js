@@ -6,7 +6,7 @@ export default {
   PUMPING: 'Pumping',
   PUMPING_MANNUAL: 'PumpingMannual',
   SLEEPING: 'Sleeping',
-  SLEEPING2: 'Sleeping2',
+  SLEEPING_MANNUAL: 'SleepingMannual',
   BREAST: 'Breast',
   BREASTMANNUAL: 'BreastMannual',
   PROFILEPAGE: 'ProfilePage',

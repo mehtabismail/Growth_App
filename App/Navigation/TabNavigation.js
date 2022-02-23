@@ -173,9 +173,9 @@ export default function BottomTabs() {
               </Text>
             </>
           ),
-          tabBarStyle: {
-            display: 'none',
-          },
+          // tabBarStyle: {
+          //   display: 'none',
+          // },
           tabBarActiveTintColor: Colors.primary,
           tabBarInactiveTintColor: Colors.tertiary,
           headerTintColor: Colors.secondary,

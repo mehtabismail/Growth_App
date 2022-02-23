@@ -10,7 +10,7 @@ import {
   PumpingMannual,
   Splash,
   Sleeping,
-  Sleeping2,
+  SleepingMannual,
   Breast,
   BreastMannual,
   ProfilePage,
@@ -26,7 +26,6 @@ import Test from '../../Test';
 import Colors from '../Themes/Colors';
 import Test2 from '../../Test2';
 import Testprofile from '../Screens/ProfilePages/testProfile';
-import SleepingMannual from '../Screens/SleepingScreens/SleepingMannual';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,36 +33,42 @@ const AppNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={navigationStrings.SPLASH}>
+      {/* SPLASH SCREEN STACK */}
         <Stack.Screen
           name={navigationStrings.SPLASH}
           component={Splash}
           options={{headerShown: false}}
         />
+        {/* FRONT SCREEN STACK */}
         <Stack.Screen
           name={navigationStrings.FRONT}
           component={Front}
           options={{headerShown: false}}
         />
+        {/* SIGN-UP SCREEN STACK */}
         <Stack.Screen
           name={navigationStrings.SIGN_UP}
           component={SignUp}
           options={{headerShown: false}}
         />
+        {/* SIGN-IN SCREEN STACK */}
         <Stack.Screen
           name={navigationStrings.SIGN_IN}
           component={SignIn}
           options={{headerShown: false}}
         />
+        {/* SOLIDS SCREEN STACK */}
         <Stack.Screen
           name={navigationStrings.BOTTOM_TABS}
           component={BottomTabs}
           options={{headerShown: false}}
         />
-        <Stack.Screen
+        {/* PROFILE-PAGE SCREEN STACK */}
+        {/* <Stack.Screen
           name={navigationStrings.PROFILEPAGE}
           component={ProfilePage}
           options={{headerShown: false}}
-        />
+        /> */}
         {/* SOLIDS SCREEN STACK */}
         <Stack.Screen
           name={navigationStrings.SOLIDS}
@@ -79,6 +84,7 @@ const AppNavigation = () => {
             },
           }}
         />
+        {/* SLEEPING SCREEN STACK */}
         <Stack.Screen
           name={navigationStrings.SLEEPING}
           component={Sleeping}
@@ -92,20 +98,7 @@ const AppNavigation = () => {
             },
           }}
         />
-        <Stack.Screen
-          name={navigationStrings.SLEEPING2}
-          component={Sleeping2}
-          options={{
-            title: 'Sleeping Mannual',
-            headerStyle: {
-              backgroundColor: Colors.primary,
-            },
-            headerTintColor: Colors.secondary,
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-          }}
-        />
+        {/* SLEEPING MANNUAL SCREEN STACK */}
         <Stack.Screen
           name="SleepingMannual"
           component={SleepingMannual}
@@ -120,6 +113,7 @@ const AppNavigation = () => {
             },
           }}
         />
+        {/* PUMPING SCREEN STACK */}
         <Stack.Screen
           name={navigationStrings.PUMPING}
           component={Pumping}
@@ -133,6 +127,7 @@ const AppNavigation = () => {
             },
           }}
         />
+        {/* PUMPING MANNUAL SCREEN STACK */}
         <Stack.Screen
           name={navigationStrings.PUMPING_MANNUAL}
           component={PumpingMannual}
@@ -146,6 +141,7 @@ const AppNavigation = () => {
             },
           }}
         />
+        {/* BREAST FEED SCREEN STACK */}
         <Stack.Screen
           name={navigationStrings.BREAST}
           component={Breast}
@@ -159,6 +155,7 @@ const AppNavigation = () => {
             },
           }}
         />
+        {/* BREAST FEED MANNUAL SCREEN STACK */}
         <Stack.Screen
           name={navigationStrings.BREASTMANNUAL}
           component={BreastMannual}
