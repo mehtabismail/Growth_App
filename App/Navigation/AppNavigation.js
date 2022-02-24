@@ -22,10 +22,7 @@ import {
   BornChild,
   NotBornChild,
 } from '../Screens';
-import Test from '../../Test';
 import Colors from '../Themes/Colors';
-import Test2 from '../../Test2';
-import Testprofile from '../Screens/ProfilePages/testProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -229,12 +226,7 @@ const AppNavigation = () => {
             },
           }}
         />
-        <Stack.Screen name="Testing" component={Test} />
-        <Stack.Screen
-          name="Testing2"
-          component={Testprofile}
-          options={{headerShown: false}}
-        />
+       
       </Stack.Navigator>
     </NavigationContainer>
   );
