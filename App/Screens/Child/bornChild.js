@@ -12,6 +12,7 @@ import SelectDropdown from 'react-native-select-dropdown';
 import Colors from '../../Themes/Colors';
 import metrics from '../../Themes/Metrics';
 import navigationStrings from '../../Constants/navigationStrings';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BornChild = ({navigation}) => {
   const countries = [
@@ -54,12 +55,13 @@ const BornChild = ({navigation}) => {
 
   const fetchApi = async () => {
     setLoading((isLoading = true));
+    let auth_token = await AsyncStorage.getItem('session_token');
     return await fetch('http://grow-backend.herokuapp.com/api/child', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: 'Bearer 1|0nLjVlSaKyTJyPqY9gECwiGv21gFrkVSdE93JwJF',
+        Authorization: `Bearer ${auth_token}`,
       },
       body: JSON.stringify({
         name: name,
@@ -76,7 +78,7 @@ const BornChild = ({navigation}) => {
         if (json.errors) {
           alert(json.message);
         } else {
-          navigation.navigate(navigationStrings.PROFILEPAGE);
+          navigation.replace(navigationStrings.BOTTOM_TABS);
         }
       })
       .catch(error => {

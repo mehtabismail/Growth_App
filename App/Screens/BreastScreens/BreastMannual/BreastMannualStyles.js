@@ -23,8 +23,9 @@ export default styles = StyleSheet.create({
     marginLeft: 20,
   },
   topContainer: {
-    marginVertical: 20,
-    marginHorizontal: metrics.baseMargin,
+    paddingTop: metrics.smallPadding,
+    marginBottom: metrics.regularMargin,
+    marginHorizontal: metrics.regularMargin,
   },
   totalDurationContainer: {
     alignSelf: 'center',

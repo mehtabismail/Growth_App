@@ -144,11 +144,16 @@ class Sleeping extends Component {
                   onPress={() => {
                     // this.selectDate();
                   }}>
+                  {
+                    (console.log(this.state.currentDate.substring(0, 10)),
+                    console.log('and'),
+                    console.log(this.state.endDate.substring(0, 10)))
+                  }
                   <Input
                     placeholder={
-                      this.state.currentDate.substring(0, 10) ==
+                      this.state.currentDate.substring(0, 10) ===
                       this.state.endDate.substring(0, 10)
-                        ? 'End Date'
+                        ? 'Today'
                         : this.state.endDate.substring(0, 10)
                     }
                     editable={false}
@@ -204,7 +209,9 @@ class Sleeping extends Component {
               {this.state.pressCount >= 2 ? (
                 <View>
                   <Text style={styles.timeText}>
-                    {this.state.second >= 31 ? (this.state.minute+1) + ' min': "0 min"}
+                    {this.state.second >= 31
+                      ? this.state.minute + 1 + ' min'
+                      : '0 min'}
                   </Text>
                 </View>
               ) : (
@@ -311,9 +318,7 @@ class Sleeping extends Component {
 
                   if (this.state.pressCount >= 2) {
                     alert('Uploaded Successfully');
-                    this.props.navigation.replace(
-                      navigationStrings.BOTTOM_TABS,
-                    );
+                    this.props.navigation.popToTop();
                   }
                 }}
               />
