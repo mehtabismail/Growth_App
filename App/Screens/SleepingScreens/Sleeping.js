@@ -56,15 +56,6 @@ class Sleeping extends Component {
   render() {
     const sleepingTime = () => {
       this.stopWatch();
-      // if (this.state.pressed == true) {
-      //   this.stopWatch();
-      //   this.props.navigation.navigate('SleepingMannual', {
-      //     minute: this.state.minute,
-      //     second: this.state.second,
-      //   });
-      // } else {
-      //   this.stopWatch();
-      // }
     };
     return (
       <SafeAreaView>
