@@ -21,6 +21,7 @@ import {
   AddChild,
   BornChild,
   NotBornChild,
+  ForumAnswers,
 } from '../Screens';
 import Colors from '../Themes/Colors';
 
@@ -29,7 +30,7 @@ const Stack = createNativeStackNavigator();
 const AppNavigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={navigationStrings.SPLASH}>
+      <Stack.Navigator initialRouteName={navigationStrings.BOTTOM_TABS}>
       {/* SPLASH SCREEN STACK */}
         <Stack.Screen
           name={navigationStrings.SPLASH}
@@ -227,6 +228,21 @@ const AppNavigation = () => {
           }}
         />
        
+
+       <Stack.Screen
+          name={navigationStrings.FORUM_ANSWERS}
+          component={ForumAnswers}
+          options={{
+            title: 'Forum Answers',
+            headerStyle: {
+              backgroundColor: Colors.primary,
+            },
+            headerTintColor: Colors.secondary,
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

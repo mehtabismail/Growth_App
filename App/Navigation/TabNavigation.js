@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Community, Profile, ProfilePage} from '../Screens';
+import {Community, Profile, ProfilePage, CommunityForum} from '../Screens';
 import navigationStrings from '../Constants/navigationStrings';
 import {Image} from 'react-native-elements';
 import Colors from '../Themes/Colors';
@@ -140,7 +140,7 @@ export default function BottomTabs() {
         }}
       />
       {/* COMMUNITY SCREEN */}
-      <Tab.Screen
+      {/* <Tab.Screen
         name={navigationStrings.COMMUNITY}
         component={Community}
         options={{
@@ -176,6 +176,45 @@ export default function BottomTabs() {
           // tabBarStyle: {
           //   display: 'none',
           // },
+          tabBarActiveTintColor: Colors.primary,
+          tabBarInactiveTintColor: Colors.tertiary,
+          headerTintColor: Colors.secondary,
+          headerStyle: {backgroundColor: Colors.primary},
+        }}
+      /> */}
+      <Tab.Screen
+        name={navigationStrings.COMMUNITY_FORUM}
+        component={CommunityForum}
+        options={{
+          headerShown: true,
+          // title: navigationStrings.COMMUNITY,
+          headerLeft: ({navigation}) => <ArrowBack />,
+          tabBarIcon: ({focused}) => {
+            return (
+              <Image
+                source={require('../assets/community.png')}
+                style={{
+                  tintColor: focused ? Colors.primary : Colors.tertiary,
+                  width: 20,
+                  height: 20,
+                  padding: 12,
+                }}
+              />
+            );
+          },
+          tabBarLabel: ({focused}) => (
+            <>
+              <Text
+                style={{
+                  fontSize: 10,
+                  fontWeight: focused ? 'bold' : 'normal',
+                  color: focused ? Colors.primary : Colors.tertiary,
+                  paddingBottom: 3,
+                }}>
+                Comminity
+              </Text>
+            </>
+          ),
           tabBarActiveTintColor: Colors.primary,
           tabBarInactiveTintColor: Colors.tertiary,
           headerTintColor: Colors.secondary,

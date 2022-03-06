@@ -19,4 +19,6 @@ export default {
   ADDCHILD: 'AddChild',
   BORNCHILD: 'BornChild',
   NOTBORNCHILD: 'NotBornChild',
+  COMMUNITY_FORUM: 'CommunityForum',
+  FORUM_ANSWERS: 'ForumAnswers',
 };

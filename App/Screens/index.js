@@ -18,3 +18,5 @@ export {default as Solids} from './Solids/Solids';
 export {default as AddChild} from './Child/addChild';
 export {default as BornChild} from './Child/bornChild';
 export {default as NotBornChild} from './Child/notBornChild';
+export {default as CommunityForum} from './CommunityScreen/CommunityForum';
+export {default as ForumAnswers} from './CommunityScreen/ForumAnswers';

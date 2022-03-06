@@ -1,8 +1,8 @@
-import { StyleSheet } from 'react-native'
+import {StyleSheet} from 'react-native';
 
 export default styles = StyleSheet.create({
   shadow: {
-      backgroundColor: "white",
+    backgroundColor: 'white',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
