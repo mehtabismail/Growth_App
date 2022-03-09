@@ -1,4 +1,4 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, {useState, useLayoutEffect, useEffect} from 'react';
 // IMPORT FROM REACT NATIVE
 import {
   ScrollView,
@@ -9,6 +9,7 @@ import {
   Pressable,
   Modal,
   Alert,
+  FlatList,
 } from 'react-native';
 import Shadow from '../../Components/Shadow';
 // IMPORT FROM REACT-REDUX
@@ -23,282 +24,288 @@ import Colors from '../../Themes/Colors';
 import Fonts from '../../Themes/Fonts';
 import metrics from '../../Themes/Metrics';
 // IMPORT FROM REDUX REDUCERS
-import UserDataReducer, {
-  setApiData,
-} from '../../Redux/Reducers/UserDataReducer';
+import UserDataReducer, {userData} from '../../Redux/Reducers/UserDataReducer';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-class Testprofile extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      reduxState: {},
-    };
-  }
+const TestProfile = ({navigation}) => {
+  const [profileName, setProfileName] = useState('');
+  const [babiesList, setBabiesList] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [count, setCount] = useState(0);
 
-  static getDerivedStateFromProps(props, state) {
-    async function fetchUserData() {
-        var err = false;
-        return await fetch('http://grow-backend.herokuapp.com/api/profile', {
-          method: 'GET',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization:
-              'Bearer 120|IXMyAylsLKvxHiJgPulx7L2ffeFRIFVO2ZwJs7Vw',
-          },
-        })
-          .then(async response =>
-            response.status === 200
-              ? response.json()
-              : (err = true && response.json()),
-          )
-          .then(async json => {
-            if (json.message) {
-              console.log(json);
-            } else {
-            //   console.log(json);
-              dispatch(setApiData(json));
-              // await dispatch(setApiData(json));
-            }
-          })
-          .catch(error => {
-            alert(error);
-          });
-      }
-}
+  const fetchBabiesList = async () => {
+    console.log('babies list fetched : ');
+    let auth_token = await AsyncStorage.getItem('session_token');
+    let babyData = await fetch(
+      'http://grow-backend.herokuapp.com/api/profile/children',
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${auth_token}`,
+        },
+      },
+    )
+      .then(async response => response.json())
+      .catch(error => {
+        alert(error);
+      });
 
-  ProfilePage = ({navigation}) => {
-    // var [data, setData] = useState([]);
-    const dispatch = useDispatch();
-    const {userApiData} = useSelector(state => state.userData);
-    const [modalVisible, setModalVisible] = useState(false);
-    // USEFFECT / COMPONENT-DID-MOUNT
+    const variable = babyData.data[0].name;
+    console.log(variable);
+    // await this.setState({babiesList: babyData.data});
+    await setBabiesList(babyData.data);
+    // await this.setState({profileName: this.state.babiesList[0].name});
+    await setProfileName(variable);
+  };
 
-   
+  useEffect(() => {
+    fetchBabiesList();
+  }, []);
 
-    // useEffect(() => {
-    //   // USER DATA API FETCH METHOD
-    //   async function fetchUserData() {
-    //     var err = false;
-    //     return await fetch('http://grow-backend.herokuapp.com/api/profile', {
-    //       method: 'GET',
-    //       headers: {
-    //         Accept: 'application/json',
-    //         'Content-Type': 'application/json',
-    //         Authorization:
-    //           'Bearer 120|IXMyAylsLKvxHiJgPulx7L2ffeFRIFVO2ZwJs7Vw',
-    //       },
-    //     })
-    //       .then(async response =>
-    //         response.status === 200
-    //           ? response.json()
-    //           : (err = true && response.json()),
-    //       )
-    //       .then(async json => {
-    //         if (json.message) {
-    //           console.log(json);
-    //         } else {
-    //         //   console.log(json);
-    //           dispatch(setApiData(json));
-    //           // await dispatch(setApiData(json));
-    //         }
-    //       })
-    //       .catch(error => {
-    //         alert(error);
-    //       });
-    //   }
-
-    //   return () => {
-    //     fetchUserData();
-    //     this.setState({
-    //         reduxState : userApiData
-    //     })
-    //     console.log(this.state.reduxState);
-    //   };
-    // }, []);
+  /* PROFILE CONTAINER */
+  ProfileContainer = () => {
     return (
-      <SafeAreaView style={styles.SafeAreaViewContainer}>
-        <View style={styles.container}>
-          {/* PROFILE CONTAINER */}
-          <View style={styles.profileContainer}>
-            {/* PROFILE IMAGE AVATAR */}
-            <View style={{marginRight: metrics.smallMargin}}>
-              <Avatar
-                rounded
-                size="large"
-                source={require('../../assets/google.png')}
-              />
-            </View>
-            <TouchableOpacity
-              onPress={() => setModalVisible(true)}
-              style={{flexDirection: 'row'}}>
-              {/* PROFILE NAME & MONTH */}
-              <View style={{flexDirection: 'column'}}>
-                <View style={{alignItems: 'center'}}>
-                  <Text style={styles.profileNameTextStyle}>name</Text>
-                </View>
-                <View style={{margin: metrics.smallMargin}}>
-                  <Text style={{fontSize: Fonts.size.medium}}>4 Months</Text>
-                </View>
-              </View>
-              {/* DROPDOWN ICON */}
-              <View style={{justifyContent: 'center', padding: 5}}>
-                <View style={styles.centeredView}>
-                  <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={() => {
-                      Alert.alert('Modal has been closed.');
-                      setModalVisible(!modalVisible);
-                    }}>
-                    <View style={styles.centeredView}>
-                      <View style={styles.modalView}>
-                        <Text style={styles.modalText}>
-                          Existing baby if any?
-                        </Text>
-                        <Pressable
-                          style={[styles.button, styles.buttonClose]}
-                          onPress={() => {
-                            setModalVisible(!modalVisible),
-                              navigation.navigate(navigationStrings.ADDCHILD);
-                          }}>
-                          <Text style={styles.textStyle}>Add new baby</Text>
-                        </Pressable>
-                      </View>
-                    </View>
-                  </Modal>
-                  <TouchableOpacity
-                    style={{marginTop: -10}}
-                    onPress={() => setModalVisible(true)}>
-                    <Image
-                      style={styles.caretDownImage}
-                      source={require('../../assets/caret-down.png')}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </TouchableOpacity>
-          </View>
-
-          {/* HOME & ANALYSIS PART */}
-          <View style={styles.flexContainer}>
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-              <TouchableOpacity style={styles.homeAndAnalysisContainer}>
-                <Text style={styles.homeAndAnalysisText}>Home</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.homeAndAnalysisContainer}>
-                <Text style={styles.homeAndAnalysisText}>Analysis</Text>
-              </TouchableOpacity>
-            </View>
-            <ScrollView>
-              {/* FEED PART*/}
-              <View
-                style={{
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
-                }}>
-                <View
-                  style={{
-                    borderBottomWidth: 1,
-                    borderBottomColor: Colors.primary,
-                    marginVertical: metrics.smallMargin,
-                  }}>
-                  <Text
-                    style={{
-                      paddingVertical: metrics.smallPadding,
-                      paddingHorizontal: metrics.basePadding,
-                      fontSize: Fonts.size.regular,
-                      fontWeight: 'bold',
-                    }}>
-                    Feed
-                  </Text>
-                </View>
-                <TouchableOpacity
-                  style={[Shadow.shadow, styles.feedButtons]}
-                  onPress={() => navigation.navigate(navigationStrings.BOTTLE)}>
-                  <Text
-                    style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
-                    Bottle
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[Shadow.shadow, styles.feedButtons]}
-                  onPress={() => navigation.navigate(navigationStrings.BREAST)}>
-                  <Text
-                    style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
-                    Breastfead
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[Shadow.shadow, styles.feedButtons]}>
-                  <Text
-                    style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
-                    Solids
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[Shadow.shadow, styles.feedButtons]}
-                  onPress={() =>
-                    navigation.navigate(navigationStrings.PUMPING)
-                  }>
-                  <Text
-                    style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
-                    Pumping
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              {/* OTHERS PART*/}
-              <View
-                style={{
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
-                  paddingBottom: metrics.doubleBasePadding,
-                }}>
-                <View
-                  style={{
-                    borderBottomWidth: 1,
-                    borderBottomColor: Colors.primary,
-                    marginVertical: metrics.smallMargin,
-                  }}>
-                  <Text
-                    style={{
-                      paddingVertical: metrics.smallPadding,
-                      paddingHorizontal: metrics.basePadding,
-                      fontSize: Fonts.size.regular,
-                      fontWeight: 'bold',
-                    }}>
-                    Others
-                  </Text>
-                </View>
-                <TouchableOpacity
-                  style={[Shadow.shadow, styles.otherButtons]}
-                  onPress={() =>
-                    navigation.navigate(navigationStrings.SLEEPING)
-                  }>
-                  <Text
-                    style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
-                    Sleeping
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[Shadow.shadow, styles.otherButtons]}>
-                  <Text
-                    style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
-                    Diaper
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </ScrollView>
-          </View>
+      <View style={styles.profileContainer}>
+        {/* PROFILE IMAGE AVATAR */}
+        <View style={{marginRight: metrics.smallMargin}}>
+          <Avatar
+            rounded
+            size="large"
+            source={require('../../assets/google.png')}
+          />
         </View>
-      </SafeAreaView>
+        <TouchableOpacity
+          onPress={() => setModalVisible(true)}
+          style={{flexDirection: 'row'}}>
+          {/* PROFILE NAME & MONTH */}
+          <View style={{flexDirection: 'column'}}>
+            <View style={{alignItems: 'center'}}>
+              <Text style={styles.profileNameTextStyle}>
+                {profileName == '' ? 'loading' : profileName}
+                {/* {profileName} */}
+              </Text>
+            </View>
+            <View style={{margin: metrics.smallMargin}}>
+              <Text style={{fontSize: Fonts.size.medium}}>3 Months</Text>
+            </View>
+          </View>
+          {/* DROPDOWN ICON */}
+          <View style={{justifyContent: 'center', padding: 5}}>
+            <View style={styles.centeredView}>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  // this.setState({modalVisible: !this.state.modalVisible});
+                  setModalVisible(!modalVisible);
+                }}>
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <View>
+                      <Text style={styles.modalText}>Select baby if any?</Text>
+                    </View>
+                    <View style={{flex: 1}}>
+                      <FlatList
+                        showsVerticalScrollIndicator={false}
+                        data={babiesList}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={item => {
+                          return (
+                            <View>
+                              <TouchableOpacity
+                                style={{
+                                  backgroundColor: Colors.tertiary,
+                                  borderRadius: 10,
+                                  paddingHorizontal: metrics.doubleBasePadding,
+                                  paddingVertical: metrics.basePadding,
+                                  marginBottom: metrics.regularMargin,
+                                  shadowColor: '#000',
+                                  shadowOffset: {
+                                    width: 0,
+                                    height: 2,
+                                  },
+                                  shadowOpacity: 0.25,
+                                  shadowRadius: 4,
+                                  elevation: 5,
+                                }}
+                                onPress={() => {
+                                  // this.setState({
+                                  //   profileName: item.item.name,
+                                  //   modalVisible: false,
+                                  // });
+                                  setProfileName(item.item.name);
+                                  setModalVisible(false);
+                                }}>
+                                <Text
+                                  style={{
+                                    fontSize: Fonts.size.h6,
+                                    fontWeight: 'bold',
+                                  }}>
+                                  {item.item.name}
+                                </Text>
+                              </TouchableOpacity>
+                            </View>
+                          );
+                        }}
+                      />
+                    </View>
+                    <View style={{marginTop: metrics.baseMargin}}>
+                      <Pressable
+                        style={[styles.button, styles.buttonClose]}
+                        onPress={() => {
+                          // this.setState({
+                          //   modalVisible: !this.state.modalVisible,
+                          // }),
+                          setModalVisible(!modalVisible);
+                          navigation.navigate(navigationStrings.ADDCHILD)
+                        }}>
+                        <Text style={styles.textStyle}>Add new baby</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                </View>
+              </Modal>
+              <TouchableOpacity
+                style={{marginTop: -10}}
+                onPress={() =>
+                  // this.setState({modalVisible: true})
+                  setModalVisible(true)
+                }>
+                <Image
+                  style={styles.caretDownImage}
+                  source={require('../../assets/caret-down.png')}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
     );
   };
-  render() {
-    return <this.ProfilePage />;
-  }
-}
+
+  /* HOME & ANALYSIS PART */
+  HomeAnalysis = () => {
+    return (
+      <View style={styles.flexContainer}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+          <TouchableOpacity style={styles.homeAndAnalysisContainer}>
+            <Text style={styles.homeAndAnalysisText}>Home</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.homeAndAnalysisContainer}>
+            <Text style={styles.homeAndAnalysisText}>Analysis</Text>
+          </TouchableOpacity>
+        </View>
+        <ScrollView>
+          {/* FEED PART*/}
+          <View
+            style={{
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+            }}>
+            <View
+              style={{
+                borderBottomWidth: 1,
+                borderBottomColor: Colors.primary,
+                marginVertical: metrics.smallMargin,
+              }}>
+              <Text
+                style={{
+                  paddingVertical: metrics.smallPadding,
+                  paddingHorizontal: metrics.basePadding,
+                  fontSize: Fonts.size.regular,
+                  fontWeight: 'bold',
+                }}>
+                Feed
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={[Shadow.shadow, styles.feedButtons]}
+              onPress={() => navigation.navigate(navigationStrings.BOTTLE)}>
+              <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
+                Bottle
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[Shadow.shadow, styles.feedButtons]}
+              onPress={() => navigation.navigate(navigationStrings.BREAST)}>
+              <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
+                Breastfeed
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[Shadow.shadow, styles.feedButtons]}
+              onPress={() => navigation.navigate(navigationStrings.SOLIDS)}>
+              <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
+                Solids
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[Shadow.shadow, styles.feedButtons]}
+              onPress={() => navigation.navigate(navigationStrings.PUMPING)}>
+              <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
+                Pumping
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {/* OTHERS PART*/}
+          <View
+            style={{
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              paddingBottom: metrics.doubleBasePadding,
+            }}>
+            <View
+              style={{
+                borderBottomWidth: 1,
+                borderBottomColor: Colors.primary,
+                marginVertical: metrics.smallMargin,
+              }}>
+              <Text
+                style={{
+                  paddingVertical: metrics.smallPadding,
+                  paddingHorizontal: metrics.basePadding,
+                  fontSize: Fonts.size.regular,
+                  fontWeight: 'bold',
+                }}>
+                Others
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={[Shadow.shadow, styles.otherButtons]}
+              onPress={() => navigation.navigate(navigationStrings.SLEEPING)}>
+              <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
+                Sleeping
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[Shadow.shadow, styles.otherButtons]}>
+              <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
+                Diaper
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
+    );
+  };
+  // MAIN SCREEN RENDERING
+  return (
+    <SafeAreaView style={styles.SafeAreaViewContainer}>
+      <View style={styles.container}>
+        {/* PROFILE CONTAINER */}
+        {ProfileContainer()}
+
+        {/* HOME & ANALYSIS PART */}
+        {HomeAnalysis()}
+      </View>
+    </SafeAreaView>
+  );
+};
+
+export default TestProfile;
 
 const styles = StyleSheet.create({
   SafeAreaViewContainer: {
@@ -367,7 +374,6 @@ const styles = StyleSheet.create({
   },
 
   centeredView: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 22,
@@ -408,5 +414,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
-export default Testprofile;

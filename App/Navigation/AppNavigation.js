@@ -30,7 +30,7 @@ const Stack = createNativeStackNavigator();
 const AppNavigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={navigationStrings.BOTTOM_TABS}>
+      <Stack.Navigator initialRouteName={navigationStrings.SPLASH}>
       {/* SPLASH SCREEN STACK */}
         <Stack.Screen
           name={navigationStrings.SPLASH}

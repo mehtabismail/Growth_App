@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useLayoutEffect, useEffect} from 'react';
 // IMPORT FROM REACT NATIVE
 import {
   ScrollView,
@@ -28,19 +28,13 @@ import UserDataReducer, {userData} from '../../Redux/Reducers/UserDataReducer';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// EXPORT FUNCTION / MAIN FUNCTION
-class ProfilePage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      profileName: '',
-      babiesList: null,
-      modalVisible: false,
-      count: 0,
-    };
-  }
+const ProfilePage = ({navigation}) => {
+  const [profileName, setProfileName] = useState('');
+  const [babiesList, setBabiesList] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [count, setCount] = useState(0);
 
-  fetchBabiesList = async () => {
+  const fetchBabiesList = async () => {
     console.log('babies list fetched : ');
     let auth_token = await AsyncStorage.getItem('session_token');
     let babyData = await fetch(
@@ -59,266 +53,257 @@ class ProfilePage extends React.Component {
         alert(error);
       });
 
-    await this.setState({babiesList: babyData.data});
-    await this.setState({profileName: this.state.babiesList[0].name});
+    const variable = babyData.data[0].name;
+    console.log(variable);
+    // await this.setState({babiesList: babyData.data});
+    await setBabiesList(babyData.data);
+    // await this.setState({profileName: this.state.babiesList[0].name});
+    await setProfileName(variable);
   };
 
-  componentDidMount = () => {
-    console.log('component did mount calls : ');
-    this.fetchBabiesList();
-  };
+  useEffect(() => {
+    fetchBabiesList();
+  }, []);
 
-  render() {
-    /* PROFILE CONTAINER */
-    ProfileContainer = () => {
-      return (
-        <View style={styles.profileContainer}>
-          {/* PROFILE IMAGE AVATAR */}
-          <View style={{marginRight: metrics.smallMargin}}>
-            <Avatar
-              rounded
-              size="large"
-              source={require('../../assets/google.png')}
-            />
-          </View>
-          <TouchableOpacity
-            onPress={() => this.setState({modalVisible: true})}
-            style={{flexDirection: 'row'}}>
-            {/* PROFILE NAME & MONTH */}
-            <View style={{flexDirection: 'column'}}>
-              <View style={{alignItems: 'center'}}>
-                <Text style={styles.profileNameTextStyle}>
-                  {/* {profileName == '' ? 'loading' : profileName} */}
-                  {this.state.profileName}
-                </Text>
-              </View>
-              <View style={{margin: metrics.smallMargin}}>
-                <Text style={{fontSize: Fonts.size.medium}}>3 Months</Text>
-              </View>
+  /* PROFILE CONTAINER */
+  ProfileContainer = () => {
+    return (
+      <View style={styles.profileContainer}>
+        {/* PROFILE IMAGE AVATAR */}
+        <View style={{marginRight: metrics.smallMargin}}>
+          <Avatar
+            rounded
+            size="large"
+            source={require('../../assets/google.png')}
+          />
+        </View>
+        <TouchableOpacity
+          onPress={() => setModalVisible(true)}
+          style={{flexDirection: 'row'}}>
+          {/* PROFILE NAME & MONTH */}
+          <View style={{flexDirection: 'column'}}>
+            <View style={{alignItems: 'center'}}>
+              <Text style={styles.profileNameTextStyle}>
+                {profileName == '' ? 'loading' : profileName}
+                {/* {profileName} */}
+              </Text>
             </View>
-            {/* DROPDOWN ICON */}
-            <View style={{justifyContent: 'center', padding: 5}}>
-              <View style={styles.centeredView}>
-                <Modal
-                  animationType="slide"
-                  transparent={true}
-                  visible={this.state.modalVisible}
-                  onRequestClose={() => {
-                    this.setState({modalVisible: !this.state.modalVisible});
-                  }}>
-                  <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                      <View>
-                        <Text style={styles.modalText}>
-                          Select baby if any?
-                        </Text>
-                      </View>
-                      <View style={{flex: 1}}>
-                        <FlatList
-                          showsVerticalScrollIndicator={false}
-                          data={this.state.babiesList}
-                          keyExtractor={(item, index) => index.toString()}
-                          renderItem={item => {
-                            return (
-                              <View>
-                                <TouchableOpacity
+            <View style={{margin: metrics.smallMargin}}>
+              <Text style={{fontSize: Fonts.size.medium}}>3 Months</Text>
+            </View>
+          </View>
+          {/* DROPDOWN ICON */}
+          <View style={{justifyContent: 'center', padding: 5}}>
+            <View style={styles.centeredView}>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  // this.setState({modalVisible: !this.state.modalVisible});
+                  setModalVisible(!modalVisible);
+                }}>
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <View>
+                      <Text style={styles.modalText}>Select baby if any?</Text>
+                    </View>
+                    <View style={{flex: 1}}>
+                      <FlatList
+                        showsVerticalScrollIndicator={false}
+                        data={babiesList}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={item => {
+                          return (
+                            <View>
+                              <TouchableOpacity
+                                style={{
+                                  backgroundColor: Colors.tertiary,
+                                  borderRadius: 10,
+                                  paddingHorizontal: metrics.doubleBasePadding,
+                                  paddingVertical: metrics.basePadding,
+                                  marginBottom: metrics.regularMargin,
+                                  shadowColor: '#000',
+                                  shadowOffset: {
+                                    width: 0,
+                                    height: 2,
+                                  },
+                                  shadowOpacity: 0.25,
+                                  shadowRadius: 4,
+                                  elevation: 5,
+                                }}
+                                onPress={() => {
+                                  // this.setState({
+                                  //   profileName: item.item.name,
+                                  //   modalVisible: false,
+                                  // });
+                                  setProfileName(item.item.name);
+                                  setModalVisible(false);
+                                }}>
+                                <Text
                                   style={{
-                                    backgroundColor: Colors.tertiary,
-                                    borderRadius: 10,
-                                    paddingHorizontal:
-                                      metrics.doubleBasePadding,
-                                    paddingVertical: metrics.basePadding,
-                                    marginBottom: metrics.regularMargin,
-                                    shadowColor: '#000',
-                                    shadowOffset: {
-                                      width: 0,
-                                      height: 2,
-                                    },
-                                    shadowOpacity: 0.25,
-                                    shadowRadius: 4,
-                                    elevation: 5,
-                                  }}
-                                  onPress={() => {
-                                    this.setState({
-                                      profileName: item.item.name,
-                                      modalVisible: false,
-                                    });
+                                    fontSize: Fonts.size.h6,
+                                    fontWeight: 'bold',
                                   }}>
-                                  <Text
-                                    style={{
-                                      fontSize: Fonts.size.h6,
-                                      fontWeight: 'bold',
-                                    }}>
-                                    {item.item.name}
-                                  </Text>
-                                </TouchableOpacity>
-                              </View>
-                            );
-                          }}
-                        />
-                      </View>
-                      <View style={{marginTop: metrics.baseMargin}}>
-                        <Pressable
-                          style={[styles.button, styles.buttonClose]}
-                          onPress={() => {
-                            this.setState({
-                              modalVisible: !this.state.modalVisible,
-                            }),
-                              this.props.navigation.navigate(
-                                navigationStrings.ADDCHILD,
-                              );
-                          }}>
-                          <Text style={styles.textStyle}>Add new baby</Text>
-                        </Pressable>
-                      </View>
+                                  {item.item.name}
+                                </Text>
+                              </TouchableOpacity>
+                            </View>
+                          );
+                        }}
+                      />
+                    </View>
+                    <View style={{marginTop: metrics.baseMargin}}>
+                      <Pressable
+                        style={[styles.button, styles.buttonClose]}
+                        onPress={() => {
+                          // this.setState({
+                          //   modalVisible: !this.state.modalVisible,
+                          // }),
+                          setModalVisible(!modalVisible);
+                          navigation.navigate(navigationStrings.ADDCHILD)
+                        }}>
+                        <Text style={styles.textStyle}>Add new baby</Text>
+                      </Pressable>
                     </View>
                   </View>
-                </Modal>
-                <TouchableOpacity
-                  style={{marginTop: -10}}
-                  onPress={() => this.setState({modalVisible: true})}>
-                  <Image
-                    style={styles.caretDownImage}
-                    source={require('../../assets/caret-down.png')}
-                  />
-                </TouchableOpacity>
-              </View>
+                </View>
+              </Modal>
+              <TouchableOpacity
+                style={{marginTop: -10}}
+                onPress={() =>
+                  // this.setState({modalVisible: true})
+                  setModalVisible(true)
+                }>
+                <Image
+                  style={styles.caretDownImage}
+                  source={require('../../assets/caret-down.png')}
+                />
+              </TouchableOpacity>
             </View>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  /* HOME & ANALYSIS PART */
+  HomeAnalysis = () => {
+    return (
+      <View style={styles.flexContainer}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+          <TouchableOpacity style={styles.homeAndAnalysisContainer}>
+            <Text style={styles.homeAndAnalysisText}>Home</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.homeAndAnalysisContainer}>
+            <Text style={styles.homeAndAnalysisText}>Analysis</Text>
           </TouchableOpacity>
         </View>
-      );
-    };
-
-    /* HOME & ANALYSIS PART */
-    HomeAnalysis = () => {
-      return (
-        <View style={styles.flexContainer}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-            <TouchableOpacity style={styles.homeAndAnalysisContainer}>
-              <Text style={styles.homeAndAnalysisText}>Home</Text>
+        <ScrollView>
+          {/* FEED PART*/}
+          <View
+            style={{
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+            }}>
+            <View
+              style={{
+                borderBottomWidth: 1,
+                borderBottomColor: Colors.primary,
+                marginVertical: metrics.smallMargin,
+              }}>
+              <Text
+                style={{
+                  paddingVertical: metrics.smallPadding,
+                  paddingHorizontal: metrics.basePadding,
+                  fontSize: Fonts.size.regular,
+                  fontWeight: 'bold',
+                }}>
+                Feed
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={[Shadow.shadow, styles.feedButtons]}
+              onPress={() => navigation.navigate(navigationStrings.BOTTLE)}>
+              <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
+                Bottle
+              </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.homeAndAnalysisContainer}>
-              <Text style={styles.homeAndAnalysisText}>Analysis</Text>
+            <TouchableOpacity
+              style={[Shadow.shadow, styles.feedButtons]}
+              onPress={() => navigation.navigate(navigationStrings.BREAST)}>
+              <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
+                Breastfeed
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[Shadow.shadow, styles.feedButtons]}
+              onPress={() => navigation.navigate(navigationStrings.SOLIDS)}>
+              <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
+                Solids
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[Shadow.shadow, styles.feedButtons]}
+              onPress={() => navigation.navigate(navigationStrings.PUMPING)}>
+              <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
+                Pumping
+              </Text>
             </TouchableOpacity>
           </View>
-          <ScrollView>
-            {/* FEED PART*/}
+          {/* OTHERS PART*/}
+          <View
+            style={{
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              paddingBottom: metrics.doubleBasePadding,
+            }}>
             <View
               style={{
-                justifyContent: 'flex-start',
-                alignItems: 'center',
+                borderBottomWidth: 1,
+                borderBottomColor: Colors.primary,
+                marginVertical: metrics.smallMargin,
               }}>
-              <View
+              <Text
                 style={{
-                  borderBottomWidth: 1,
-                  borderBottomColor: Colors.primary,
-                  marginVertical: metrics.smallMargin,
+                  paddingVertical: metrics.smallPadding,
+                  paddingHorizontal: metrics.basePadding,
+                  fontSize: Fonts.size.regular,
+                  fontWeight: 'bold',
                 }}>
-                <Text
-                  style={{
-                    paddingVertical: metrics.smallPadding,
-                    paddingHorizontal: metrics.basePadding,
-                    fontSize: Fonts.size.regular,
-                    fontWeight: 'bold',
-                  }}>
-                  Feed
-                </Text>
-              </View>
-              <TouchableOpacity
-                style={[Shadow.shadow, styles.feedButtons]}
-                onPress={() =>
-                  this.props.navigation.navigate(navigationStrings.BOTTLE)
-                }>
-                <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
-                  Bottle
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[Shadow.shadow, styles.feedButtons]}
-                onPress={() =>
-                  this.props.navigation.navigate(navigationStrings.BREAST)
-                }>
-                <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
-                  Breastfeed
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[Shadow.shadow, styles.feedButtons]}
-                onPress={() =>
-                  this.props.navigation.navigate(navigationStrings.SOLIDS)
-                }>
-                <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
-                  Solids
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[Shadow.shadow, styles.feedButtons]}
-                onPress={() =>
-                  this.props.navigation.navigate(navigationStrings.PUMPING)
-                }>
-                <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
-                  Pumping
-                </Text>
-              </TouchableOpacity>
+                Others
+              </Text>
             </View>
-            {/* OTHERS PART*/}
-            <View
-              style={{
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                paddingBottom: metrics.doubleBasePadding,
-              }}>
-              <View
-                style={{
-                  borderBottomWidth: 1,
-                  borderBottomColor: Colors.primary,
-                  marginVertical: metrics.smallMargin,
-                }}>
-                <Text
-                  style={{
-                    paddingVertical: metrics.smallPadding,
-                    paddingHorizontal: metrics.basePadding,
-                    fontSize: Fonts.size.regular,
-                    fontWeight: 'bold',
-                  }}>
-                  Others
-                </Text>
-              </View>
-              <TouchableOpacity
-                style={[Shadow.shadow, styles.otherButtons]}
-                onPress={() =>
-                  this.props.navigation.navigate(navigationStrings.SLEEPING)
-                }>
-                <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
-                  Sleeping
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[Shadow.shadow, styles.otherButtons]}>
-                <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
-                  Diaper
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
-        </View>
-      );
-    };
-
-    // MAIN SCREEN RENDERING
-    return (
-      <SafeAreaView style={styles.SafeAreaViewContainer}>
-        
-        <View style={styles.container}>
-          {/* PROFILE CONTAINER */}
-          {ProfileContainer()}
-
-          {/* HOME & ANALYSIS PART */}
-          {HomeAnalysis()}
-        </View>
-      </SafeAreaView>
+            <TouchableOpacity
+              style={[Shadow.shadow, styles.otherButtons]}
+              onPress={() => navigation.navigate(navigationStrings.SLEEPING)}>
+              <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
+                Sleeping
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[Shadow.shadow, styles.otherButtons]}>
+              <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
+                Diaper
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
     );
-  }
-}
+  };
+  // MAIN SCREEN RENDERING
+  return (
+    <SafeAreaView style={styles.SafeAreaViewContainer}>
+      <View style={styles.container}>
+        {/* PROFILE CONTAINER */}
+        {ProfileContainer()}
+
+        {/* HOME & ANALYSIS PART */}
+        {HomeAnalysis()}
+      </View>
+    </SafeAreaView>
+  );
+};
 
 export default ProfilePage;
 
