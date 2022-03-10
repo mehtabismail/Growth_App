@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, Component} from 'react';
 import {StyleSheet, View, TouchableOpacity, SafeAreaView} from 'react-native';
 import moment from 'moment';
 import {Button, Text, Icon, Input, Image} from 'react-native-elements';
@@ -7,7 +7,8 @@ import Fonts from '../../Themes/Fonts';
 import Colors from '../../Themes/Colors';
 import navigationStrings from '../../Constants/navigationStrings';
 
-const Sleeping = ({navigation}) => {
+const SleepingTest = ({navigation}) => {
+  const [isActive, setIsActive] = useState(false);
   var [minute, setMinute] = useState(0);
   var [second, setSecond] = useState(0);
   var [totalTime, setTotalTime] = useState(0);
@@ -15,12 +16,12 @@ const Sleeping = ({navigation}) => {
   var [endDate, setEndDate] = useState(null);
   var [pressed, setPressed] = useState(false);
   var [pressCount, setPressCount] = useState(0);
+  var [intervalID, setIntervalID] = useState(0);
   var [secTime, setSecTime] = useState(0);
   var [minTime, setMinTime] = useState(0);
   var [currentDate, setCurrentDate] = useState(
     moment().utcOffset('+05:30').format('YYYY-MM-DD hh:mm:ss a'),
   );
-  const [isActive, setIsActive] = useState(false);
 
   function toggle() {
     if (pressed < 2) {
@@ -28,23 +29,45 @@ const Sleeping = ({navigation}) => {
     }
   }
 
-  useEffect(() => {
+  function reset() {
+    setSecond(0);
+    setMinute(0);
+    setIsActive(false);
+  }
+
+//   useEffect(() => {
+//     let interval = null;
+//     if (isActive) {
+//       interval = setInterval(() => {
+//         setSecond(second => (second == 59 ? 0 : second + 1));
+//         setMinute(minute => (second == 59 ? minute + 1 : minute));
+//       }, 1000);
+//     } else if (!isActive && second !== 0) {
+//       clearInterval(interval);
+//     }
+//     return () => clearInterval(interval);
+//   }, [isActive, second]);
+
+  const stopWatch = () => {
     let interval = null;
-    if (isActive) {
+    if (pressed == false) {
+      setPressed(true);
+      setPressCount((pressCount = pressCount + 1));
       interval = setInterval(() => {
         setSecond(second => (second == 59 ? 0 : second + 1));
         setMinute(minute => (second == 59 ? minute + 1 : minute));
       }, 1000);
-    } else if (!isActive && second !== 0) {
+    } else if (pressed == true) {
+      setPressed(false);
+      setPressCount(pressCount + 1);
       clearInterval(interval);
+      setSecTime(second);
+      setMinTime(minute);
     }
-    return () => clearInterval(interval);
-  }, [isActive, second]);
-
-  const timeSet = () => {
-    setMinute(minute => (second >= 31 ? minute + 1 : minute));
   };
-
+  const sleepingTime = () => {
+    stopWatch();
+  };
   return (
     <SafeAreaView>
       <View style={styles.container}>
@@ -83,6 +106,7 @@ const Sleeping = ({navigation}) => {
                   }
                 />
               </TouchableOpacity>
+              {console.log(`begin Time : ${beginDate.substring(11, 19)}`)}
               <TouchableOpacity style={{width: '50%'}}>
                 <Input
                   placeholder={beginDate.substring(11, 19)}
@@ -119,6 +143,11 @@ const Sleeping = ({navigation}) => {
                 onPress={() => {
                   // this.selectDate();
                 }}>
+                {
+                  (console.log(currentDate.substring(0, 10)),
+                  console.log('and'),
+                  console.log(endDate.substring(0, 10)))
+                }
                 <Input
                   placeholder={
                     currentDate.substring(0, 10) === endDate.substring(0, 10)
@@ -142,6 +171,7 @@ const Sleeping = ({navigation}) => {
                   }
                 />
               </TouchableOpacity>
+              {console.log(`begin Time : ${endDate.substring(11, 19)}`)}
               <TouchableOpacity style={{width: '50%'}}>
                 <Input
                   placeholder={endDate.substring(11, 19)}
@@ -172,10 +202,10 @@ const Sleeping = ({navigation}) => {
         {/* TIME CIRCLE */}
         <View>
           <View style={styles.timeCircleView}>
-            {pressCount == 2 ? (
+            {pressCount >= 2 ? (
               <View>
                 <Text style={styles.timeText}>
-                  {second >= 31 ? `${minute + 1} min` : `${minute} min`}
+                  {second >= 31 ? minute + 1 + ' min' : '0 min'}
                 </Text>
               </View>
             ) : (
@@ -249,23 +279,27 @@ const Sleeping = ({navigation}) => {
               onPress={() => {
                 console.log('Count : ' + pressCount);
                 if (pressed == false && pressCount == 0) {
+                  //   this.setState({
+                  //     beginDate: moment()
+                  //       .utcOffset('+05:00')
+                  //       .format('YYYY-MM-DD hh:mm a'),
+                  //   });
                   setBeginDate(
                     moment().utcOffset('+05:00').format('YYYY-MM-DD hh:mm a'),
                   );
-                  setPressed(true);
-                  setPressCount((pressCount = pressCount + 1));
-                  return toggle();
+                  return sleepingTime();
                 }
 
                 if (pressed == true && pressCount == 1) {
+                  //   this.setState({
+                  //     endDate: moment()
+                  //       .utcOffset('+05:00')
+                  //       .format('YYYY-MM-DD hh:mm a'),
+                  //   });
                   setEndDate(
                     moment().utcOffset('+05:00').format('YYYY-MM-DD hh:mm a'),
                   );
-                  setPressed(false);
-                  setPressCount(pressCount + 1);
-                  setSecTime(second);
-                  setMinTime(minute);
-                  return toggle();
+                  return sleepingTime();
                 }
 
                 if (pressCount >= 2) {
@@ -281,7 +315,7 @@ const Sleeping = ({navigation}) => {
   );
 };
 
-export default Sleeping;
+export default SleepingTest;
 
 const styles = StyleSheet.create({
   container: {
