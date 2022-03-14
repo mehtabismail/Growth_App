@@ -23,7 +23,7 @@ const Sleeping = ({navigation}) => {
   const [isActive, setIsActive] = useState(false);
 
   function toggle() {
-    if (pressed < 2) {
+    if (pressed < 2) {s
       setIsActive(!isActive);
     }
   }

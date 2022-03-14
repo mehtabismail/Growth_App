@@ -6,8 +6,18 @@ import Colors from '../../Themes/Colors';
 import Fonts from '../../Themes/Fonts';
 import metrics from '../../Themes/Metrics';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import {useDispatch, useSelector} from 'react-redux';
+import {sleepLog} from '../../Redux/Reducers/SleepingReducer';
+import navigationStrings from '../../Constants/navigationStrings';
+import {useCreateSleepingLogMutation} from '../../Redux/Services/SleepLog';
 
 const SleepingMannual = ({navigation}) => {
+  const dispatch = useDispatch();
+
+  const [createSleepLog, responseInfo] = useCreateSleepingLogMutation();
+  console.log( responseInfo);
+  
+
   var [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   var [beginDate, setBeginDate] = useState('');
   var [endDate, setEndDate] = useState('');
@@ -36,9 +46,8 @@ const SleepingMannual = ({navigation}) => {
     seconds = seconds < 10 ? '0' + seconds : seconds;
 
     return hours + ':' + minutes + ':' + seconds + '.' + milliseconds;
-   
   };
- 
+
   useEffect(() => {
     if (beginTime != null && endTime != null) {
       // const ms = Math.abs(endTime - beginTime);
@@ -82,7 +91,6 @@ const SleepingMannual = ({navigation}) => {
     setSecond(false);
     setFirst(false);
     hideDatePicker();
-
   };
 
   // const handleConfirm = date => {
@@ -378,7 +386,13 @@ const SleepingMannual = ({navigation}) => {
               title="Save"
               titleStyle={[Fonts.style.buttonText, {color: Colors.primary}]}
               onPress={() => {
-                alert('Saved Selected Data');
+                createSleepLog({
+                  child_id: 18,
+                  begin_time: beginTime,
+                  end_time: endTime,
+                  disruption: 'no disruption',
+                  total_time: overAllTime,
+                });
                 // navigation.replace(navigationStrings.BOTTOM_TABS);
               }}
             />

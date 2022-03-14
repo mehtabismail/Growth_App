@@ -63,8 +63,7 @@ const Pumping = ({navigation}) => {
                 <Input
                   label="Begin Date"
                   placeholder={
-                    currentDate.substring(0, 10) ==
-                    beginDate.substring(0, 10)
+                    currentDate.substring(0, 10) == beginDate.substring(0, 10)
                       ? 'Today'
                       : beginDate.substring(0, 10)
                   }
@@ -145,9 +144,7 @@ const Pumping = ({navigation}) => {
               onPress={() => {
                 if (pressed === 0) {
                   setBeginDate(beginDate =>
-                    moment()
-                      .utcOffset('+05:00')
-                      .format('YYYY-MM-DD hh:mm a'),
+                    moment().utcOffset('+05:00').format('YYYY-MM-DD hh:mm a'),
                   );
                 }
                 setPressed(pressed => pressed + 1);
