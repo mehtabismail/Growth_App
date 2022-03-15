@@ -5,6 +5,7 @@ export const ObjReducer = createSlice({
     initialState: {
         count: []
     },
+    // list of reducers
     reducers: {
         setEmail : (state, action) =>{
             state.count = action.payload;
