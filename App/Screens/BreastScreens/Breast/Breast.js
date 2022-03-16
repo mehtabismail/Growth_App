@@ -39,6 +39,31 @@ export default class Breast extends Component {
   }
 
   render() {
+    const fetchBreastFeedApi = async () => {
+      return await fetch('http://grow-backend.herokuapp.com/api/breast-feed', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer 7|kWcDNvzMDQrIznMSUBE1osrjSclZKoRTAa5VKYnh',
+        },
+        body: JSON.stringify({
+          child_id: 4,
+          side: 'left',
+          started_at: this.state.beginDate,
+          end_at: this.state.endDate,
+          total_time: this.state.minute.toString(),
+        }),
+      })
+        .then(async response => response.json())
+        .then(async json => {
+          console.log(json);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    };
+
     stopWatch = async () => {
       if (
         this.state.leftPressed === true &&
@@ -467,7 +492,7 @@ export default class Breast extends Component {
                       marginHorizontal: 50,
                       marginVertical: 10,
                     }}
-                    onPress={() => {
+                    onPress={async () => {
                       if (this.state.minute != 0 || this.state.second != 0) {
                         this.setState({saveCount: this.state.saveCount + 1});
                         clearInterval(this.state.rightIntervalId);
@@ -478,8 +503,12 @@ export default class Breast extends Component {
                           console.log(
                             `right duration : ${this.state.rMinute} `,
                           );
-
-                          alert("Data Saved Successfully!")
+                          await this.setState({
+                            endDate: moment()
+                              .utcOffset('+05:00')
+                              .format('YYYY-MM-DD hh:mm a'),
+                          });
+                          fetchBreastFeedApi();
                           this.props.navigation.popToTop();
                         }
                       }

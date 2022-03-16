@@ -281,11 +281,11 @@ const ProfilePage = ({navigation}) => {
                 Sleeping
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[Shadow.shadow, styles.otherButtons]}>
+            {/* <TouchableOpacity style={[Shadow.shadow, styles.otherButtons]}>
               <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
                 Diaper
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </ScrollView>
       </View>

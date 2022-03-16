@@ -25,15 +25,17 @@ import navigationStrings from '../../../Constants/navigationStrings';
 import Colors from '../../../Themes/Colors';
 import Fonts from '../../../Themes/Fonts';
 import metrics from '../../../Themes/Metrics';
+import {useSignInMutation} from '../../../Redux/Services/Authentication';
 
 const Login = ({navigation}) => {
+  const [SignIn, responseInfo] = useSignInMutation();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   /* USEDISPATCH & USESELECTOR USAGE */
   // const dispatch = useDispatch();
   // const {loginApiData} = useSelector(state => state.login);
-
 
   /* LOGIN API INTEGRATION WITH FETCH() */
   const fetchLoginApi = async () => {
@@ -239,11 +241,12 @@ const Login = ({navigation}) => {
               backgroundColor: Colors.primary,
             }}
             titleStyle={[Fonts.style.buttonText, {color: Colors.secondary}]}
-            onPress={() => {
-              // navigation.navigate(navigationStrings.SIGN_IN);
-              // console.log(email);
-              // console.log(password);
+            onPress={async() => {
               fetchLoginApi();
+              // await SignIn({email: email, password: password});
+              // if(responseInfo.status == "fulfilled" && responseInfo.isSuccess == true){
+              //   navigation.replace(navigationStrings.BOTTOM_TABS)
+              // }
             }}
           />
         </View>

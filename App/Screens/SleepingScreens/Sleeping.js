@@ -6,6 +6,7 @@ import metrics from '../../Themes/Metrics';
 import Fonts from '../../Themes/Fonts';
 import Colors from '../../Themes/Colors';
 import navigationStrings from '../../Constants/navigationStrings';
+import {useCreateSleepingLogMutation} from '../../Redux/Services/SleepLog';
 
 const Sleeping = ({navigation}) => {
   var [minute, setMinute] = useState(0);
@@ -22,8 +23,11 @@ const Sleeping = ({navigation}) => {
   );
   const [isActive, setIsActive] = useState(false);
 
+  // REDUX-TOOLKIT RTK QUERY
+  const [createSleepLog, responseInfo] = useCreateSleepingLogMutation();
+
   function toggle() {
-    if (pressed < 2) {s
+    if (pressed < 2) {
       setIsActive(!isActive);
     }
   }
@@ -246,7 +250,7 @@ const Sleeping = ({navigation}) => {
                   : 'Save'
               }
               titleStyle={[Fonts.style.buttonText, {color: Colors.primary}]}
-              onPress={() => {
+              onPress={async () => {
                 console.log('Count : ' + pressCount);
                 if (pressed == false && pressCount == 0) {
                   setBeginDate(
@@ -269,7 +273,13 @@ const Sleeping = ({navigation}) => {
                 }
 
                 if (pressCount >= 2) {
-                  alert('Uploaded Successfully');
+                await createSleepLog({
+                  child_id: 18,
+                  begin_time: beginDate,
+                  end_time: endDate,
+                  disruption: 'no disruption',
+                  total_time: minute,
+                });
                   navigation.popToTop();
                 }
               }}

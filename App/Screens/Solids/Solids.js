@@ -9,13 +9,18 @@ import Colors from '../../Themes/Colors';
 import Shadow from '../../Components/Shadow';
 import VerticalSlider from 'rn-vertical-slider';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import {useCreateSolidFeedMutation} from '../../Redux/Services/SolidFeed';
+import navigationStrings from '../../Constants/navigationStrings';
 
-const Solids = () => {
+const Solids = ({navigation}) => {
+  const [createSolidFeed, responseInfo] = useCreateSolidFeedMutation();
+  console.log(responseInfo);
+
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   var [beginDate, setBeginDate] = useState('');
   var [beginTime, setBeginTime] = useState('');
   var [mode, setMode] = useState('date');
-  var [number, setNumber] = useState(0);
+  var [time, setTime] = useState();
 
   const selectDate = () => {
     setMode((mode = 'date'));
@@ -36,13 +41,7 @@ const Solids = () => {
   };
 
   const handleConfirm = date => {
-    // beginDate = date;
-
-    mode == 'date'
-      ? setBeginDate((beginDate = date.toString().substring(0, 15)))
-      : setBeginTime((beginTime = date.toString().substring(16, 21)));
-
-    setMode((mode = ''));
+    setTime(date);
     hideDatePicker();
   };
 
@@ -56,7 +55,7 @@ const Solids = () => {
         }}>
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
-          mode={mode}
+          mode='datetime'
           locale="en_GB" // Use "en_GB" here
           // date={new Date()}
           timePickerModeAndroid=""
@@ -72,17 +71,17 @@ const Solids = () => {
             }}>
             Date of Feeding
           </Text>
-          <View style={{flexDirection: 'row'}}>
+          <View>
             <TouchableOpacity
               onPress={() => {
-                selectDate();
+                showDatePicker();
               }}
-              style={{width: '50%', flexDirection: 'row'}}>
+              style={{flexDirection: 'row'}}>
               <Input
                 placeholder={
-                  beginDate == ''
-                    ? 'Today'
-                    : beginDate.toString().substring(0, 7)
+                  time
+                    ? time.toString().substring(0,25)
+                    : 'Date & Time'
                 }
                 editable={false}
                 inputStyle={{fontSize: Fonts.size.medium}}
@@ -96,7 +95,7 @@ const Solids = () => {
                 }
               />
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => {
                 selectTime();
               }}
@@ -114,7 +113,7 @@ const Solids = () => {
                   </TouchableOpacity>
                 }
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
         {/* CENTER CONTAINER */}
@@ -145,21 +144,40 @@ const Solids = () => {
           <View>
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
               <Text>Add a note and the pic of the meal</Text>
-              <View style={{flexDirection:"row", alignItems:"center", justifyContent:"center"}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
                 <View>
                   <Image
-                    style={{height: 70, width: 70, tintColor:Colors.primary}}
+                    style={{height: 70, width: 70, tintColor: Colors.primary}}
                     source={require('../../assets/camera.png')}
                   />
                 </View>
-                <View style={{flexDirection:"row", borderColor:Colors.primary, borderWidth:1, padding:metrics.smallPadding, margin:metrics.smallMargin, borderRadius:5}}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    borderColor: Colors.primary,
+                    borderWidth: 1,
+                    padding: metrics.smallPadding,
+                    margin: metrics.smallMargin,
+                    borderRadius: 5,
+                  }}>
                   <View>
                     <Image
-                      style={{height: 20, width: 20, tintColor:Colors.primary}}
+                      style={{height: 20, width: 20, tintColor: Colors.primary}}
                       source={require('../../assets/plus.png')}
                     />
                   </View>
-                  <Text style={{color: Colors.primary, fontSize:Fonts.size.regular}}>Milestone</Text>
+                  <Text
+                    style={{
+                      color: Colors.primary,
+                      fontSize: Fonts.size.regular,
+                    }}>
+                    Milestone
+                  </Text>
                 </View>
               </View>
             </View>
@@ -173,7 +191,14 @@ const Solids = () => {
             containerStyle={{width: '100%'}}
             buttonStyle={(Shadow.shadow, BottleStyles.buttonContainer)}
             titleStyle={[Fonts.style.buttonText, {color: Colors.secondary}]}
-            onPress={() => {alert(`date & time added successfully`)}}
+            onPress={async () => {
+              await createSolidFeed({
+                child_id: 18,
+                time: time,
+                reaction: 'hate',
+              });
+              navigation.popToTop();
+            }}
           />
         </View>
       </View>

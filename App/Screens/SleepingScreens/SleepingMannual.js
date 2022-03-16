@@ -12,12 +12,15 @@ import navigationStrings from '../../Constants/navigationStrings';
 import {useCreateSleepingLogMutation} from '../../Redux/Services/SleepLog';
 
 const SleepingMannual = ({navigation}) => {
+
+  // USE-DISPATCH HOOK
   const dispatch = useDispatch();
 
+  // REDUX-TOOLKIT RTK QUERY
   const [createSleepLog, responseInfo] = useCreateSleepingLogMutation();
   console.log( responseInfo);
   
-
+  // USE-STATE HOOKS
   var [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   var [beginDate, setBeginDate] = useState('');
   var [endDate, setEndDate] = useState('');
@@ -385,15 +388,15 @@ const SleepingMannual = ({navigation}) => {
               type="outline"
               title="Save"
               titleStyle={[Fonts.style.buttonText, {color: Colors.primary}]}
-              onPress={() => {
-                createSleepLog({
+              onPress={ async() => {
+                await createSleepLog({
                   child_id: 18,
                   begin_time: beginTime,
                   end_time: endTime,
                   disruption: 'no disruption',
                   total_time: overAllTime,
                 });
-                // navigation.replace(navigationStrings.BOTTOM_TABS);
+                navigation.replace(navigationStrings.BOTTOM_TABS);
               }}
             />
           </View>

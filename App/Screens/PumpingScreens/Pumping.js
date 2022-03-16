@@ -7,10 +7,15 @@ import Colors from '../../Themes/Colors';
 import Fonts from '../../Themes/Fonts';
 import navigationStrings from '../../Constants/navigationStrings';
 import moment from 'moment';
+import {useCreatePumpingMutation} from '../../Redux/Services/Pumping';
 
 const Pumping = ({navigation}) => {
+  const [createPumping, responseInfo] = useCreatePumpingMutation();
+  console.log(responseInfo);
+
   var [pressed, setPressed] = useState(0);
   var [beginDate, setBeginDate] = useState();
+  var [endDate, setEndDate] = useState();
   var [currentDate, setCurrentDate] = useState(
     moment().utcOffset('+05:30').format('YYYY-MM-DD hh:mm:ss a'),
   );
@@ -89,11 +94,11 @@ const Pumping = ({navigation}) => {
           </View>
         </View>
         <View style={styles.buttonView}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.containerLast}
             onPress={() =>
-              // navigation.navigate(navigationStrings.PUMPING_MANNUAL)
-              reset()
+              navigation.navigate(navigationStrings.PUMPING_MANNUAL)
+              // reset()
             }>
             <Image
               style={{
@@ -114,7 +119,7 @@ const Pumping = ({navigation}) => {
               }}>
               or Enter Manually
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <View style={styles.button}>
             <Button
               icon={
@@ -141,11 +146,29 @@ const Pumping = ({navigation}) => {
                 pressed == 0 ? 'Play' : pressed == 1 ? 'Save' : 'Save & Finish'
               }
               titleStyle={[Fonts.style.buttonText, {color: Colors.primary}]}
-              onPress={() => {
+              onPress={async () => {
                 if (pressed === 0) {
                   setBeginDate(beginDate =>
                     moment().utcOffset('+05:00').format('YYYY-MM-DD hh:mm a'),
                   );
+                }
+                if (pressed === 1) {
+                  setEndDate(endDate =>
+                    moment().utcOffset('+05:00').format('YYYY-MM-DD hh:mm a'),
+                  );
+                }
+                if (pressed >= 2) {
+                  await createPumping({
+                    child_id: 18,
+                    begin_time: beginDate,
+                    end_time: endDate,
+                    unit: 'oz',
+                    amount_for_left: 'excepturi',
+                    amount_for_right: 'facilis',
+                    total_amount: 'iusto',
+                    engorgement: 'odio',
+                  });
+                  navigation.popToTop();
                 }
                 setPressed(pressed => pressed + 1);
                 toggle();

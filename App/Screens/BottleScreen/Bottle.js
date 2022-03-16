@@ -9,11 +9,17 @@ import Colors from '../../Themes/Colors';
 import Shadow from '../../Components/Shadow';
 import VerticalSlider from 'rn-vertical-slider';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import {useCreateBottleFeedMutation} from '../../Redux/Services/BottleFeed';
+import navigationStrings from '../../Constants/navigationStrings';
 
-const Bottle = () => {
+const Bottle = ({navigation}) => {
+  const [createBottleFeed, responseInfo] = useCreateBottleFeedMutation();
+  console.log(responseInfo);
+
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   var [beginDate, setBeginDate] = useState('');
   var [beginTime, setBeginTime] = useState('');
+  var [time, setTime] = useState();
   var [mode, setMode] = useState('date');
   var [number, setNumber] = useState(0);
 
@@ -36,24 +42,16 @@ const Bottle = () => {
   };
 
   const handleConfirm = date => {
-    // beginDate = date;
-
-    mode == 'date'
-      ? setBeginDate((beginDate = date.toString().substring(0, 15)))
-      : setBeginTime((beginTime = date.toString().substring(16, 21)));
-
-    setMode((mode = ''));
+    setTime(date);
     hideDatePicker();
   };
-
-  
 
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
-          mode={mode}
+          mode="datetime"
           locale="en_GB" // Use "en_GB" here
           // date={new Date()}
           timePickerModeAndroid=""
@@ -74,12 +72,10 @@ const Bottle = () => {
               onPress={() => {
                 selectDate();
               }}
-              style={{width: '50%', flexDirection: 'row'}}>
+              style={{flexDirection: 'row'}}>
               <Input
                 placeholder={
-                  beginDate == ''
-                    ? 'Today'
-                    : beginDate.toString().substring(0, 7)
+                  time ? time.toString().substring(0, 25) : 'Date & Time'
                 }
                 editable={false}
                 inputStyle={{fontSize: Fonts.size.medium}}
@@ -93,7 +89,7 @@ const Bottle = () => {
                 }
               />
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => {
                 selectTime();
               }}
@@ -111,7 +107,7 @@ const Bottle = () => {
                   </TouchableOpacity>
                 }
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
         {/* BOTTLE CONTAINER / CENTER CONTAINER */}
@@ -239,7 +235,16 @@ const Bottle = () => {
             containerStyle={{width: '100%'}}
             buttonStyle={(Shadow.shadow, BottleStyles.buttonContainer)}
             titleStyle={[Fonts.style.buttonText, {color: Colors.secondary}]}
-            onPress={() => {alert(`${number}ml added successfully`)}}
+            onPress={async () => {
+              await createBottleFeed({
+                child_id: 18,
+                time: time,
+                type: 'breast',
+                unit: 'ml',
+                amount: number.toString(),
+              });
+              navigation.popToTop();
+            }}
           />
         </View>
       </View>
