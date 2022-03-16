@@ -1,27 +1,24 @@
-// export const store = configureStore({
-//   reducer: {
-//     // LIST OF REDUCERS
-//     // counter: CounterSlice,
-//     // login: LoginReducer,
-//   },
-// });
-
 import {configureStore} from '@reduxjs/toolkit';
 import {setupListeners} from '@reduxjs/toolkit/query';
-import SleepingReducer from './Reducers/SleepingReducer';
-import { AuthenticationApi } from './Services/Authentication';
+import {AuthenticationApi} from './Services/Authentication';
 import {BottleFeedApi} from './Services/BottleFeed';
 import {PumpingApi} from './Services/Pumping';
 import {SleepingApi} from './Services/SleepLog';
 import {SolidFeedApi} from './Services/SolidFeed';
+import LoginReducer from './Reducers/LoginReducer';
+import SleepingReducer from './Reducers/SleepingReducer';
+import ChildReducer from './Reducers/ChildReducer';
 
 export const store = configureStore({
   reducer: {
     // LIST OF REDUCERS
+    login: LoginReducer,
+    user_data: SleepingReducer,
+    children: ChildReducer,
+
     [AuthenticationApi.reducerPath]: AuthenticationApi.reducer,
     user_data: SleepingReducer,
     [SleepingApi.reducerPath]: SleepingApi.reducer,
-    user_data: SleepingReducer,
     [BottleFeedApi.reducerPath]: BottleFeedApi.reducer,
     user_data: SleepingReducer,
     [SolidFeedApi.reducerPath]: SolidFeedApi.reducer,
@@ -37,7 +34,6 @@ export const store = configureStore({
       SolidFeedApi.middleware,
       PumpingApi.middleware,
       AuthenticationApi.middleware,
-      
     ),
 });
 

@@ -13,29 +13,29 @@ import {
 /* USE-SELECTOR & USE-DISPATCH HOOKS FOR REDUX */
 import {useSelector, useDispatch} from 'react-redux';
 
-import LoginReducer, {setApiData} from '../../../Redux/Reducers/LoginReducer';
+import LoginReducer, {
+  setCurrentUser,
+  setToken,
+} from '../../../Redux/Reducers/LoginReducer';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /* REACT NATIVE ELEMENT COMPONENTS */
-import {Button, Image, Input, Icon, Text} from 'react-native-elements';
+import {Button, Image, Input, Text} from 'react-native-elements';
 import navigationStrings from '../../../Constants/navigationStrings';
 
 /* THEME FILES IMPORTED */
 import Colors from '../../../Themes/Colors';
 import Fonts from '../../../Themes/Fonts';
 import metrics from '../../../Themes/Metrics';
-import {useSignInMutation} from '../../../Redux/Services/Authentication';
 
 const Login = ({navigation}) => {
-  const [SignIn, responseInfo] = useSignInMutation();
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   /* USEDISPATCH & USESELECTOR USAGE */
-  // const dispatch = useDispatch();
-  // const {loginApiData} = useSelector(state => state.login);
+  const dispatch = useDispatch();
+  const {currentUser, token} = useSelector(state => state.login);
 
   /* LOGIN API INTEGRATION WITH FETCH() */
   const fetchLoginApi = async () => {
@@ -51,38 +51,32 @@ const Login = ({navigation}) => {
       .then(async json => {
         console.log(json);
         if (json.token) {
-          await AsyncStorage.setItem('session_token', json.token);
-          await AsyncStorage.setItem('isLogin', 'true');
+          asyncStoreData(json);
+          await dispatchData(json);
           navigation.replace(navigationStrings.BOTTOM_TABS);
         } else if (json.errors) {
           alert(json.message);
         }
-        // await dispatch(setApiData(json));
-        // await dispatchData(json);
-        // console.log("after dispatching response");
-        // console.log('Api :', json.token);
-        // console.log('redux :', loginApiData);
-        // AsyncStorage.setItem('login_token', loginApiData.token);
-        // console.log("successfully stored");
-        // getData();
       })
       .catch(error => {
         console.error(error);
       });
   };
 
-  const dispatchData = async () => {
+  const dispatchData = async data => {
     console.log('saving data to redux');
-    return dispatch(setApiData(data));
+    await dispatch(setCurrentUser(data.user));
+    await dispatch(setToken(data.token));
   };
-  // const storeData = async () => {
-  //   try {
-  //     await AsyncStorage.setItem('login_token', loginApiData.token);
-  //     console.log("success storage")
-  //   } catch (e) {
-  //     // saving error
-  //   }
-  // }
+  const asyncStoreData = async data => {
+    try {
+      await AsyncStorage.setItem('session_token', data.token);
+      await AsyncStorage.setItem('isLogin', 'true');
+      console.log('success storage');
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const getData = async () => {
     try {
@@ -241,7 +235,7 @@ const Login = ({navigation}) => {
               backgroundColor: Colors.primary,
             }}
             titleStyle={[Fonts.style.buttonText, {color: Colors.secondary}]}
-            onPress={async() => {
+            onPress={async () => {
               fetchLoginApi();
               // await SignIn({email: email, password: password});
               // if(responseInfo.status == "fulfilled" && responseInfo.isSuccess == true){

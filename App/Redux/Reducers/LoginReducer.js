@@ -3,16 +3,20 @@ import { createSlice, PayloadAction} from "@reduxjs/toolkit";
 export const LoginReducer = createSlice({
     name : "Login",
     initialState: {
-        loginApiData: ["hello"]
+        currentUser: null,
+        token: null,
     },
     reducers: {
-        setApiData : (state, action) =>{
-            state.loginApiData = action.payload;
+        setCurrentUser : (state, action) =>{
+            state.currentUser = action.payload;
+        },
+        setToken : (state, action) =>{
+            state.token = action.payload;
         }
     }
 });
 
-export const {setApiData} = LoginReducer.actions;
+export const {setCurrentUser, setToken} = LoginReducer.actions;
 
 export default LoginReducer.reducer;
 

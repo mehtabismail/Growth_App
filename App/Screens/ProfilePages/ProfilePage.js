@@ -24,18 +24,22 @@ import Colors from '../../Themes/Colors';
 import Fonts from '../../Themes/Fonts';
 import metrics from '../../Themes/Metrics';
 // IMPORT FROM REDUX REDUCERS
-import UserDataReducer, {userData} from '../../Redux/Reducers/UserDataReducer';
+import { setChildList, setCurrentChild } from '../../Redux/Reducers/ChildReducer';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfilePage = ({navigation}) => {
+  const dispatch = useDispatch();
+  const {childList, currentChild} = useSelector(state=> state.children);
+  console.log("child List : ",childList)
+
   const [profileName, setProfileName] = useState('');
   const [babiesList, setBabiesList] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [count, setCount] = useState(0);
 
   const fetchBabiesList = async () => {
-    console.log('babies list fetched : ');
+    console.log('babies list fetching : ');
     let auth_token = await AsyncStorage.getItem('session_token');
     let babyData = await fetch(
       'http://grow-backend.herokuapp.com/api/profile/children',
@@ -52,22 +56,29 @@ const ProfilePage = ({navigation}) => {
       .catch(error => {
         alert(error);
       });
-
-    const variable = babyData.data[0].name;
-    console.log(variable);
+    console.log('babies list fetched : ');
+    const baby = babyData.data[0].name;
+    console.log('babies : ', baby);
     // await this.setState({babiesList: babyData.data});
     await setBabiesList(babyData.data);
+    console.log('babies list : ', babiesList);
     // await this.setState({profileName: this.state.babiesList[0].name});
-    await setProfileName(variable);
+    await setProfileName(baby);
+
+    await dispatch(setChildList(babiesList));
+    await dispatch(setCurrentChild(baby));
+    console.log("redux data : ", childList, currentChild)
   };
 
   useEffect(() => {
     fetchBabiesList();
+    
   }, []);
 
   /* PROFILE CONTAINER */
   ProfileContainer = () => {
     return (
+      
       <View style={styles.profileContainer}>
         {/* PROFILE IMAGE AVATAR */}
         <View style={{marginRight: metrics.smallMargin}}>
@@ -161,7 +172,7 @@ const ProfilePage = ({navigation}) => {
                           //   modalVisible: !this.state.modalVisible,
                           // }),
                           setModalVisible(!modalVisible);
-                          navigation.navigate(navigationStrings.ADDCHILD)
+                          navigation.navigate(navigationStrings.ADDCHILD);
                         }}>
                         <Text style={styles.textStyle}>Add new baby</Text>
                       </Pressable>
