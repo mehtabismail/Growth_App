@@ -9,6 +9,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 /* USE-SELECTOR & USE-DISPATCH HOOKS FOR REDUX */
 import {useSelector, useDispatch} from 'react-redux';
@@ -32,6 +33,7 @@ import metrics from '../../../Themes/Metrics';
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  var [isLoading, setIsLoading] = useState(false);
 
   /* USEDISPATCH & USESELECTOR USAGE */
   const dispatch = useDispatch();
@@ -53,12 +55,15 @@ const Login = ({navigation}) => {
         if (json.token) {
           asyncStoreData(json);
           await dispatchData(json);
+          setIsLoading(false);
           navigation.replace(navigationStrings.BOTTOM_TABS);
         } else if (json.errors) {
+          setIsLoading(false);
           alert(json.message);
         }
       })
       .catch(error => {
+        setIsLoading(false);
         console.error(error);
       });
   };
@@ -68,6 +73,7 @@ const Login = ({navigation}) => {
     await dispatch(setCurrentUser(data.user));
     await dispatch(setToken(data.token));
   };
+
   const asyncStoreData = async data => {
     try {
       await AsyncStorage.setItem('session_token', data.token);
@@ -236,6 +242,7 @@ const Login = ({navigation}) => {
             }}
             titleStyle={[Fonts.style.buttonText, {color: Colors.secondary}]}
             onPress={async () => {
+              setIsLoading(true);
               fetchLoginApi();
               // await SignIn({email: email, password: password});
               // if(responseInfo.status == "fulfilled" && responseInfo.isSuccess == true){
@@ -266,6 +273,11 @@ const Login = ({navigation}) => {
 
   return (
     <View style={{flex: 1}}>
+    <ActivityIndicator
+        animating={isLoading}
+        size="large"
+        style={{position: 'absolute', top: '40%', left: '40%'}}
+      />
       <View
         style={{
           height: '60%',
