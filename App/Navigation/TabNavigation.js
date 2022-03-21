@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Community, Profile, ProfilePage, CommunityForum} from '../Screens';
+import {Community, Profile, ProfilePage, CommunityForum, Resources} from '../Screens';
 import navigationStrings from '../Constants/navigationStrings';
 import {Image} from 'react-native-elements';
 import Colors from '../Themes/Colors';
@@ -65,9 +65,11 @@ export default function BottomTabs() {
       {/* RESOURCES SCREEN */}
       <Tab.Screen
         name="Resource"
-        component={Resource}
+        component={Resources}
         options={{
+          headerShown: true,
           title: 'Resource',
+          // headerLeft: ({navigation}) => <ArrowBack />,
           tabBarIcon: ({focused}) => {
             return (
               <Image
@@ -96,6 +98,9 @@ export default function BottomTabs() {
           ),
           tabBarActiveTintColor: Colors.primary,
           tabBarInactiveTintColor: Colors.tertiary,
+          headerTitleAlign: 'center',
+          headerTintColor: Colors.secondary,
+          headerStyle: {backgroundColor: Colors.primary},
         }}
       />
       {/* PROFILE SCREEN */}
@@ -188,7 +193,7 @@ export default function BottomTabs() {
         options={{
           headerShown: true,
           // title: navigationStrings.COMMUNITY,
-          headerLeft: ({navigation}) => <ArrowBack />,
+          // headerLeft: ({navigation}) => <ArrowBack />,
           tabBarIcon: ({focused}) => {
             return (
               <Image
@@ -217,6 +222,7 @@ export default function BottomTabs() {
           ),
           tabBarActiveTintColor: Colors.primary,
           tabBarInactiveTintColor: Colors.tertiary,
+          headerTitleAlign: 'center',
           headerTintColor: Colors.secondary,
           headerStyle: {backgroundColor: Colors.primary},
         }}

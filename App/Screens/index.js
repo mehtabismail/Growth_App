@@ -20,3 +20,4 @@ export {default as BornChild} from './Child/bornChild';
 export {default as NotBornChild} from './Child/notBornChild';
 export {default as CommunityForum} from './CommunityScreen/CommunityForum';
 export {default as ForumAnswers} from './CommunityScreen/ForumAnswers';
+export {default as Resources} from './ResourceScreens/Resources';

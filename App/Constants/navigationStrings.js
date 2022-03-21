@@ -21,4 +21,6 @@ export default {
   NOTBORNCHILD: 'NotBornChild',
   COMMUNITY_FORUM: 'CommunityForum',
   FORUM_ANSWERS: 'ForumAnswers',
+  RESOURCES: 'Resources',
+
 };

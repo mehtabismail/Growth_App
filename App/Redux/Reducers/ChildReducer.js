@@ -5,18 +5,27 @@ export const ChildReducer = createSlice({
     initialState: {
         childList: null,
         currentChild: null,
+        children: null
     },
     reducers: {
         setChildList : (state, action) =>{
-            state.currentUser = action.payload;
+            state.childList = action.payload;
+            console.log("child list dispatched ")
         },
         setCurrentChild : (state, action) =>{
-            state.token = action.payload;
+            state.currentChild = action.payload;
+            console.log("current child dispatched ")
+        },
+        setChildren : (state, action) =>{
+            console.log("setChildren called");
+            state.children = action.payload;
+            console.log("children dispatched  ")
+            console.log("children : ",state.children);
         }
     }
 });
 
-export const {setChildList, setCurrentChild} = ChildReducer.actions;
+export const {setChildList, setCurrentChild, setChildren} = ChildReducer.actions;
 
 export default ChildReducer.reducer;
 

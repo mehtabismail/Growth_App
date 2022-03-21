@@ -1,4 +1,4 @@
-import React, {useState, useLayoutEffect, useEffect} from 'react';
+import React, {useState, useMemo, useEffect} from 'react';
 // IMPORT FROM REACT NATIVE
 import {
   ScrollView,
@@ -24,22 +24,30 @@ import Colors from '../../Themes/Colors';
 import Fonts from '../../Themes/Fonts';
 import metrics from '../../Themes/Metrics';
 // IMPORT FROM REDUX REDUCERS
-import { setChildList, setCurrentChild } from '../../Redux/Reducers/ChildReducer';
-
+import {
+  setChildList,
+  setCurrentChild,
+  setChildren,
+} from '../../Redux/Reducers/ChildReducer';
+// IMPORT FROM ASYNC-STORAGE
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// PROFILE-PAGE MAIN SCREEN
 const ProfilePage = ({navigation}) => {
+  // USE-DISPATCH & USE-SELECTOR
   const dispatch = useDispatch();
-  const {childList, currentChild} = useSelector(state=> state.children);
-  console.log("child List : ",childList)
+  const response = useSelector(
+    state => state.children,
+  );
 
+  // USE-STATE HOOKS
   const [profileName, setProfileName] = useState('');
   const [babiesList, setBabiesList] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [count, setCount] = useState(0);
 
+  // FETCHING BABIES LIST
   const fetchBabiesList = async () => {
-    console.log('babies list fetching : ');
     let auth_token = await AsyncStorage.getItem('session_token');
     let babyData = await fetch(
       'http://grow-backend.herokuapp.com/api/profile/children',
@@ -49,6 +57,7 @@ const ProfilePage = ({navigation}) => {
           Accept: 'application/json',
           'Content-Type': 'application/json',
           Authorization: `Bearer ${auth_token}`,
+          // Authorization: "Bearer 3|bMezWFXT4McJHIJTRl897ZQf3sopb8GD5B5RtuXy"
         },
       },
     )
@@ -56,29 +65,32 @@ const ProfilePage = ({navigation}) => {
       .catch(error => {
         alert(error);
       });
-    console.log('babies list fetched : ');
+      // console.log(babyData)
     const baby = babyData.data[0].name;
-    console.log('babies : ', baby);
-    // await this.setState({babiesList: babyData.data});
-    await setBabiesList(babyData.data);
-    console.log('babies list : ', babiesList);
-    // await this.setState({profileName: this.state.babiesList[0].name});
-    await setProfileName(baby);
+     setBabiesList(babyData.data);
+     setProfileName(baby);
+    dispatchingChildren(babyData)
+    // await dispatch(setChildren(babyData));
+    // await dispatch(setChildList(babiesList));
+    // await dispatch(setCurrentChild(baby));
+    
+  };
 
-    await dispatch(setChildList(babiesList));
-    await dispatch(setCurrentChild(baby));
-    console.log("redux data : ", childList, currentChild)
+  const dispatchingChildren = (data) => {
+    console.log('dispatching data to redux');
+    dispatch(setChildren(data));
+    setCount(count+1)
+    console.log("children test : ", response)
+  
   };
 
   useEffect(() => {
     fetchBabiesList();
-    
   }, []);
 
   /* PROFILE CONTAINER */
   ProfileContainer = () => {
     return (
-      
       <View style={styles.profileContainer}>
         {/* PROFILE IMAGE AVATAR */}
         <View style={{marginRight: metrics.smallMargin}}>
