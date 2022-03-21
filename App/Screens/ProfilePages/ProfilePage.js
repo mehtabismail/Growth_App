@@ -70,9 +70,6 @@ const ProfilePage = ({navigation}) => {
      setBabiesList(babyData.data);
      setProfileName(baby);
     dispatchingChildren(babyData)
-    // await dispatch(setChildren(babyData));
-    // await dispatch(setChildList(babiesList));
-    // await dispatch(setCurrentChild(baby));
     
   };
 
@@ -304,11 +301,11 @@ const ProfilePage = ({navigation}) => {
                 Sleeping
               </Text>
             </TouchableOpacity>
-            {/* <TouchableOpacity style={[Shadow.shadow, styles.otherButtons]}>
+            <TouchableOpacity onPress={() => navigation.navigate(navigationStrings.DIAPER)} style={[Shadow.shadow, styles.otherButtons]}>
               <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
                 Diaper
               </Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </View>

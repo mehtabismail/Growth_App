@@ -22,6 +22,7 @@ import {
   BornChild,
   NotBornChild,
   ForumAnswers,
+  Diaper,
 } from '../Screens';
 import Colors from '../Themes/Colors';
 
@@ -102,6 +103,20 @@ const AppNavigation = () => {
           component={SleepingMannual}
           options={{
             title: 'Sleeping Mannual',
+            headerStyle: {
+              backgroundColor: Colors.primary,
+            },
+            headerTintColor: Colors.secondary,
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+        {/* DIAPER SCREEN STACK */}
+        <Stack.Screen
+          name={navigationStrings.DIAPER}
+          component={Diaper}
+          options={{
             headerStyle: {
               backgroundColor: Colors.primary,
             },

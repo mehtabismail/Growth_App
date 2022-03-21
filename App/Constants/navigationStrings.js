@@ -9,6 +9,7 @@ export default {
   SLEEPING_MANNUAL: 'SleepingMannual',
   BREAST: 'Breast',
   BREASTMANNUAL: 'BreastMannual',
+  DIAPER: 'Diaper',
   PROFILEPAGE: 'ProfilePage',
   BOTTOM_TABS: 'BottomTabs',
   SETTINGS: 'Settings',

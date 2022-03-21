@@ -8,6 +8,8 @@ import {SolidFeedApi} from './Services/SolidFeed';
 import LoginReducer from './Reducers/LoginReducer';
 import SleepingReducer from './Reducers/SleepingReducer';
 import ChildReducer from './Reducers/ChildReducer';
+import { ProfileApi } from './Services/Profile';
+import { DiaperApi } from './Services/Diaper';
 
 export const store = configureStore({
   reducer: {
@@ -17,14 +19,12 @@ export const store = configureStore({
     children: ChildReducer,
 
     [AuthenticationApi.reducerPath]: AuthenticationApi.reducer,
-    user_data: SleepingReducer,
     [SleepingApi.reducerPath]: SleepingApi.reducer,
     [BottleFeedApi.reducerPath]: BottleFeedApi.reducer,
-    user_data: SleepingReducer,
     [SolidFeedApi.reducerPath]: SolidFeedApi.reducer,
-    user_data: SleepingReducer,
     [PumpingApi.reducerPath]: PumpingApi.reducer,
-    user_data: SleepingReducer,
+    [ProfileApi.reducerPath]: ProfileApi.reducer,
+    [DiaperApi.reducerPath]: DiaperApi.reducer,
   },
 
   middleware: getDefaultMiddleware =>
@@ -34,6 +34,8 @@ export const store = configureStore({
       SolidFeedApi.middleware,
       PumpingApi.middleware,
       AuthenticationApi.middleware,
+      ProfileApi.middleware,
+      DiaperApi.middleware,
     ),
 });
 
