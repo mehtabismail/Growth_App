@@ -1,63 +1,56 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View, TouchableOpacity, SafeAreaView} from 'react-native';
 import {Button, Icon, Input, Text, Image} from 'react-native-elements';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Colors from '../../Themes/Colors';
 import Fonts from '../../Themes/Fonts';
 import metrics from '../../Themes/Metrics';
 
-const PumpingMannual = () => {
+const PumpingMannual = ({navigation}) => {
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  var [time, setTime] = useState(null);
+  var [duration, setDuration] = useState(null);
+
+  const selectDate = () => {
+    setMode((mode = 'date'));
+    showDatePicker();
+  };
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = date => {
+    setTime(date);
+    hideDatePicker();
+  };
+
   return (
     <SafeAreaView>
       <View style={styles.container}>
+      <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="datetime"
+          locale="en_GB" // Use "en_GB" here
+          // date={new Date()}
+          timePickerModeAndroid=""
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
+        />
         <View>
           <View style={styles.beginDateContainer}>
-            <View>
-              <Text>Begin Date</Text>
-              <View style={{flexDirection: 'row'}}>
-                <View style={{width: '50%', flexDirection: 'row'}}>
-                  <Input
-                    placeholder="Today"
-                    rightIcon={
-                      <TouchableOpacity>
-                        <Image
-                          style={{
-                            width: 25,
-                            height: 25,
-                            resizeMode: 'contain',
-                            alignSelf: 'flex-start',
-                            marginLeft: 20,
-                          }}
-                          source={require('../../assets/caret-down.png')}
-                        />
-                      </TouchableOpacity>
-                    }
-                  />
-                </View>
-                <View style={{width: '50%'}}>
-                  <Input
-                    placeholder="Begin Time"
-                    rightIcon={
-                      <TouchableOpacity>
-                        <Image
-                          style={{
-                            width: 25,
-                            height: 25,
-                            resizeMode: 'contain',
-                            alignSelf: 'flex-start',
-                            marginLeft: 20,
-                          }}
-                          source={require('../../assets/caret-down.png')}
-                        />
-                      </TouchableOpacity>
-                    }
-                  />
-                </View>
-              </View>
-              <View>
+            <View style={{width: '100%'}}>
+              <Text>Date of Pumping</Text>
+              <TouchableOpacity onPress={()=>{showDatePicker()}} >
                 <Input
-                  placeholder="Duration (Optional)"
+                  placeholder={time === null ? "Today" : time.toString().substring(0,25)}
+                  editable={false}
                   rightIcon={
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={()=>{showDatePicker()}}>
                       <Image
                         style={{
                           width: 25,
@@ -70,6 +63,15 @@ const PumpingMannual = () => {
                       />
                     </TouchableOpacity>
                   }
+                />
+              </TouchableOpacity>
+              <Text>Duration (optional)</Text>
+              <View>
+                <Input
+                  // placeholder={duration === null ? "Enter Duration" : duration}
+                  placeholder='Enter Duration'
+                  value={duration}
+                  onChangeText={(value)=> setDuration(value)}
                 />
               </View>
             </View>
@@ -86,9 +88,11 @@ const PumpingMannual = () => {
                   source={require('../../assets/stopwatch.png')}
                 />
               </View>
-              <View style={{marginTop: 2}}>
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={{marginTop: 2}}>
                 <Text style={styles.textContainer}>or Start Time</Text>
-              </View>
+              </TouchableOpacity>
             </TouchableOpacity>
             <View>
               <Text>Side(s) & Amount (optional)</Text>
@@ -203,7 +207,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   beginDateContainer: {
-    margin: 30,
+    padding: metrics.basePadding,
     alignItems: 'center',
   },
   textContainer: {

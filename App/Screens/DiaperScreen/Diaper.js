@@ -6,10 +6,11 @@ import Fonts from '../../Themes/Fonts';
 import Colors from '../../Themes/Colors';
 import {Button, Card, Input} from 'react-native-elements';
 import Shadow from '../../Components/Shadow';
-import { useCreateDiaperLogMutation } from '../../Redux/Services/Diaper';
+import {useCreateDiaperLogMutation} from '../../Redux/Services/Diaper';
 
 const Diaper = ({navigation}) => {
   const data = ['Clean', 'Poo', 'Pee', 'Mixed'];
+  var [selected, setSelected] = useState(null);
 
   const [createDiaperLog, responseInfo] = useCreateDiaperLogMutation();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -71,7 +72,7 @@ const Diaper = ({navigation}) => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{flex: 1, justifyContent:"space-between"}}>
+        <View style={{flex: 1, justifyContent: 'space-between'}}>
           {/* TEXT CONTAINER */}
           <View
             style={{
@@ -94,24 +95,46 @@ const Diaper = ({navigation}) => {
               flexDirection: 'row',
               flexWrap: 'wrap',
               paddingBottom: metrics.basePadding,
-              height:"50%"
+              height: '50%',
+              justifyContent: 'space-around',
             }}>
             {data.map((item, key) => {
               return (
-                <Card
+                <TouchableOpacity
+                  onPress={() => {
+                    setSelected(item);
+                  }}
+                  // accessibilityValue={selected}
                   key={key}
-                  containerStyle={[
-                    {
-                      borderRadius: metrics.regularMargin,
-                      width: '40%',
-                      height: '40%',
+                  style={{
+                    borderRadius: metrics.regularMargin,
+                    width: '40%',
+                    height: '40%',
+                    marginBottom: metrics.baseMargin,
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
                     },
-                    Shadow.shadow,
-                  ]}>
-                  <Card.Title style={{fontSize: Fonts.size.large}}>
-                    {item}
-                  </Card.Title>
-                </Card>
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                    elevation: 5,
+                    backgroundColor: selected == item ? 'green' : 'white',
+                    borderColor: selected == item ? 'green' : 'white',
+                    justifyContent:"center",
+                    alignItems:"center"
+                  }}>
+                  <View
+                    style={{
+                      // backgroundColor: selected == item ? 'green' : 'white',
+                      backgroundColor:"transparent",
+                      padding:metrics.smallPadding
+                    }}>
+                    <Text style={{fontSize: Fonts.size.large, fontWeight:"bold"}}>
+                      {item}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               );
             })}
           </View>
@@ -130,13 +153,14 @@ const Diaper = ({navigation}) => {
               buttonStyle={(Shadow.shadow, styles.buttonContainer)}
               titleStyle={[Fonts.style.buttonText, {color: Colors.secondary}]}
               onPress={async () => {
-              await createDiaperLog({
-                child_id: 7,
-                time: time,
-                what_was_in: "pee"
-              });
-              navigation.popToTop();
-            }}
+                await createDiaperLog({
+                  child_id: 7,
+                  time: time,
+                  what_was_in: selected,
+                });
+                navigation.popToTop();
+                // console.log(selected);
+              }}
             />
           </View>
         </View>

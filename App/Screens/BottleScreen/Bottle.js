@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import {Input, Image, Button, Slider, Icon} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BottleStyles from './BottleStyles';
@@ -49,6 +49,11 @@ const Bottle = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
+        <ActivityIndicator
+          animating={responseInfo.isLoading}
+          size="large"
+          style={{position: 'absolute', top: '40%', left: '40%'}}
+        />
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
           mode="datetime"

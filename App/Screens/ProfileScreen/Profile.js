@@ -21,6 +21,7 @@ const Profle = () => {
 
   const {children} = useSelector(state => state.children);
   const responseInfo = useGetUserProfileQuery();
+  console.log(responseInfo);
   return (
     <View style={styles.container}>
       {responseInfo.isLoading === true ? (

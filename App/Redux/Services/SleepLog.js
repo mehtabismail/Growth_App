@@ -1,4 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import Token from './Token';
 
 export const SleepingApi = createApi({
   reducerPath: 'sleeping',
@@ -16,7 +17,7 @@ export const SleepingApi = createApi({
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
-            Authorization: 'Bearer 7|kWcDNvzMDQrIznMSUBE1osrjSclZKoRTAa5VKYnh',
+            Authorization: `Bearer ${Token.auth_token._W}`,
           },
           body: data,
           method: 'POST',

@@ -84,17 +84,17 @@ const Login = ({navigation}) => {
     }
   };
 
-  const getData = async () => {
-    try {
-      const value = await AsyncStorage.getItem('login_token');
-      if (value !== null) {
-        // value previously stored
-        console.log('stored value : ', value);
-      }
-    } catch (e) {
-      // error reading value
-    }
-  };
+  // const getData = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem('login_token');
+  //     if (value !== null) {
+  //       // value previously stored
+  //       console.log('stored value : ', value);
+  //     }
+  //   } catch (e) {
+  //     // error reading value
+  //   }
+  // };
 
   const TextInputs = () => {
     return (

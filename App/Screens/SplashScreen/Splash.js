@@ -30,7 +30,7 @@ const Splash = ({navigation}) => {
         </View>
         <View>
           <Text style={SplashContainerStyles.subHeadingTextStyle}>
-            Parrenting Made Easy
+            Parenting Made Easy
           </Text>
         </View>
         <View style={SplashContainerStyles.divider}></View>

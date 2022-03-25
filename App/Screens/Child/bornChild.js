@@ -15,12 +15,12 @@ import navigationStrings from '../../Constants/navigationStrings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BornChild = ({navigation}) => {
-  const countries = [
-    'Mother',
-    'Father',
-    'family Member',
-    'Nanny/Babysitter',
-    'Other',
+  const relations = [
+    'MOTHER',
+    'FATHER',
+    'FAMILY_MEMBER',
+    'NANNY\/BABYSITTER',
+    'OTHER',
   ];
   const gender = ['Boy', 'Girl'];
 
@@ -68,7 +68,7 @@ const BornChild = ({navigation}) => {
         gender: sex,
         date_of_birth: birthDate,
         due_date: dueDate,
-        relationship: 'NANNY/BABYSITTER',
+        relationship: relation,
       }),
     })
       .then(async response => response.json())
@@ -202,7 +202,7 @@ const BornChild = ({navigation}) => {
             borderColor: Colors.primary,
           }}
           defaultButtonText="What's your relationship to baby?"
-          data={countries}
+          data={relations}
           onSelect={(selectedItem, index) => {
             console.log(selectedItem, index);
             setRelation((relation = selectedItem));

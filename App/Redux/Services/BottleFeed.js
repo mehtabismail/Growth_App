@@ -1,4 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import Token from './Token';
 
 export const BottleFeedApi = createApi({
   reducerPath: 'bootle_feed',
@@ -10,13 +11,13 @@ export const BottleFeedApi = createApi({
   endpoints: builder => ({
     createBottleFeed: builder.mutation({
       query: data => {
-        console.log('new data : ', data);
+        console.log('Token  : ', Token.auth_token._W);
         return {
           url: 'bottle-feed',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
-            Authorization: 'Bearer 7|kWcDNvzMDQrIznMSUBE1osrjSclZKoRTAa5VKYnh',
+            Authorization: `Bearer ${Token.auth_token._W}`,
           },
           body: data,
           method: 'POST',

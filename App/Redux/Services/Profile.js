@@ -1,4 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import Token from './Token';
 
 export const ProfileApi = createApi({
   reducerPath: 'profile',
@@ -15,7 +16,7 @@ export const ProfileApi = createApi({
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
-            Authorization: 'Bearer 3|bMezWFXT4McJHIJTRl897ZQf3sopb8GD5B5RtuXy',
+            Authorization: `Bearer ${Token.auth_token._W}`,
           },
           method: 'GET',
         };
