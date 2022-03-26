@@ -69,9 +69,6 @@ const Sleeping = ({navigation}) => {
                 style={{
                   width: '50%',
                   flexDirection: 'row',
-                }}
-                onPress={() => {
-                  // this.selectDate();
                 }}>
                 <Input
                   placeholder={
