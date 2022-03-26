@@ -1,5 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, TouchableOpacity, SafeAreaView} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  SafeAreaView,
+  ActivityIndicator,
+} from 'react-native';
 import CustomHeader from '../../Components/CustomHeader';
 import {Button, Text, Icon, Input, Image} from 'react-native-elements';
 import Colors from '../../Themes/Colors';
@@ -12,14 +18,13 @@ import navigationStrings from '../../Constants/navigationStrings';
 import {useCreateSleepingLogMutation} from '../../Redux/Services/SleepLog';
 
 const SleepingMannual = ({navigation}) => {
-
   // USE-DISPATCH HOOK
   const dispatch = useDispatch();
 
   // REDUX-TOOLKIT RTK QUERY
   const [createSleepLog, responseInfo] = useCreateSleepingLogMutation();
-  console.log( responseInfo);
-  
+  console.log(responseInfo);
+
   // USE-STATE HOOKS
   var [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   var [beginDate, setBeginDate] = useState('');
@@ -344,64 +349,72 @@ const SleepingMannual = ({navigation}) => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: Colors.background}}>
-      <View style={styles.container}>
-        <DateTimePickerModal
-          isVisible={isDatePickerVisible}
-          mode="datetime"
-          locale="en_GB" // Use "en_GB" here
-          // date={new Date()}
-          timePickerModeAndroid=""
-          onConfirm={handleConfirm}
-          onCancel={hideDatePicker}
+      {/* LOADING INDICATOR */}
+      {responseInfo.isLoading == true ? (
+        <ActivityIndicator
+          animating={true}
+          size="large"
+          style={{position: 'absolute', top: '45%', left: '45%'}}
         />
-        <View style={{width: '100%', marginHorizontal: metrics.baseMargin}}>
-          {/* BEGIN DATE / BEGIN TIME */}
-          {selectBeginTime()}
-          {/* END DATE / END TIME */}
-          {selectEndTime()}
-        </View>
-        <View style={styles.timeCircleView}>
-          <Text style={styles.timeText}>
-            {overAllTime == null ? `00:00` : `${overAllTime}`}
-          </Text>
-        </View>
-        <View style={styles.buttonView}>
-          <View style={styles.button}>
-            <Button
-              icon={
-                <Image
-                  style={{
-                    width: 30,
-                    height: 30,
-                    resizeMode: 'contain',
-                    marginRight: metrics.baseMargin,
-                    tintColor: Colors.primary,
-                  }}
-                  source={require('../../assets/play-button.png')}
-                />
-              }
-              buttonStyle={{
-                borderColor: Colors.primary,
-                borderWidth: 2,
-                paddingHorizontal: metrics.doubleBasePadding,
-              }}
-              type="outline"
-              title="Save"
-              titleStyle={[Fonts.style.buttonText, {color: Colors.primary}]}
-              onPress={ async() => {
-                await createSleepLog({
-                  child_id: 18,
-                  begin_time: beginTime,
-                  end_time: endTime,
-                  disruption: 'no disruption',
-                  total_time: overAllTime,
-                });
-                navigation.replace(navigationStrings.BOTTOM_TABS);
-              }}
-            />
+      ) : (
+        <View style={styles.container}>
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode="datetime"
+            locale="en_GB"
+            timePickerModeAndroid=""
+            onConfirm={handleConfirm}
+            onCancel={hideDatePicker}
+          />
+          <View style={{width: '100%', marginHorizontal: metrics.baseMargin}}>
+            {/* BEGIN DATE / BEGIN TIME */}
+            {selectBeginTime()}
+            {/* END DATE / END TIME */}
+            {selectEndTime()}
+          </View>
+          <View style={styles.timeCircleView}>
+            <Text style={styles.timeText}>
+              {overAllTime == null ? `00:00` : `${overAllTime}`}
+            </Text>
+          </View>
+          <View style={styles.buttonView}>
+            <View style={styles.button}>
+              <Button
+                icon={
+                  <Image
+                    style={{
+                      width: 30,
+                      height: 30,
+                      resizeMode: 'contain',
+                      marginRight: metrics.baseMargin,
+                      tintColor: Colors.primary,
+                    }}
+                    source={require('../../assets/play-button.png')}
+                  />
+                }
+                buttonStyle={{
+                  borderColor: Colors.primary,
+                  borderWidth: 2,
+                  paddingHorizontal: metrics.doubleBasePadding,
+                }}
+                type="outline"
+                title="Save"
+                titleStyle={[Fonts.style.buttonText, {color: Colors.primary}]}
+                onPress={async () => {
+                  await createSleepLog({
+                    child_id: 18,
+                    begin_time: beginTime,
+                    end_time: endTime,
+                    disruption: 'no disruption',
+                    total_time: overAllTime,
+                  });
+                  navigation.replace(navigationStrings.BOTTOM_TABS);
+                }}
+              />
+            </View>
           </View>
         </View>
-      </View>
+      )}
     </SafeAreaView>
   );
 };

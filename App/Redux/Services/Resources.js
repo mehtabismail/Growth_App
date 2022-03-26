@@ -1,29 +1,28 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import Token from './Token';
 
-export const BottleFeedApi = createApi({
-  reducerPath: 'bootle_feed',
+export const ArticleApi = createApi({
+  reducerPath: 'article',
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://grow-backend.herokuapp.com/api/',
   }),
 
-//   SLEEPING-LOG POST API
+  //   ARTICLE GET API
   endpoints: builder => ({
-    createBottleFeed: builder.mutation({
-      query: data => {
+    getArticles: builder.query({
+      query: () => {
         return {
-          url: 'bottle-feed',
+          url: 'article',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
             Authorization: `Bearer ${Token.auth_token._W}`,
           },
-          body: data,
-          method: 'POST',
+          method: 'GET',
         };
       },
     }),
   }),
 });
 
-export const { useCreateBottleFeedMutation } = BottleFeedApi;
+export const {useGetArticlesQuery} = ArticleApi;

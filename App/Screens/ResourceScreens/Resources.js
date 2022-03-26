@@ -11,54 +11,37 @@ import {Card, Image} from 'react-native-elements';
 import Shadow from '../../Components/Shadow';
 import metrics from '../../Themes/Metrics';
 import Fonts from '../../Themes/Fonts';
+import {useGetArticlesQuery} from '../../Redux/Services/Resources';
+import Loader from '../../Components/Loader';
 
 const Resources = () => {
-  const number = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const responseInfo = useGetArticlesQuery();
+  console.log(responseInfo)
   return (
-    <View style={styles.mainContainer}>
-      <ScrollView>
-        <View style={{marginBottom: metrics.doubleBaseMargin}}>
-          {number.map(item => {
-            return (
-              <TouchableOpacity key={item}>
-                <Card
-                  title="CARD WITH DIVIDER"
-                  containerStyle={[{borderRadius: 10}, Shadow.shadow]}>
-                  <Text style={{marginBottom: 10}}>
-                    The idea with React Native Elements is more about component
-                    structure than actual design.
-                  </Text>
-                </Card>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-      </ScrollView>
-      <TouchableOpacity
-        style={{
-          backgroundColor: 'white',
-          height: 50,
-          width: 50,
-          borderRadius: 25,
-          position: 'absolute',
-          bottom: metrics.regularMargin,
-          right: metrics.regularMargin,
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 12,
-          },
-          shadowOpacity: 0.58,
-          shadowRadius: 16.0,
-          elevation: 24,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <Image
-          style={{height: 30, width: 32, tintColor: Colors.primary}}
-          source={require('../../assets/plus.png')}
-        />
-      </TouchableOpacity>
+    <View style={{flex: 1}}>
+      {responseInfo.isLoading === true ? <Loader /> : null}
+      {responseInfo.isSuccess === true ? <View style={styles.mainContainer}>
+          <ScrollView>
+            <View style={{marginBottom: metrics.doubleBaseMargin}}>
+              {responseInfo.data.data.map(item => 
+              {
+                return (
+                  <TouchableOpacity key={item.id}>
+                    <Card
+                      containerStyle={[{borderRadius: 10}, Shadow.shadow]}>
+                      <Card.Title>{item.name}</Card.Title>
+                      <Text style={{marginBottom: metrics.smallMargin}}>{item.body}</Text>
+                      <Text>
+                        {item.created_at.toString()}
+                      </Text>
+                    </Card>
+                  </TouchableOpacity>
+                );
+              }
+              )}
+            </View>
+          </ScrollView>
+        </View>: null}
     </View>
   );
 };

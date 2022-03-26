@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import {Input, Image, Button, Slider, Icon} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BottleStyles from '../BottleScreen/BottleStyles';
@@ -53,9 +53,17 @@ const Solids = ({navigation}) => {
           alignItems: 'center',
           backgroundColor: Colors.background,
         }}>
+        {/* LOADING INDICATOR */}
+        {responseInfo.isLoading == true ? (
+          <ActivityIndicator
+            animating={true}
+            size="large"
+            style={{position: 'absolute', top: '45%', left: '45%'}}
+          />
+        ) : null}
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
-          mode='datetime'
+          mode="datetime"
           locale="en_GB" // Use "en_GB" here
           // date={new Date()}
           timePickerModeAndroid=""
@@ -79,9 +87,7 @@ const Solids = ({navigation}) => {
               style={{flexDirection: 'row'}}>
               <Input
                 placeholder={
-                  time
-                    ? time.toString().substring(0,25)
-                    : 'Date & Time'
+                  time ? time.toString().substring(0, 25) : 'Date & Time'
                 }
                 editable={false}
                 inputStyle={{fontSize: Fonts.size.medium}}
@@ -192,12 +198,14 @@ const Solids = ({navigation}) => {
             buttonStyle={(Shadow.shadow, BottleStyles.buttonContainer)}
             titleStyle={[Fonts.style.buttonText, {color: Colors.secondary}]}
             onPress={async () => {
-              await createSolidFeed({
-                child_id: 18,
-                time: time,
-                reaction: 'hate',
-              });
-              navigation.popToTop();
+              if (time) {
+                await createSolidFeed({
+                  child_id: 18,
+                  time: time,
+                  reaction: 'hate',
+                });
+                navigation.popToTop();
+              } else alert('data is missing!');
             }}
           />
         </View>

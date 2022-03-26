@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import metrics from '../../Themes/Metrics';
 import Fonts from '../../Themes/Fonts';
@@ -31,6 +31,13 @@ const Diaper = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={{flex: 1, backgroundColor: Colors.background}}>
+        {responseInfo.isLoading === true ? (
+          <ActivityIndicator
+            animating={true}
+            size="large"
+            style={{position: 'absolute', top: '40%', left: '45%'}}
+          />
+        ) : null}
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
           mode="datetime"
@@ -121,16 +128,17 @@ const Diaper = ({navigation}) => {
                     elevation: 5,
                     backgroundColor: selected == item ? 'green' : 'white',
                     borderColor: selected == item ? 'green' : 'white',
-                    justifyContent:"center",
-                    alignItems:"center"
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}>
                   <View
                     style={{
                       // backgroundColor: selected == item ? 'green' : 'white',
-                      backgroundColor:"transparent",
-                      padding:metrics.smallPadding
+                      backgroundColor: 'transparent',
+                      padding: metrics.smallPadding,
                     }}>
-                    <Text style={{fontSize: Fonts.size.large, fontWeight:"bold"}}>
+                    <Text
+                      style={{fontSize: Fonts.size.large, fontWeight: 'bold'}}>
                       {item}
                     </Text>
                   </View>

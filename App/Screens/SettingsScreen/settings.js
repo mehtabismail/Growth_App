@@ -8,6 +8,28 @@ import navigationStrings from '../../Constants/navigationStrings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const settings = ({navigation}) => {
+  const logOut = async () => {
+    let token = await AsyncStorage.getItem('session_token');
+    return await fetch('http://grow-backend.herokuapp.com/api/login', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+    })
+      .then(async response => response.json())
+      .then(async json => {
+        await AsyncStorage.setItem('isLogin', 'false');
+        await AsyncStorage.removeItem('session_token');
+        console.log("log out done successfully")
+        navigation.replace(navigationStrings.SIGN_IN)
+
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.touchableContainers}>
@@ -45,8 +67,7 @@ const settings = ({navigation}) => {
       </TouchableOpacity>
       <TouchableOpacity 
       onPress={async ()=>{
-        await AsyncStorage.setItem('isLogin', 'false');
-        navigation.replace(navigationStrings.SIGN_IN)
+        logOut();
       }}
       style={styles.touchableContainers}>
         <View style={{paddingRight: metrics.smallPadding}}>

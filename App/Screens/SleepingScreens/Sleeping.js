@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, TouchableOpacity, SafeAreaView} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, SafeAreaView, ActivityIndicator} from 'react-native';
 import moment from 'moment';
 import {Button, Text, Icon, Input, Image} from 'react-native-elements';
 import metrics from '../../Themes/Metrics';
@@ -25,6 +25,7 @@ const Sleeping = ({navigation}) => {
 
   // REDUX-TOOLKIT RTK QUERY
   const [createSleepLog, responseInfo] = useCreateSleepingLogMutation();
+  console.log(responseInfo)
 
   function toggle() {
     if (pressed < 2) {
@@ -52,6 +53,14 @@ const Sleeping = ({navigation}) => {
   return (
     <SafeAreaView>
       <View style={styles.container}>
+      {/* LOADING INDICATOR */}
+      {responseInfo.isLoading == true ? (
+          <ActivityIndicator
+            animating={true}
+            size="large"
+            style={{position: 'absolute', top: '45%', left: '45%'}}
+          />
+        ) : null}
         {/* BEGIN DATE & Time */}
         {pressed == true || pressCount >= 1 ? (
           <View style={{padding: metrics.regularPadding}}>
@@ -275,10 +284,10 @@ const Sleeping = ({navigation}) => {
                 if (pressCount >= 2) {
                 await createSleepLog({
                   child_id: 18,
-                  begin_time: beginDate,
-                  end_time: endDate,
+                  begin_time: beginDate.toString(),
+                  end_time: endDate.toString(),
                   disruption: 'no disruption',
-                  total_time: minute,
+                  total_time: minute.toString(),
                 });
                   navigation.popToTop();
                 }

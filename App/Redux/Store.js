@@ -10,6 +10,7 @@ import SleepingReducer from './Reducers/SleepingReducer';
 import ChildReducer from './Reducers/ChildReducer';
 import { ProfileApi } from './Services/Profile';
 import { DiaperApi } from './Services/Diaper';
+import { ArticleApi } from './Services/Resources';
 
 export const store = configureStore({
   reducer: {
@@ -25,6 +26,7 @@ export const store = configureStore({
     [PumpingApi.reducerPath]: PumpingApi.reducer,
     [ProfileApi.reducerPath]: ProfileApi.reducer,
     [DiaperApi.reducerPath]: DiaperApi.reducer,
+    [ArticleApi.reducerPath]: ArticleApi.reducer,
   },
 
   middleware: getDefaultMiddleware =>
@@ -36,6 +38,7 @@ export const store = configureStore({
       AuthenticationApi.middleware,
       ProfileApi.middleware,
       DiaperApi.middleware,
+      ArticleApi.middleware,
     ),
 });
 

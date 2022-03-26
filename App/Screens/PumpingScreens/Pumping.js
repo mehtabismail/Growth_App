@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, TouchableOpacity, TextInput} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, TextInput, ActivityIndicator} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Button, Text, Image, Input, Divider} from 'react-native-elements';
 import metrics from '../../Themes/Metrics';
@@ -53,21 +53,18 @@ const Pumping = ({navigation}) => {
     return () => clearInterval(interval);
   }, [isActive, seconds]);
 
-  useEffect(() => {
-    const totalAmountHandler = () => {
-      console.log('total amount : ', total);
-      console.log('type of left : ', typeof left);
-      console.log('type of right : ', typeof right);
-      console.log('type of right : ', typeof right);
-    };
-    return () => {
-      totalAmountHandler();
-    };
-  }, [left, right]);
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: Colors.backgroundColor}}>
       <View style={styles.container}>
+      {/* LOADING INDICATOR */}
+      {responseInfo.isLoading == true ? (
+          <ActivityIndicator
+            animating={true}
+            size="large"
+            style={{position: 'absolute', top: '45%', left: '45%'}}
+          />
+        ) : null}
         {/* BEGIN DATE & Time */}
         {pressed >= 1 ? (
           <View
