@@ -7,8 +7,12 @@ import Fonts from '../../Themes/Fonts';
 import Colors from '../../Themes/Colors';
 import navigationStrings from '../../Constants/navigationStrings';
 import {useCreateSleepingLogMutation} from '../../Redux/Services/SleepLog';
+import { useSelector } from 'react-redux';
 
 const Sleeping = ({navigation}) => {
+
+  const {currentChild} = useSelector(state => state.children);
+
   var [minute, setMinute] = useState(0);
   var [second, setSecond] = useState(0);
   var [totalTime, setTotalTime] = useState(0);
@@ -280,7 +284,7 @@ const Sleeping = ({navigation}) => {
 
                 if (pressCount >= 2) {
                 await createSleepLog({
-                  child_id: 18,
+                  child_id: currentChild.id,
                   begin_time: beginDate.toString(),
                   end_time: endDate.toString(),
                   disruption: 'no disruption',

@@ -14,8 +14,12 @@ import Shadow from '../../Components/Shadow';
 import Colors from '../../Themes/Colors';
 import Fonts from '../../Themes/Fonts';
 import metrics from '../../Themes/Metrics';
+import { useSelector } from 'react-redux';
 
 const PumpingMannual = ({navigation}) => {
+
+  const {currentChild} = useSelector(state => state.children);
+
   // RTK QUERY REDUX-TOOLKIT
   const [createPumping, responseInfo] = useCreatePumpingMutation();
   console.log(responseInfo);
@@ -310,7 +314,7 @@ const PumpingMannual = ({navigation}) => {
             onPress={async () => {
               if (time != null && endDate != null) {
                 await createPumping({
-                  child_id: 7,
+                  child_id: currentChild.id,
                   begin_time: time,
                   end_time: endDate,
                   unit: 'ml',

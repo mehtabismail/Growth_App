@@ -11,8 +11,12 @@ import VerticalSlider from 'rn-vertical-slider';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {useCreateSolidFeedMutation} from '../../Redux/Services/SolidFeed';
 import navigationStrings from '../../Constants/navigationStrings';
+import { useSelector } from 'react-redux';
 
 const Solids = ({navigation}) => {
+
+  const {currentChild} = useSelector(state => state.children);
+
   const [createSolidFeed, responseInfo] = useCreateSolidFeedMutation();
   console.log(responseInfo);
 
@@ -200,7 +204,7 @@ const Solids = ({navigation}) => {
             onPress={async () => {
               if (time) {
                 await createSolidFeed({
-                  child_id: 18,
+                  child_id: currentChild.id,
                   time: time,
                   reaction: 'hate',
                 });

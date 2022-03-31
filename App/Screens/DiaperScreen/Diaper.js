@@ -7,8 +7,13 @@ import Colors from '../../Themes/Colors';
 import {Button, Card, Input} from 'react-native-elements';
 import Shadow from '../../Components/Shadow';
 import {useCreateDiaperLogMutation} from '../../Redux/Services/Diaper';
+import { setCurrentChild } from '../../Redux/Reducers/ChildReducer';
+import { useSelector } from 'react-redux';
 
 const Diaper = ({navigation}) => {
+
+  const {currentChild} = useSelector(state => state.children);
+
   const data = ['Clean', 'Poo', 'Pee', 'Mixed'];
   var [selected, setSelected] = useState(null);
 
@@ -126,14 +131,14 @@ const Diaper = ({navigation}) => {
                     shadowOpacity: 0.25,
                     shadowRadius: 3.84,
                     elevation: 5,
-                    backgroundColor: selected == item ? 'green' : 'white',
-                    borderColor: selected == item ? 'green' : 'white',
+                    backgroundColor: selected == item ? Colors.secondary : 'white',
+                    borderColor: selected == item ? Colors.secondary : 'white',
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
                   <View
                     style={{
-                      // backgroundColor: selected == item ? 'green' : 'white',
+                      // backgroundColor: selected == item ? Colors.primary : 'white',
                       backgroundColor: 'transparent',
                       padding: metrics.smallPadding,
                     }}>
@@ -162,7 +167,7 @@ const Diaper = ({navigation}) => {
               titleStyle={[Fonts.style.buttonText, {color: Colors.secondary}]}
               onPress={async () => {
                 await createDiaperLog({
-                  child_id: 7,
+                  child_id: currentChild.id,
                   time: time,
                   what_was_in: selected,
                 });

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {TouchableOpacity, Text, View} from 'react-native';
+import {TouchableOpacity, Text, View, ActivityIndicator} from 'react-native';
 import {Button, Image, Input} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import navigationStrings from '../../../Constants/navigationStrings';
@@ -8,6 +8,8 @@ import Fonts from '../../../Themes/Fonts';
 import metrics from '../../../Themes/Metrics';
 import BreastStyles from './BreastStyles';
 import moment from 'moment';
+import Token from '../../../Redux/Services/Token';
+
 
 export default class Breast extends Component {
   constructor(props) {
@@ -45,12 +47,13 @@ export default class Breast extends Component {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          Authorization: 'Bearer 7|kWcDNvzMDQrIznMSUBE1osrjSclZKoRTAa5VKYnh',
+          Authorization: `Bearer ${Token.auth_token._W}`,
         },
         body: JSON.stringify({
-          child_id: 4,
-          side: 'left',
+          child_id: 40,
           started_at: this.state.beginDate,
+          left_duration: this.state.lMinute.toString(),
+          right_duration: this.state.rMinute.toString(),
           end_at: this.state.endDate,
           total_time: this.state.minute.toString(),
         }),
@@ -526,7 +529,7 @@ export default class Breast extends Component {
                     flexDirection: 'row',
                     padding: metrics.basePadding,
                   }}
-                  onPress={() =>
+                  onPress={() => 
                     this.props.navigation.navigate(
                       navigationStrings.BREASTMANNUAL,
                     )

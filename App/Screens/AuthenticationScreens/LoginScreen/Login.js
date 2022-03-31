@@ -34,6 +34,7 @@ const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   var [isLoading, setIsLoading] = useState(false);
+  var [showText, setShowText] = useState(true);
 
   /* USEDISPATCH & USESELECTOR USAGE */
   const dispatch = useDispatch();
@@ -105,6 +106,8 @@ const Login = ({navigation}) => {
         }}>
         <Input
           placeholder="E-mail or Username"
+          onFocus={()=> setShowText(false) }
+          onBlur={()=> setShowText(true) }
           style={{
             fontWeight: 'bold',
           }}
@@ -120,6 +123,8 @@ const Login = ({navigation}) => {
         />
         <Input
           placeholder="Password"
+          onFocus={()=> setShowText(false) }
+          onBlur={()=> setShowText(true) }
           secureTextEntry={true}
           style={{
             fontWeight: 'bold',
@@ -244,10 +249,6 @@ const Login = ({navigation}) => {
             onPress={async () => {
               setIsLoading(true);
               fetchLoginApi();
-              // await SignIn({email: email, password: password});
-              // if(responseInfo.status == "fulfilled" && responseInfo.isSuccess == true){
-              //   navigation.replace(navigationStrings.BOTTOM_TABS)
-              // }
             }}
           />
         </View>
@@ -300,7 +301,8 @@ const Login = ({navigation}) => {
           right: 0,
           borderBottomRightRadius: 600,
         }}></View>
-      <View style={{position: 'absolute', top: '10%', left: '8%'}}>
+      {
+        showText === true ? <View style={{position: 'absolute', top: '10%', left: '8%'}}>
         <Text
           style={{
             fontSize: Fonts.size.h3,
@@ -315,10 +317,12 @@ const Login = ({navigation}) => {
             borderColor: Colors.secondary,
             marginTop: 10,
           }}></View>
-      </View>
+      </View>: null
+      }
       <View style={{flex: 1, marginTop: '-60%'}}>
         {/* SIGN IN SIGN UP TEXT */}
-        <View
+       {
+         showText === true ?  <View
           style={{
             // height:"30%",
             justifyContent: 'flex-end',
@@ -355,7 +359,8 @@ const Login = ({navigation}) => {
               </Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </View>: null
+       }
         <View
           style={{
             flex: 1,

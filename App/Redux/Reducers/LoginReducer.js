@@ -9,6 +9,7 @@ export const LoginReducer = createSlice({
     reducers: {
         setCurrentUser : (state, action) =>{
             state.currentUser = action.payload;
+            console.log("user saved in redux : ", state.currentUser)
         },
         setToken : (state, action) =>{
             state.token = action.payload;

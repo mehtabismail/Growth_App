@@ -9,8 +9,12 @@ import navigationStrings from '../../Constants/navigationStrings';
 import moment from 'moment';
 import {useCreatePumpingMutation} from '../../Redux/Services/Pumping';
 import Shadow from '../../Components/Shadow';
+import { useSelector } from 'react-redux';
 
 const Pumping = ({navigation}) => {
+
+  const {currentChild} = useSelector(state => state.children);
+
   const [createPumping, responseInfo] = useCreatePumpingMutation();
   console.log(responseInfo);
 
@@ -326,7 +330,7 @@ const Pumping = ({navigation}) => {
                 }
                 if (pressed >= 2) {
                   await createPumping({
-                    child_id: 7,
+                    child_id: currentChild.id,
                     begin_time: beginDate,
                     end_time: endDate,
                     unit: 'ml',

@@ -20,6 +20,7 @@ import {useCreateSleepingLogMutation} from '../../Redux/Services/SleepLog';
 const SleepingMannual = ({navigation}) => {
   // USE-DISPATCH HOOK
   const dispatch = useDispatch();
+  const {currentChild} = useSelector(state => state.children);
 
   // REDUX-TOOLKIT RTK QUERY
   const [createSleepLog, responseInfo] = useCreateSleepingLogMutation();
@@ -402,7 +403,7 @@ const SleepingMannual = ({navigation}) => {
                 titleStyle={[Fonts.style.buttonText, {color: Colors.primary}]}
                 onPress={async () => {
                   await createSleepLog({
-                    child_id: 18,
+                    child_id: currentChild.id,
                     begin_time: beginTime,
                     end_time: endTime,
                     disruption: 'no disruption',

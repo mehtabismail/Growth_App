@@ -11,10 +11,14 @@ import VerticalSlider from 'rn-vertical-slider';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {useCreateBottleFeedMutation} from '../../Redux/Services/BottleFeed';
 import navigationStrings from '../../Constants/navigationStrings';
+import { useSelector } from 'react-redux';
 
 const Bottle = ({navigation}) => {
   const [createBottleFeed, responseInfo] = useCreateBottleFeedMutation();
   console.log(responseInfo);
+
+  const {currentUser, token} = useSelector(state => state.login);
+  const {currentChild} = useSelector(state => state.children);
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   var [beginDate, setBeginDate] = useState('');
@@ -135,9 +139,7 @@ const Bottle = ({navigation}) => {
               <Text>Formula</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => {
-                styles.container;
-              }}
+              onPress={()=>console.log(currentChild)}
               style={{
                 // backgroundColor: 'yellow',
                 paddingVertical: metrics.basePadding,
@@ -242,9 +244,9 @@ const Bottle = ({navigation}) => {
             titleStyle={[Fonts.style.buttonText, {color: Colors.secondary}]}
             onPress={async () => {
               await createBottleFeed({
-                child_id: 18,
+                child_id: currentChild.id,
                 time: time,
-                type: 'breast',
+                type: 'formula',
                 unit: 'ml',
                 amount: number.toString(),
               });

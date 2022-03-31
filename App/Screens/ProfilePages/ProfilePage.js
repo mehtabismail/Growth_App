@@ -37,13 +37,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const ProfilePage = ({navigation}) => {
   // USE-DISPATCH & USE-SELECTOR
   const dispatch = useDispatch();
-  const response = useSelector(state => state.children);
+  const {currentChild, children} = useSelector(state => state.children);
 
   // USE-STATE HOOKS
   const [profileName, setProfileName] = useState('');
   const [babiesList, setBabiesList] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-  const [count, setCount] = useState(0);
+  // const [count, setCount] = useState(0);
   var [loading, setLoading] = useState(true);
 
   // FETCHING BABIES LIST
@@ -64,9 +64,13 @@ const ProfilePage = ({navigation}) => {
       .catch(error => {
         alert(error);
       });
-    // console.log(babyData)
+
     setLoading(false);
     const baby = babyData.data[0].name;
+    if(currentChild === null){
+      console.log("current child is null so, : ");
+      await dispatch(setCurrentChild(baby));
+    }
     setBabiesList(babyData.data);
     setProfileName(baby);
     dispatchingChildren(babyData);
@@ -75,8 +79,7 @@ const ProfilePage = ({navigation}) => {
   const dispatchingChildren = data => {
     console.log('dispatching data to redux');
     dispatch(setChildren(data));
-    setCount(count + 1);
-    console.log('children test : ', response);
+    console.log('current child : ', currentChild);
   };
 
   useEffect(() => {
@@ -126,7 +129,6 @@ const ProfilePage = ({navigation}) => {
                     transparent={true}
                     visible={modalVisible}
                     onRequestClose={() => {
-                      // this.setState({modalVisible: !this.state.modalVisible});
                       setModalVisible(!modalVisible);
                     }}>
                     <View style={styles.centeredView}>
@@ -162,10 +164,8 @@ const ProfilePage = ({navigation}) => {
                                       elevation: 5,
                                     }}
                                     onPress={() => {
-                                      // this.setState({
-                                      //   profileName: item.item.name,
-                                      //   modalVisible: false,
-                                      // });
+                                      console.log(item.item)
+                                      dispatch(setCurrentChild(item.item))
                                       setProfileName(item.item.name);
                                       setModalVisible(false);
                                     }}>

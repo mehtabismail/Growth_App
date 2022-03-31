@@ -11,6 +11,8 @@ import ChildReducer from './Reducers/ChildReducer';
 import { ProfileApi } from './Services/Profile';
 import { DiaperApi } from './Services/Diaper';
 import { ArticleApi } from './Services/Resources';
+import { CommunityForumApi } from './Services/Community';
+import { ForumApi } from './Services/Forum';
 
 export const store = configureStore({
   reducer: {
@@ -27,6 +29,8 @@ export const store = configureStore({
     [ProfileApi.reducerPath]: ProfileApi.reducer,
     [DiaperApi.reducerPath]: DiaperApi.reducer,
     [ArticleApi.reducerPath]: ArticleApi.reducer,
+    [CommunityForumApi.reducerPath]: CommunityForumApi.reducer,
+    [ForumApi.reducerPath]: ForumApi.reducer,
   },
 
   middleware: getDefaultMiddleware =>
@@ -39,6 +43,8 @@ export const store = configureStore({
       ProfileApi.middleware,
       DiaperApi.middleware,
       ArticleApi.middleware,
+      CommunityForumApi.middleware,
+      ForumApi.middleware,
     ),
 });
 

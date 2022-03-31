@@ -22,6 +22,7 @@ const SignUp = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  var [showText, setShowText] = useState(true);
   // getDeviceName().then((deviceName) => {
   //   // iOS: "Becca's iPhone 6"
   //   // Android: ?
@@ -72,6 +73,9 @@ const SignUp = ({navigation}) => {
         }>
         <Input
           placeholder="First Name"
+          onFocus={()=> setShowText(false) }
+          onBlur={()=> setShowText(true) }
+          autoCapitalize="words"
           style={{
             fontWeight: 'bold',
           }}
@@ -87,6 +91,8 @@ const SignUp = ({navigation}) => {
         />
         <Input
           placeholder="Last Name"
+          onFocus={()=> setShowText(false) }
+          onBlur={()=> setShowText(true) }
           style={{
             fontWeight: 'bold',
           }}
@@ -102,6 +108,8 @@ const SignUp = ({navigation}) => {
         />
         <Input
           placeholder="E-mail or Username"
+          onFocus={()=> setShowText(false) }
+          onBlur={()=> setShowText(true) }
           style={{
             fontWeight: 'bold',
           }}
@@ -117,6 +125,8 @@ const SignUp = ({navigation}) => {
         />
         <Input
           placeholder="Password"
+          onFocus={()=> setShowText(false) }
+          onBlur={()=> setShowText(true) }
           secureTextEntry={true}
           style={{
             fontWeight: 'bold',
@@ -133,6 +143,9 @@ const SignUp = ({navigation}) => {
         />
         <Input
           placeholder="Confirm Password"
+          onFocus={()=> setShowText(false) }
+          onBlur={()=> setShowText(true) }
+          secureTextEntry={true}
           style={{
             fontWeight: 'bold',
           }}
@@ -302,7 +315,8 @@ const SignUp = ({navigation}) => {
           right: 0,
           borderBottomRightRadius: 600,
         }}></View>
-      <View style={{position: 'absolute', top: '10%', left: '8%'}}>
+      {
+        showText === true ? <View style={{position: 'absolute', top: '10%', left: '8%'}}>
         <Text
           style={{
             fontSize: Fonts.size.h3,
@@ -317,11 +331,13 @@ const SignUp = ({navigation}) => {
             borderColor: Colors.secondary,
             marginTop: 10,
           }}></View>
-      </View>
+      </View>: null
+      }
       <View style={{flex: 1, marginTop: '-50%'}}>
         <ScrollView>
           {/* SIGN IN SIGN UP TEXT */}
-          <View
+          {
+            showText === true ? <View
             style={{
               // height:"30%",
               justifyContent: 'flex-end',
@@ -358,7 +374,8 @@ const SignUp = ({navigation}) => {
                 </Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </View> : null
+          }
           <View
             style={{
               flex: 1,
