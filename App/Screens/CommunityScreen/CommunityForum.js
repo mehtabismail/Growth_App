@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Dimensions
 } from 'react-native';
 import React, {useState} from 'react';
 import {Card, Image} from 'react-native-elements';
@@ -17,6 +18,47 @@ import {useGetForumCategoryQuery} from '../../Redux/Services/Community';
 import Loader from '../../Components/Loader';
 import {ForumApi, useGetForumQuery} from '../../Redux/Services/Forum';
 import Token from '../../Redux/Services/Token';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+export const SKELETON_SPEED = 1000;
+export const SKELETON_BG = '#D9D9D9';
+export const SKELETON_HIGHLIGHT = '#e7e7e7';
+export const MAX_RATING_DEVIATION = 200;
+const {width, height} = Dimensions.get('window');
+
+// SHIMMER EFFECT / SKELETON SCREEN
+const Skeleton = () => {
+  const reuseComp = () => {
+    return (
+      <View style={{marginTop: 40, marginBottom:10}}>
+        <View>
+        <SkeletonPlaceholder
+          speed={SKELETON_SPEED}
+          backgroundColor={SKELETON_BG}
+          highlightColor={SKELETON_HIGHLIGHT}>
+          <View style={{justifyContent: 'center',}}>
+            <View
+              style={{
+                marginLeft: 20,
+                width: '90%',
+                height: 30,
+                borderRadius: 4,
+              }}
+            />
+          </View>
+        </SkeletonPlaceholder>
+        </View>
+      </View>
+    );
+  };
+  return (
+    <View style={{flex: 1, backgroundColor: 'white'}}>
+      {reuseComp()}
+      {reuseComp()}
+      {reuseComp()}
+    </View>
+  );
+};
+
 
 const CommunityForum = ({navigation}) => {
   var [forumdata, setForumdata] = useState(null);
@@ -112,7 +154,7 @@ const CommunityForum = ({navigation}) => {
                             color: 'black',
                             fontSize: Fonts.size.medium,
                           }}>
-                          DOB : {item.item.created_at.toString()}
+                          {/* DOB : {item.item.created_at.toString()} */}{console.log(item, "item bro")}
                         </Text>
                       </Card>
                     </TouchableOpacity>
@@ -125,7 +167,7 @@ const CommunityForum = ({navigation}) => {
                 Questions
               </Text>
             </View>
-            {forumdata === null ? null : (
+            {forumdata === null ? <View style={{padding:metrics.basePadding}}><Text>Select Forum </Text></View> : (
               <View>
               {forumdata.data.map((item, key)=>{
                 return (
@@ -147,30 +189,6 @@ const CommunityForum = ({navigation}) => {
                       </TouchableOpacity>
                     );
               })}
-                {/* <FlatList
-                  data={forumdata.data}
-                  showsVerticalScrollIndicator={false}
-                  horizontal={false}
-                  renderItem={item => {
-                    return (
-                      <TouchableOpacity onPress={() => {navigation.navigate(navigationStrings.FORUM_ANSWERS, {data: item})}}>
-                        <Card
-                          key={item.index}
-                          containerStyle={[
-                            {
-                              marginBottom: metrics.baseMargin,
-                              borderRadius: metrics.regularMargin,
-                            },
-                            Shadow.shadow,
-                          ]}>
-                          <Card.Title style={{fontSize: Fonts.size.h6}}>
-                            {item.item.question}
-                          </Card.Title>
-                        </Card>
-                      </TouchableOpacity>
-                    );
-                  }}
-                /> */}
               </View>
             )}
           </ScrollView>

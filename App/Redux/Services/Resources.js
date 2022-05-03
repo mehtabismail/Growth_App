@@ -1,6 +1,7 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import Token from './Token';
 
+console.log(Token, "token")
 export const ArticleApi = createApi({
   reducerPath: 'article',
   baseQuery: fetchBaseQuery({

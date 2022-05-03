@@ -1,5 +1,5 @@
 const theme_id = "theme_1";
-var primary, secondary, tertiary, quaternary, background, inactive_primary, inactive_secondary = '';
+var primary, secondary, tertiary, quaternary, background, inactive_primary, inactive_secondary, gradient_chart = '';
 switch (theme_id) {
   case 'theme_1':
     primary = "#396F81";
@@ -9,6 +9,7 @@ switch (theme_id) {
     background = '#e5e7eb';
     inactive_primary = '#D8D8D8';
     inactive_secondary = '#9E9E9E';
+    gradient_chart = ['#FEC021', '#FA6602']
     break;
 
   case 'theme_2':
@@ -74,4 +75,5 @@ export default {
   background,
   inactive_primary,
   inactive_secondary,
+  gradient_chart,
 }

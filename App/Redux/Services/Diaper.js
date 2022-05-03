@@ -7,7 +7,7 @@ export const DiaperApi = createApi({
     baseUrl: 'http://grow-backend.herokuapp.com/api/',
   }),
 
-//   SLEEPING-LOG POST API
+//   DIAPER-LOG POST API
   endpoints: builder => ({
     createDiaperLog: builder.mutation({
       query: data => {

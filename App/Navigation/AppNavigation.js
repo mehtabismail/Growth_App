@@ -25,6 +25,7 @@ import {
   Diaper,
 } from '../Screens';
 import Colors from '../Themes/Colors';
+import TestProfile from '../Screens/ProfilePages/testProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -242,8 +243,6 @@ const AppNavigation = () => {
             },
           }}
         />
-       
-
        <Stack.Screen
           name={navigationStrings.FORUM_ANSWERS}
           component={ForumAnswers}
@@ -257,6 +256,11 @@ const AppNavigation = () => {
               fontWeight: 'bold',
             },
           }}
+        />
+        <Stack.Screen
+          name='TestProfile'
+          component={TestProfile}
+          options={{headerShown: false}}
         />
       </Stack.Navigator>
     </NavigationContainer>

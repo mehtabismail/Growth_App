@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import metrics from '../../Themes/Metrics';
 import Fonts from '../../Themes/Fonts';
@@ -7,17 +14,17 @@ import Colors from '../../Themes/Colors';
 import {Button, Card, Input} from 'react-native-elements';
 import Shadow from '../../Components/Shadow';
 import {useCreateDiaperLogMutation} from '../../Redux/Services/Diaper';
-import { setCurrentChild } from '../../Redux/Reducers/ChildReducer';
-import { useSelector } from 'react-redux';
+import {setCurrentChild} from '../../Redux/Reducers/ChildReducer';
+import {useSelector} from 'react-redux';
 
 const Diaper = ({navigation}) => {
-
   const {currentChild} = useSelector(state => state.children);
 
   const data = ['Clean', 'Poo', 'Pee', 'Mixed'];
   var [selected, setSelected] = useState(null);
 
   const [createDiaperLog, responseInfo] = useCreateDiaperLogMutation();
+  console.log(responseInfo);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   var [time, setTime] = useState();
 
@@ -73,7 +80,10 @@ const Diaper = ({navigation}) => {
                 editable={false}
                 inputStyle={{fontSize: Fonts.size.medium}}
                 rightIcon={
-                  <TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      showDatePicker();
+                    }}>
                     <Image
                       style={styles.caretDownImage}
                       source={require('../../assets/caret-down.png')}
@@ -131,14 +141,14 @@ const Diaper = ({navigation}) => {
                     shadowOpacity: 0.25,
                     shadowRadius: 3.84,
                     elevation: 5,
-                    backgroundColor: selected == item ? Colors.secondary : 'white',
+                    backgroundColor:
+                      selected == item ? Colors.secondary : 'white',
                     borderColor: selected == item ? Colors.secondary : 'white',
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
                   <View
                     style={{
-                      // backgroundColor: selected == item ? Colors.primary : 'white',
                       backgroundColor: 'transparent',
                       padding: metrics.smallPadding,
                     }}>
@@ -172,7 +182,7 @@ const Diaper = ({navigation}) => {
                   what_was_in: selected,
                 });
                 navigation.popToTop();
-                // console.log(selected);
+
               }}
             />
           </View>

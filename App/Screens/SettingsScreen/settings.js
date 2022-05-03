@@ -13,7 +13,7 @@ import metrics from '../../Themes/Metrics';
 import navigationStrings from '../../Constants/navigationStrings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const settings = ({navigation}) => {
+const Settings = ({navigation}) => {
   var [loading, setLoading] = useState(false);
 
   const logOut = async () => {
@@ -107,7 +107,7 @@ const settings = ({navigation}) => {
   );
 };
 
-export default settings;
+export default Settings;
 
 const styles = StyleSheet.create({
   container: {

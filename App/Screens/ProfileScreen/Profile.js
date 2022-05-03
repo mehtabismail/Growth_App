@@ -15,6 +15,7 @@ import metrics from '../../Themes/Metrics';
 import {useSelector} from 'react-redux';
 import {useGetUserProfileQuery} from '../../Redux/Services/Profile';
 import Shadow from '../../Components/Shadow';
+import Skeleton from '../../Components/Skeleton';
 
 const Profle = () => {
   // var [isLoading, setLoading] = useState(false);
@@ -24,13 +25,7 @@ const Profle = () => {
   console.log(responseInfo);
   return (
     <View style={styles.container}>
-      {responseInfo.isLoading === true ? (
-        <ActivityIndicator
-          animating={true}
-          size="large"
-          style={{position: 'absolute', top: '40%', left: '40%'}}
-        />
-      ) : (
+      {responseInfo.isLoading === true ? <Skeleton /> : (
         <View style={{flex: 1}}>
           <View
             style={{

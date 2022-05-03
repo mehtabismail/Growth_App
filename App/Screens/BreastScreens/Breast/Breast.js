@@ -9,6 +9,13 @@ import metrics from '../../../Themes/Metrics';
 import BreastStyles from './BreastStyles';
 import moment from 'moment';
 import Token from '../../../Redux/Services/Token';
+import { useSelector } from 'react-redux';
+
+const getData =() => {
+  const {currentChild} = useSelector(state => state.children);
+  console.log(currentChild, "data of current child")
+  // return currentChild.id;
+}
 
 
 export default class Breast extends Component {
@@ -50,7 +57,7 @@ export default class Breast extends Component {
           Authorization: `Bearer ${Token.auth_token._W}`,
         },
         body: JSON.stringify({
-          child_id: 40,
+          child_id: this.props.route.params.chiled_id,
           started_at: this.state.beginDate,
           left_duration: this.state.lMinute.toString(),
           right_duration: this.state.rMinute.toString(),

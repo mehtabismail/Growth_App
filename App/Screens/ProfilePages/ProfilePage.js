@@ -33,6 +33,10 @@ import {
 // IMPORT FROM ASYNC-STORAGE
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import Feed from './Feed';
+import Analysis from './Analysis';
+import Skeleton from '../../Components/Skeleton';
+
 // PROFILE-PAGE MAIN SCREEN
 const ProfilePage = ({navigation}) => {
   // USE-DISPATCH & USE-SELECTOR
@@ -43,6 +47,7 @@ const ProfilePage = ({navigation}) => {
   const [profileName, setProfileName] = useState('');
   const [babiesList, setBabiesList] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  var [feed, setFeed] = useState(true);
   // const [count, setCount] = useState(0);
   var [loading, setLoading] = useState(true);
 
@@ -67,9 +72,9 @@ const ProfilePage = ({navigation}) => {
 
     setLoading(false);
     const baby = babyData.data[0].name;
-    if(currentChild === null){
-      console.log("current child is null so, : ");
-      await dispatch(setCurrentChild(baby));
+    if (currentChild === null) {
+      console.log('current child is null so, : ');
+      await dispatch(setCurrentChild(babyData.data[0]));
     }
     setBabiesList(babyData.data);
     setProfileName(baby);
@@ -89,7 +94,7 @@ const ProfilePage = ({navigation}) => {
   /* PROFILE CONTAINER */
   ProfileContainer = loading => {
     return (
-      <View style={{height:"25%"}}>
+      <View style={{height: '25%'}}>
         {/* PROFILE IMAGE AVATAR */}
         {loading == true ? (
           <ActivityIndicator
@@ -164,8 +169,8 @@ const ProfilePage = ({navigation}) => {
                                       elevation: 5,
                                     }}
                                     onPress={() => {
-                                      console.log(item.item)
-                                      dispatch(setCurrentChild(item.item))
+                                      console.log(item.item);
+                                      dispatch(setCurrentChild(item.item));
                                       setProfileName(item.item.name);
                                       setModalVisible(false);
                                     }}>
@@ -223,104 +228,36 @@ const ProfilePage = ({navigation}) => {
     return (
       <View style={styles.flexContainer}>
         <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-          <TouchableOpacity style={styles.homeAndAnalysisContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              setFeed(true);
+            }}
+            style={{
+              borderBottomColor: feed == true ? Colors.primary : null,
+              width: '30%',
+              borderBottomWidth: feed == true ? 2 : null,
+              padding: metrics.basePadding,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
             <Text style={styles.homeAndAnalysisText}>Home</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.homeAndAnalysisContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              setFeed(false);
+            }}
+            style={{
+              borderBottomColor: feed == false ? Colors.primary : null,
+              width: '30%',
+              borderBottomWidth: feed == false ? 2 : null,
+              padding: metrics.basePadding,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
             <Text style={styles.homeAndAnalysisText}>Analysis</Text>
           </TouchableOpacity>
         </View>
-        <ScrollView>
-          {/* FEED PART*/}
-          <View
-            style={{
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-            }}>
-            <View
-              style={{
-                borderBottomWidth: 1,
-                borderBottomColor: Colors.primary,
-                marginVertical: metrics.smallMargin,
-              }}>
-              <Text
-                style={{
-                  paddingVertical: metrics.smallPadding,
-                  paddingHorizontal: metrics.basePadding,
-                  fontSize: Fonts.size.regular,
-                  fontWeight: 'bold',
-                }}>
-                Feed
-              </Text>
-            </View>
-            <TouchableOpacity
-              style={[Shadow.shadow, styles.feedButtons]}
-              onPress={() => navigation.navigate(navigationStrings.BOTTLE)}>
-              <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
-                Bottle
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[Shadow.shadow, styles.feedButtons]}
-              onPress={() => navigation.navigate(navigationStrings.BREAST)}>
-              <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
-                Breastfeed
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[Shadow.shadow, styles.feedButtons]}
-              onPress={() => navigation.navigate(navigationStrings.SOLIDS)}>
-              <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
-                Solids
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[Shadow.shadow, styles.feedButtons]}
-              onPress={() => navigation.navigate(navigationStrings.PUMPING)}>
-              <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
-                Pumping
-              </Text>
-            </TouchableOpacity>
-          </View>
-          {/* OTHERS PART*/}
-          <View
-            style={{
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              paddingBottom: metrics.doubleBasePadding,
-            }}>
-            <View
-              style={{
-                borderBottomWidth: 1,
-                borderBottomColor: Colors.primary,
-                marginVertical: metrics.smallMargin,
-              }}>
-              <Text
-                style={{
-                  paddingVertical: metrics.smallPadding,
-                  paddingHorizontal: metrics.basePadding,
-                  fontSize: Fonts.size.regular,
-                  fontWeight: 'bold',
-                }}>
-                Others
-              </Text>
-            </View>
-            <TouchableOpacity
-              style={[Shadow.shadow, styles.otherButtons]}
-              onPress={() => navigation.navigate(navigationStrings.SLEEPING)}>
-              <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
-                Sleeping
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate(navigationStrings.DIAPER)}
-              style={[Shadow.shadow, styles.otherButtons]}>
-              <Text style={{fontSize: Fonts.size.regular, fontWeight: '600'}}>
-                Diaper
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+        {feed == true ? <Feed /> : <Analysis />}
       </View>
     );
   };
@@ -328,11 +265,17 @@ const ProfilePage = ({navigation}) => {
   return (
     <SafeAreaView style={styles.SafeAreaViewContainer}>
       <View style={styles.container}>
-        {/* PROFILE CONTAINER */}
-        {ProfileContainer(loading)}
+        {loading == true ? (
+          <Skeleton />
+        ) : (
+          <View style={styles.container}>
+            {/* PROFILE CONTAINER */}
+            {ProfileContainer(loading)}
 
-        {/* HOME & ANALYSIS PART */}
-        {HomeAnalysis()}
+            {/* HOME & ANALYSIS PART */}
+            {HomeAnalysis()}
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -352,7 +295,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   profileContainer: {
-    flex:1,
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

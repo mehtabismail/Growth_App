@@ -76,6 +76,7 @@ const Login = ({navigation}) => {
   };
 
   const asyncStoreData = async data => {
+    console.log(data.token, "dubugging the token for testing the component")
     try {
       await AsyncStorage.setItem('session_token', data.token);
       await AsyncStorage.setItem('isLogin', 'true');
@@ -85,17 +86,6 @@ const Login = ({navigation}) => {
     }
   };
 
-  // const getData = async () => {
-  //   try {
-  //     const value = await AsyncStorage.getItem('login_token');
-  //     if (value !== null) {
-  //       // value previously stored
-  //       console.log('stored value : ', value);
-  //     }
-  //   } catch (e) {
-  //     // error reading value
-  //   }
-  // };
 
   const TextInputs = () => {
     return (
@@ -108,9 +98,9 @@ const Login = ({navigation}) => {
           placeholder="E-mail or Username"
           onFocus={()=> setShowText(false) }
           onBlur={()=> setShowText(true) }
-          style={{
-            fontWeight: 'bold',
-          }}
+          // style={{
+          //   fontWeight: 'bold',
+          // }}
           inputContainerStyle={{
             width: '95%',
             alignSelf: 'center',
@@ -126,9 +116,9 @@ const Login = ({navigation}) => {
           onFocus={()=> setShowText(false) }
           onBlur={()=> setShowText(true) }
           secureTextEntry={true}
-          style={{
-            fontWeight: 'bold',
-          }}
+          // style={{
+          //   fontWeight: 'bold',
+          // }}
           inputContainerStyle={{
             width: '95%',
             alignSelf: 'center',

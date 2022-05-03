@@ -1,5 +1,5 @@
 import AppThemeColors from './AppThemeColors';
-const {primary, secondary, tertiary, quaternary, background, inactive_primary, inactive_secondary} = AppThemeColors;
+const {primary, secondary, tertiary, quaternary, background, inactive_primary, inactive_secondary, gradient_chart} = AppThemeColors;
 
 // Export colors
 const Colors = {
@@ -15,6 +15,7 @@ const Colors = {
   background,
   inactive_primary,
   inactive_secondary,
+  gradient_chart,
 
   /*********************************/
   third: '#5893D4',

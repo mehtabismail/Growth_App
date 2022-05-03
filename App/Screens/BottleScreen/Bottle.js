@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import {Input, Image, Button, Slider, Icon} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BottleStyles from './BottleStyles';
@@ -10,8 +16,8 @@ import Shadow from '../../Components/Shadow';
 import VerticalSlider from 'rn-vertical-slider';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {useCreateBottleFeedMutation} from '../../Redux/Services/BottleFeed';
+import {useSelector} from 'react-redux';
 import navigationStrings from '../../Constants/navigationStrings';
-import { useSelector } from 'react-redux';
 
 const Bottle = ({navigation}) => {
   const [createBottleFeed, responseInfo] = useCreateBottleFeedMutation();
@@ -19,6 +25,7 @@ const Bottle = ({navigation}) => {
 
   const {currentUser, token} = useSelector(state => state.login);
   const {currentChild} = useSelector(state => state.children);
+
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   var [beginDate, setBeginDate] = useState('');
@@ -139,7 +146,7 @@ const Bottle = ({navigation}) => {
               <Text>Formula</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={()=>console.log(currentChild)}
+              onPress={() => navigation.navigate(navigationStrings.BREAST, {chiled_id: currentChild.id})}
               style={{
                 // backgroundColor: 'yellow',
                 paddingVertical: metrics.basePadding,
