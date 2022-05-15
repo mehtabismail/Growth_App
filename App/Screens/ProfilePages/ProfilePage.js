@@ -38,7 +38,9 @@ import Analysis from './Analysis';
 import Skeleton from '../../Components/Skeleton';
 
 // PROFILE-PAGE MAIN SCREEN
-const ProfilePage = ({navigation}) => {
+const ProfilePage = props => {
+  console.log(props, 'props');
+
   // USE-DISPATCH & USE-SELECTOR
   const dispatch = useDispatch();
   const {currentChild, children} = useSelector(state => state.children);
@@ -46,6 +48,7 @@ const ProfilePage = ({navigation}) => {
   // USE-STATE HOOKS
   const [profileName, setProfileName] = useState('');
   const [babiesList, setBabiesList] = useState('');
+  // var [showCreateBaby, setShowCreateBaby] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   var [feed, setFeed] = useState(true);
   // const [count, setCount] = useState(0);
@@ -65,13 +68,16 @@ const ProfilePage = ({navigation}) => {
         },
       },
     )
-      .then(async response => response.json())
+      .then(response => response.json())
       .catch(error => {
         alert(error);
       });
-
-    setLoading(false);
-    const baby = babyData.data[0].name;
+    if (babyData.data.length === 0) {
+      console.log('baby length is ', babyData.data.length);
+      setLoading(false);
+      props.navigation.replace(navigationStrings.ADDCHILD);
+    } else {
+      const baby = babyData.data[0].name;
     if (currentChild === null) {
       console.log('current child is null so, : ');
       await dispatch(setCurrentChild(babyData.data[0]));
@@ -79,6 +85,10 @@ const ProfilePage = ({navigation}) => {
     setBabiesList(babyData.data);
     setProfileName(baby);
     dispatchingChildren(babyData);
+    setLoading(false);
+    }
+
+    
   };
 
   const dispatchingChildren = data => {
@@ -136,7 +146,9 @@ const ProfilePage = ({navigation}) => {
                     onRequestClose={() => {
                       setModalVisible(!modalVisible);
                     }}>
-                    <View style={styles.centeredView}>
+                    <TouchableOpacity 
+                    onPress={() => setModalVisible(false)}
+                     style={styles.centeredView}>
                       <View style={styles.modalView}>
                         <View>
                           <Text style={styles.modalText}>
@@ -195,13 +207,15 @@ const ProfilePage = ({navigation}) => {
                               //   modalVisible: !this.state.modalVisible,
                               // }),
                               setModalVisible(!modalVisible);
-                              navigation.navigate(navigationStrings.ADDCHILD);
+                              props.navigation.navigate(
+                                navigationStrings.ADDCHILD,
+                              );
                             }}>
                             <Text style={styles.textStyle}>Add new baby</Text>
                           </Pressable>
                         </View>
                       </View>
-                    </View>
+                    </TouchableOpacity>
                   </Modal>
                   <TouchableOpacity
                     style={{marginTop: -10}}
@@ -264,7 +278,7 @@ const ProfilePage = ({navigation}) => {
   // MAIN SCREEN RENDERING
   return (
     <SafeAreaView style={styles.SafeAreaViewContainer}>
-      <View style={styles.container}>
+     <View style={styles.container}>
         {loading == true ? (
           <Skeleton />
         ) : (

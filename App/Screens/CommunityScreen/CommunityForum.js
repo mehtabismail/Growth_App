@@ -4,10 +4,14 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  Modal,
+  Pressable,
+  TextInput,
   View,
-  Dimensions
+  Dimensions,
+  ActivityIndicator,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Card, Image} from 'react-native-elements';
 import Shadow from '../../Components/Shadow';
 import Colors from '../../Themes/Colors';
@@ -16,7 +20,6 @@ import Fonts from '../../Themes/Fonts';
 import navigationStrings from '../../Constants/navigationStrings';
 import {useGetForumCategoryQuery} from '../../Redux/Services/Community';
 import Loader from '../../Components/Loader';
-import {ForumApi, useGetForumQuery} from '../../Redux/Services/Forum';
 import Token from '../../Redux/Services/Token';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 export const SKELETON_SPEED = 1000;
@@ -25,51 +28,22 @@ export const SKELETON_HIGHLIGHT = '#e7e7e7';
 export const MAX_RATING_DEVIATION = 200;
 const {width, height} = Dimensions.get('window');
 
-// SHIMMER EFFECT / SKELETON SCREEN
-const Skeleton = () => {
-  const reuseComp = () => {
-    return (
-      <View style={{marginTop: 40, marginBottom:10}}>
-        <View>
-        <SkeletonPlaceholder
-          speed={SKELETON_SPEED}
-          backgroundColor={SKELETON_BG}
-          highlightColor={SKELETON_HIGHLIGHT}>
-          <View style={{justifyContent: 'center',}}>
-            <View
-              style={{
-                marginLeft: 20,
-                width: '90%',
-                height: 30,
-                borderRadius: 4,
-              }}
-            />
-          </View>
-        </SkeletonPlaceholder>
-        </View>
-      </View>
-    );
-  };
-  return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
-      {reuseComp()}
-      {reuseComp()}
-      {reuseComp()}
-    </View>
-  );
-};
-
-
 const CommunityForum = ({navigation}) => {
   var [forumdata, setForumdata] = useState(null);
+  var [newQuestion, setNewQuestion] = useState(null);
+  var [count, setCount] = useState(0);
+  var [forumId, setForumId] = useState(1);
+  var [loading, setLoading] = useState(false);
 
+  const [modalVisible, setModalVisible] = useState(false);
   const responseInfo = useGetForumCategoryQuery();
 
-  console.log(responseInfo);
+  // console.log(responseInfo);
 
-  const ForumApi = async forum_id => {
+  const fetchQuestions = async () => {
+    setLoading(true);
     return await fetch(
-      `http://grow-backend.herokuapp.com/api/forum/${forum_id}/questions`,
+      `http://grow-backend.herokuapp.com/api/forum/${forumId}/questions`,
       {
         method: 'GET',
         headers: {
@@ -81,54 +55,68 @@ const CommunityForum = ({navigation}) => {
     )
       .then(async response => response.json())
       .then(async json => {
-        console.log("after pressing : ",json);
+        console.log('after pressing : ', json);
         setForumdata(json);
+        setLoading(false);
+        // console.log(forumdata, 'forumdata');
       })
       .catch(error => {
-        // setLoading(false);
+        setLoading(false);
         console.error(error);
       });
   };
+
+  const createQuestion = async () => {
+    setLoading(true);
+    return await fetch(
+      `http://grow-backend.herokuapp.com/api/forum/${forumId}/questions`,
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${Token.auth_token._W}`,
+        },
+        body: JSON.stringify({question: newQuestion}),
+      },
+    )
+      .then(async response => response.json())
+      .then(async json => {
+        console.log(json, 'success');
+        setLoading(false);
+        setCount(count + 1);
+      })
+      .catch(error => {
+        setLoading(false);
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    fetchQuestions();
+    console.log('rendered + updated');
+  }, [count]);
 
   return (
     <View style={{flex: 1}}>
       {responseInfo.isLoading === true ? <Loader /> : null}
       {responseInfo.isSuccess === true ? (
         <View style={styles.container}>
-          <TouchableOpacity
-            style={{
-              backgroundColor: 'white',
-              height: 50,
-              width: 50,
-              borderRadius: 25,
-              position: 'absolute',
-              bottom: metrics.regularMargin,
-              right: metrics.regularMargin,
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 12,
-              },
-              shadowOpacity: 0.58,
-              shadowRadius: 16.0,
-              elevation: 24,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Image
-              style={{height: 30, width: 32, tintColor: Colors.primary}}
-              source={require('../../assets/plus.png')}
-            />
-          </TouchableOpacity>
-          <ScrollView>
-            <View >
-              <FlatList
-                data={responseInfo.data.data}
-                showsHorizontalScrollIndicator={false}
-                horizontal={true}
-                renderItem={item => {
+          {/* <ScrollView> */}
+          <View>
+            <FlatList
+              data={responseInfo.data.data}
+              showsHorizontalScrollIndicator={false}
+              horizontal={true}
+              renderItem={item => {
+                if(item.item.id<=15){
                   return (
-                    <TouchableOpacity onPress={() => ForumApi(item.item.id)}>
+                    <TouchableOpacity
+                      onPress={async () => {
+                        await setForumId(item.item.id);
+                        // fetchQuestions();
+                        setCount(count+1)
+                      }}>
                       <Card
                         key={item.index}
                         containerStyle={[
@@ -148,50 +136,157 @@ const CommunityForum = ({navigation}) => {
                           }}>
                           ID : {item.item.id}
                         </Text>
-
+  
                         <Text
                           style={{
                             color: 'black',
                             fontSize: Fonts.size.medium,
                           }}>
-                          {/* DOB : {item.item.created_at.toString()} */}{console.log(item, "item bro")}
+                          {/* DOB : {item.item.created_at.toString()} */}
+                          {/* {console.log(item, 'item bro')} */}
                         </Text>
                       </Card>
                     </TouchableOpacity>
                   );
-                }}
-              />
-            </View>
-            <View style={{padding: metrics.basePadding}}>
-              <Text style={{fontWeight:"bold", fontSize: Fonts.size.h6}}>
+                }
+              }}
+            />
+          </View>
+          <ScrollView>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}>
+              <TouchableOpacity
+                onPress={() => setModalVisible(false)}
+                style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <View
+                    style={{
+                      width: '100%',
+                      marginBottom: metrics.baseMargin,
+                    }}>
+                    <TextInput
+                      style={{
+                        width: '100%',
+                        borderBottomColor: Colors.primary,
+                        borderBottomWidth: 1,
+                      }}
+                      placeholder="Enter your Question"
+                      value={newQuestion}
+                      onChangeText={value => setNewQuestion(value)}
+                    />
+                  </View>
+                  <View style={{marginTop: metrics.baseMargin}}>
+                    <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => {
+                        setModalVisible(!modalVisible);
+                        setNewQuestion(null);
+                        if (newQuestion != null && forumdata != null) {
+                          createQuestion();
+                        }
+                      }}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setModalVisible(!modalVisible);
+                          setNewQuestion(null);
+                          if (newQuestion != null && forumdata != null) {
+                            createQuestion();
+                          }
+                        }}>
+                        <Text style={styles.textStyle}>Add new Question</Text>
+                      </TouchableOpacity>
+                    </Pressable>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </Modal>
+            <View style={{padding: metrics.regularPadding}}>
+              <Text style={{fontWeight: 'bold', fontSize: Fonts.size.h6}}>
                 Questions
               </Text>
             </View>
-            {forumdata === null ? <View style={{padding:metrics.basePadding}}><Text>Select Forum </Text></View> : (
+            {loading == true ? (
+              <View >
+                <ActivityIndicator
+                  animating={true}
+                  size="large"
+                />
+              </View>
+            ) : forumdata === null ? (
+              <View style={{padding: metrics.basePadding}}>
+                <Text>{'-->  Please Select Forum '}</Text>
+              </View>
+            ) : forumdata.data.length === 0 ? <View style={{padding: metrics.basePadding}}>
+            <Text>{'This Forum has no Question '}</Text>
+          </View>: (
               <View>
-              {forumdata.data.map((item, key)=>{
-                return (
-                      <TouchableOpacity key={key} onPress={() => {navigation.navigate(navigationStrings.FORUM_ANSWERS, {data: item})}}>
-                        <Card
-                          key={item.index}
-                          containerStyle={[
-                            {
-                              marginBottom: metrics.baseMargin,
-                              borderRadius: metrics.regularMargin,
-                              
-                            },
-                            // Shadow.shadow,
-                          ]}>
-                          <Card.Title style={{fontSize: Fonts.size.h6}}>
-                            {item.question}
-                          </Card.Title>
-                        </Card>
-                      </TouchableOpacity>
-                    );
-              })}
+                {forumdata.data.map((item, key) => {
+                  return (
+                    <TouchableOpacity
+                      key={key}
+                      onPress={() => {
+                        navigation.navigate(navigationStrings.FORUM_ANSWERS, {
+                          data: item,
+                        });
+                      }}>
+                      <Card
+                        key={item.index}
+                        containerStyle={[
+                          {
+                            marginBottom: metrics.baseMargin,
+                            borderRadius: metrics.regularMargin,
+                          },
+                          // Shadow.shadow,
+                        ]}>
+                        <Card.Title style={{fontSize: Fonts.size.h6}}>
+                          {item.question}
+                        </Card.Title>
+                      </Card>
+                    </TouchableOpacity>
+                  );
+                })}
               </View>
             )}
           </ScrollView>
+          {/* </ScrollView> */}
+          <View
+            style={{alignItems: 'flex-end', padding: metrics.regularPadding}}>
+            <TouchableOpacity
+              onPress={() => {
+                if (forumId != null) {
+                  setModalVisible(true);
+                } else {
+                  alert('Please select a Forum !');
+                }
+              }}
+              style={{
+                backgroundColor: 'white',
+                height: 50,
+                width: 50,
+                borderRadius: 25,
+
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 12,
+                },
+                shadowOpacity: 0.58,
+                shadowRadius: 16.0,
+                elevation: 24,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Image
+                style={{height: 30, width: 32, tintColor: Colors.primary}}
+                source={require('../../assets/plus.png')}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
       ) : null}
     </View>
@@ -208,6 +303,47 @@ const styles = StyleSheet.create({
   cardContainer: {
     backgroundColor: 'white',
     borderRadius: 10,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalView: {
+    margin: 20,
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: Colors.primary,
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
   },
 });
 

@@ -355,6 +355,7 @@ const Login = ({navigation}) => {
           style={{
             flex: 1,
             justifyContent: 'center',
+            paddingTop:metrics.basePadding
           }}>
           {TextInputs()}
           <View

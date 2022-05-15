@@ -7,7 +7,7 @@ export const SolidFeedApi = createApi({
     baseUrl: 'http://grow-backend.herokuapp.com/api/',
   }),
 
-//   SLEEPING-LOG POST API
+//   Solid-Feed POST API
   endpoints: builder => ({
     createSolidFeed: builder.mutation({
       query: data => {
@@ -24,7 +24,24 @@ export const SolidFeedApi = createApi({
         };
       },
     }),
+
+    getSolidFeed: builder.query({
+      query: data => {
+        return {
+          url: 'solid-feed-category',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${Token.auth_token._W}`,
+          },
+          body: data,
+          method: 'GET',
+        }
+      }
+    })
   }),
 });
 
-export const { useCreateSolidFeedMutation } = SolidFeedApi;
+export const { useCreateSolidFeedMutation, useGetSolidFeedQuery } = SolidFeedApi;
+
+

@@ -1,5 +1,13 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+  FlatList,
+  ScrollView,
+} from 'react-native';
 import {Input, Image, Button, Slider, Icon} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BottleStyles from '../BottleScreen/BottleStyles';
@@ -9,16 +17,27 @@ import Colors from '../../Themes/Colors';
 import Shadow from '../../Components/Shadow';
 import VerticalSlider from 'rn-vertical-slider';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import {useCreateSolidFeedMutation} from '../../Redux/Services/SolidFeed';
+import {
+  useCreateSolidFeedMutation,
+  useGetSolidFeedQuery,
+} from '../../Redux/Services/SolidFeed';
 import navigationStrings from '../../Constants/navigationStrings';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
+import Loader from '../../Components/Loader';
 
 const Solids = ({navigation}) => {
-
+  const testData = [{name: 'mehtab'}, {name: 'Irfan'}, {name: 'Numan'}];
+  var feedCategories = null;
   const {currentChild} = useSelector(state => state.children);
 
   const [createSolidFeed, responseInfo] = useCreateSolidFeedMutation();
-  console.log(responseInfo);
+  const showData = useGetSolidFeedQuery();
+  // console.log(showData.currentData.data[0], "Data which is Showed in ShowData")
+  if (showData.isSuccess == true) {
+    feedCategories = showData.currentData.data;
+    // console.log(feedCategories[1]);
+  }
+  // console.log(responseInfo);
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   var [beginDate, setBeginDate] = useState('');
@@ -75,7 +94,12 @@ const Solids = ({navigation}) => {
           onCancel={hideDatePicker}
         />
         {/* DATE OF FEEDING CONTAINER / TOP CONTAINER */}
-        <View style={[BottleStyles.topContainer]}>
+        <View
+          style={{
+            marginVertical: 20,
+            marginHorizontal: metrics.baseMargin,
+            height: '10%',
+          }}>
           <Text
             style={{
               marginLeft: metrics.smallMargin,
@@ -105,31 +129,12 @@ const Solids = ({navigation}) => {
                 }
               />
             </TouchableOpacity>
-            {/* <TouchableOpacity
-              onPress={() => {
-                selectTime();
-              }}
-              style={{width: '50%'}}>
-              <Input
-                placeholder={beginTime == '' ? 'Time of Feeding' : beginTime}
-                inputStyle={{fontSize: Fonts.size.small}}
-                editable={false}
-                rightIcon={
-                  <TouchableOpacity>
-                    <Image
-                      style={BottleStyles.caretDownImage}
-                      source={require('../../assets/caret-down.png')}
-                    />
-                  </TouchableOpacity>
-                }
-              />
-            </TouchableOpacity> */}
           </View>
         </View>
         {/* CENTER CONTAINER */}
         <View
           style={{
-            height: '60%',
+            height: '70%',
             justifyContent: 'space-between',
             flexDirection: 'column',
             alignItems: 'center',
@@ -151,6 +156,72 @@ const Solids = ({navigation}) => {
               categories below and add reaction :
             </Text>
           </View>
+          {
+            feedCategories != null ?  <View style={{flexDirection: 'row'}}>
+            <View style={{width: '75%', height: 260}}>
+              <ScrollView style={{flex: 1}}>
+                <View style={{flex: 1, flexWrap: 'wrap', flexDirection: 'row'}}>
+                  {feedCategories.map((value, index) => {
+                    // console.log(value.image);
+                    return (
+                      <View
+                        key={index}
+                        style={{
+                          paddingVertical: metrics.smallPadding,
+                          paddingHorizontal: metrics.regularPadding,
+                          margin: 5,
+                          width: 85,
+                        }}>
+                        {/* <Text>{item.item.name}</Text> */}
+                        <Image
+                          source={{uri: `${value.image}`}}
+                          style={{width: 70, height: 70}}
+                        />
+                        <Text style={{textAlign: 'center'}} numberOfLines={2}>
+                          {value.name}
+                        </Text>
+                      </View>
+                    );
+                  })}
+                </View>
+              </ScrollView>
+            </View>
+            <View
+              style={{
+                width: '25%',
+                height: 260,
+              }}>
+              <ScrollView style={{flex: 1}}>
+                <View style={{flex: 1, flexWrap: 'wrap', flexDirection: 'row'}}>
+                  {feedCategories.map((value, index) => {
+                    return (
+                      <View
+                        key={index}
+                        style={{
+                          paddingVertical: metrics.smallPadding,
+                          paddingHorizontal: metrics.regularPadding,
+                          margin: 5,
+                          width: 85,
+                        }}>
+                        <Image
+                          source={{uri: `${value.image}`}}
+                          style={{width: 70, height: 70}}
+                        />
+                        <Text style={{textAlign: 'center'}} numberOfLines={2}>
+                          {value.name}
+                        </Text>
+                      </View>
+                    );
+                  })}
+                </View>
+              </ScrollView>
+            </View>
+          </View>: <View><ActivityIndicator
+        animating={true}
+        size="large"
+      /></View>
+          }
+         
           <View>
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
               <Text>Add a note and the pic of the meal</Text>
