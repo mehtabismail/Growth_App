@@ -1,7 +1,7 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import Token from './Token';
 
-console.log(Token, "token")
+console.log(Token.auth_token._W, "token--------------------------------")
 export const ArticleApi = createApi({
   reducerPath: 'article',
   baseQuery: fetchBaseQuery({
@@ -17,7 +17,7 @@ export const ArticleApi = createApi({
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${Token.auth_token._W}`,
+            Authorization: `Bearer 9|lUFXA5ENCGYoBvIkbUI02KptRB2UAaHde5C6CeJ8`,
           },
           method: 'GET',
         };

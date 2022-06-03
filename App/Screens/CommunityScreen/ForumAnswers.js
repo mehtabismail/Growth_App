@@ -17,6 +17,7 @@ import {Image} from 'react-native-elements';
 import Colors from '../../Themes/Colors';
 import Loader from '../../Components/Loader';
 import navigationStrings from '../../Constants/navigationStrings';
+import { BaseUrl } from '../../Services/BaseUrl';
 
 const ForumAnswers = data => {
   const newData = data.route.params.data;
@@ -28,7 +29,7 @@ const ForumAnswers = data => {
 
   const fetchAnswersList = async () => {
     return await fetch(
-      `http://grow-backend.herokuapp.com/api/questions/${newData.id}/answers`,
+      `${BaseUrl}/questions/${newData.id}/answers`,
       {
         method: 'GET',
         headers: {
@@ -50,7 +51,7 @@ const ForumAnswers = data => {
 
   const createAnswer = async () => {
     return await fetch(
-      `http://grow-backend.herokuapp.com/api/questions/${newData.id}/answers`,
+      `${BaseUrl}/questions/${newData.id}/answers`,
       {
         method: 'POST',
         headers: {

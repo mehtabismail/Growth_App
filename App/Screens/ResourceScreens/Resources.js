@@ -6,7 +6,7 @@ import {
   View,
   Dimensions,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Colors from '../../Themes/Colors';
 import {Card, Image} from 'react-native-elements';
 import Shadow from '../../Components/Shadow';
@@ -15,6 +15,9 @@ import Fonts from '../../Themes/Fonts';
 import {useGetArticlesQuery} from '../../Redux/Services/Resources';
 import Loader from '../../Components/Loader';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import {getResources} from '../../Services/Resources';
+import Token from '../../Redux/Services/Token';
+import {useSelector} from 'react-redux';
 export const SKELETON_SPEED = 1000;
 export const SKELETON_BG = '#D9D9D9';
 export const SKELETON_HIGHLIGHT = '#e7e7e7';
@@ -25,23 +28,23 @@ const {width, height} = Dimensions.get('window');
 const Skeleton = () => {
   const reuseComp = () => {
     return (
-      <View style={{marginTop: 40, marginBottom:10}}>
+      <View style={{marginTop: 40, marginBottom: 10}}>
         <View style={{}}>
-        <SkeletonPlaceholder
-          speed={SKELETON_SPEED}
-          backgroundColor={SKELETON_BG}
-          highlightColor={SKELETON_HIGHLIGHT}>
-          <View style={{justifyContent: 'center',}}>
-            <View
-              style={{
-                marginLeft: 20,
-                width: '90%',
-                height: 50,
-                borderRadius: 4,
-              }}
-            />
-          </View>
-        </SkeletonPlaceholder>
+          <SkeletonPlaceholder
+            speed={SKELETON_SPEED}
+            backgroundColor={SKELETON_BG}
+            highlightColor={SKELETON_HIGHLIGHT}>
+            <View style={{justifyContent: 'center'}}>
+              <View
+                style={{
+                  marginLeft: 20,
+                  width: '90%',
+                  height: 50,
+                  borderRadius: 4,
+                }}
+              />
+            </View>
+          </SkeletonPlaceholder>
         </View>
       </View>
     );
@@ -58,33 +61,59 @@ const Skeleton = () => {
 };
 
 const Resources = () => {
-  const responseInfo = useGetArticlesQuery();
-  console.log(responseInfo);
+  var [resourceData, setResourceData] = useState(null);
+  var [loading, setLoading] = useState(true);
+  const token = useSelector(state => state?.login?.token);
+  console.log(token, 'token is getting ...');
+  useEffect(() => {
+    getResources(token, success, fail);
+  }, []);
+
+  const success = data => {
+    console.log(data, 'success');
+    setResourceData(data?.data);
+    setLoading(false);
+  };
+
+  const fail = data => {
+    console.log(data, 'fail');
+    setLoading(false);
+  };
   return (
     <View style={{flex: 1}}>
-      {responseInfo.isLoading === true ? <Skeleton /> : null}
-      {responseInfo.isSuccess === true ? 
-      (
-        <View style={styles.mainContainer}>
+      <View style={styles.mainContainer}>
+        {loading === true ? (
+          <Skeleton />
+        ) : resourceData.length !== 0 ? (
           <ScrollView>
             <View style={{marginBottom: metrics.doubleBaseMargin}}>
-              {responseInfo.data.data.map(item => {
-                return (
-                  <TouchableOpacity key={item.id}>
-                    <Card containerStyle={[{borderRadius: 10}, Shadow.shadow]}>
-                      <Card.Title>{item.name}</Card.Title>
-                      <Text style={{marginBottom: metrics.smallMargin}}>
-                        {item.body}
-                      </Text>
-                      <Text>{item.category.created_at.toString()}</Text>
-                    </Card>
-                  </TouchableOpacity>
-                );
-              })}
+              {resourceData !== null
+                ? resourceData.map(item => {
+                    return (
+                      <TouchableOpacity key={item.id}>
+                        <Card
+                          containerStyle={[{borderRadius: 10}, Shadow.shadow]}>
+                          <Card.Title>{item.name}</Card.Title>
+                          <Text style={{marginBottom: metrics.smallMargin}}>
+                            {item.body}
+                          </Text>
+                          <Text>{item.category.created_at.toString()}</Text>
+                        </Card>
+                      </TouchableOpacity>
+                    );
+                  })
+                : null}
             </View>
           </ScrollView>
-        </View>
-      ) : null}
+        ) : (
+          <View
+            style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+            <Text style={{fontWeight: '600', Fonts: 18, color: 'black'}}>
+              No item fiund !
+            </Text>
+          </View>
+        )}
+      </View>
     </View>
   );
 };

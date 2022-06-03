@@ -12,6 +12,7 @@ import Fonts from '../../Themes/Fonts';
 import metrics from '../../Themes/Metrics';
 import navigationStrings from '../../Constants/navigationStrings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BaseUrl } from '../../Services/BaseUrl';
 
 const Settings = ({navigation}) => {
   var [loading, setLoading] = useState(false);
@@ -19,7 +20,7 @@ const Settings = ({navigation}) => {
   const logOut = async () => {
     setLoading(true);
     let token = await AsyncStorage.getItem('session_token');
-    return await fetch('http://grow-backend.herokuapp.com/api/login', {
+    return await fetch(`${BaseUrl}/login`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

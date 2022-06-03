@@ -22,6 +22,9 @@ import {useGetForumCategoryQuery} from '../../Redux/Services/Community';
 import Loader from '../../Components/Loader';
 import Token from '../../Redux/Services/Token';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import {BaseUrl} from '../../Services/BaseUrl';
+import {useSelector} from 'react-redux';
+import {getCommunityForum} from '../../Services/CommunityForum';
 export const SKELETON_SPEED = 1000;
 export const SKELETON_BG = '#D9D9D9';
 export const SKELETON_HIGHLIGHT = '#e7e7e7';
@@ -33,8 +36,10 @@ const CommunityForum = ({navigation}) => {
   var [newQuestion, setNewQuestion] = useState(null);
   var [count, setCount] = useState(0);
   var [forumId, setForumId] = useState(1);
-  var [loading, setLoading] = useState(false);
+  var [loading, setLoading] = useState(true);
+  var [communityForumData, setCommunityFormData] = useState(null);
 
+  const token = useSelector(state => state?.login?.token);
   const [modalVisible, setModalVisible] = useState(false);
   const responseInfo = useGetForumCategoryQuery();
 
@@ -42,23 +47,19 @@ const CommunityForum = ({navigation}) => {
 
   const fetchQuestions = async () => {
     setLoading(true);
-    return await fetch(
-      `http://grow-backend.herokuapp.com/api/forum/${forumId}/questions`,
-      {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${Token.auth_token._W}`,
-        },
+    return await fetch(`${BaseUrl}/forum/${forumId}/questions`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${Token.auth_token._W}`,
       },
-    )
+    })
       .then(async response => response.json())
       .then(async json => {
         console.log('after pressing : ', json);
         setForumdata(json);
         setLoading(false);
-        // console.log(forumdata, 'forumdata');
       })
       .catch(error => {
         setLoading(false);
@@ -68,18 +69,15 @@ const CommunityForum = ({navigation}) => {
 
   const createQuestion = async () => {
     setLoading(true);
-    return await fetch(
-      `http://grow-backend.herokuapp.com/api/forum/${forumId}/questions`,
-      {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${Token.auth_token._W}`,
-        },
-        body: JSON.stringify({question: newQuestion}),
+    return await fetch(`${BaseUrl}/forum/${forumId}/questions`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${Token.auth_token._W}`,
       },
-    )
+      body: JSON.stringify({question: newQuestion}),
+    })
       .then(async response => response.json())
       .then(async json => {
         console.log(json, 'success');
@@ -92,30 +90,42 @@ const CommunityForum = ({navigation}) => {
       });
   };
 
+  const success = data => {
+    console.log(data, 'success in fetching data');
+    setCommunityFormData(data?.data);
+    setLoading(false);
+  };
+
+  const fail = data => {
+    console.log(data, 'fail');
+    setLoading(false);
+  };
+
   useEffect(() => {
+    getCommunityForum(token, success, fail);
     fetchQuestions();
     console.log('rendered + updated');
   }, [count]);
 
   return (
     <View style={{flex: 1}}>
-      {responseInfo.isLoading === true ? <Loader /> : null}
-      {responseInfo.isSuccess === true ? (
+      {loading === true ? (
+        <Loader />
+      ) : communityForumData.length !== null &&
+        communityForumData.length !== 0 ? (
         <View style={styles.container}>
-          {/* <ScrollView> */}
           <View>
             <FlatList
               data={responseInfo.data.data}
               showsHorizontalScrollIndicator={false}
               horizontal={true}
               renderItem={item => {
-                if(item.item.id<=15){
+                if (item.item.id <= 15) {
                   return (
                     <TouchableOpacity
-                      onPress={async () => {
-                        await setForumId(item.item.id);
-                        // fetchQuestions();
-                        setCount(count+1)
+                      onPress={() => {
+                        setForumId(item.item.id);
+                        setCount(count + 1);
                       }}>
                       <Card
                         key={item.index}
@@ -136,15 +146,12 @@ const CommunityForum = ({navigation}) => {
                           }}>
                           ID : {item.item.id}
                         </Text>
-  
+
                         <Text
                           style={{
                             color: 'black',
                             fontSize: Fonts.size.medium,
-                          }}>
-                          {/* DOB : {item.item.created_at.toString()} */}
-                          {/* {console.log(item, 'item bro')} */}
-                        </Text>
+                          }}></Text>
                       </Card>
                     </TouchableOpacity>
                   );
@@ -211,19 +218,18 @@ const CommunityForum = ({navigation}) => {
               </Text>
             </View>
             {loading == true ? (
-              <View >
-                <ActivityIndicator
-                  animating={true}
-                  size="large"
-                />
+              <View>
+                <ActivityIndicator animating={true} size="large" />
               </View>
             ) : forumdata === null ? (
               <View style={{padding: metrics.basePadding}}>
                 <Text>{'-->  Please Select Forum '}</Text>
               </View>
-            ) : forumdata.data.length === 0 ? <View style={{padding: metrics.basePadding}}>
-            <Text>{'This Forum has no Question '}</Text>
-          </View>: (
+            ) : forumdata.data.length === 0 ? (
+              <View style={{padding: metrics.basePadding}}>
+                <Text>{'This Forum has no Question '}</Text>
+              </View>
+            ) : (
               <View>
                 {forumdata.data.map((item, key) => {
                   return (
@@ -241,7 +247,6 @@ const CommunityForum = ({navigation}) => {
                             marginBottom: metrics.baseMargin,
                             borderRadius: metrics.regularMargin,
                           },
-                          // Shadow.shadow,
                         ]}>
                         <Card.Title style={{fontSize: Fonts.size.h6}}>
                           {item.question}
@@ -253,7 +258,6 @@ const CommunityForum = ({navigation}) => {
               </View>
             )}
           </ScrollView>
-          {/* </ScrollView> */}
           <View
             style={{alignItems: 'flex-end', padding: metrics.regularPadding}}>
             <TouchableOpacity
@@ -287,6 +291,10 @@ const CommunityForum = ({navigation}) => {
               />
             </TouchableOpacity>
           </View>
+        </View>
+      ) : communityForumData.length === 0 ? (
+        <View>
+          <Text>Item not found</Text>
         </View>
       ) : null}
     </View>
@@ -389,3 +397,10 @@ const styles = StyleSheet.create({
 //     answers: ['mehtab', 'irfan', 'zia', 'yasir'],
 //   },
 // ];
+
+{
+  /* DOB : {item.item.created_at.toString()} */
+}
+{
+  /* {console.log(item, 'item bro')} */
+}

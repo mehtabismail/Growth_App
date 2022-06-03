@@ -13,6 +13,7 @@ import Colors from '../../Themes/Colors';
 import metrics from '../../Themes/Metrics';
 import navigationStrings from '../../Constants/navigationStrings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BaseUrl } from '../../Services/BaseUrl';
 
 const BornChild = ({navigation}) => {
   const relations = [
@@ -56,7 +57,7 @@ const BornChild = ({navigation}) => {
   const fetchApi = async () => {
     setLoading((isLoading = true));
     let auth_token = await AsyncStorage.getItem('session_token');
-    return await fetch('http://grow-backend.herokuapp.com/api/child', {
+    return await fetch(`${BaseUrl}/child`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

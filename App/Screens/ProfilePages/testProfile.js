@@ -34,6 +34,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Feed from './Feed';
 import Analysis from './Analysis';
+import { BaseUrl } from '../../Services/BaseUrl';
 
 // PROFILE-PAGE MAIN SCREEN
 const TestProfile = ({navigation}) => {
@@ -53,7 +54,7 @@ const TestProfile = ({navigation}) => {
   const fetchBabiesList = async () => {
     let auth_token = await AsyncStorage.getItem('session_token');
     let babyData = await fetch(
-      'http://grow-backend.herokuapp.com/api/profile/children',
+      `${BaseUrl}/profile/children`,
       {
         method: 'GET',
         headers: {

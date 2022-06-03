@@ -14,6 +14,7 @@ import Fonts from '../../../Themes/Fonts';
 import metrics from '../../../Themes/Metrics';
 
 import DeviceInfo from 'react-native-device-info';
+import { BaseUrl } from '../../../Services/BaseUrl';
 // import { getUniqueId, getManufacturer, getDeviceName } from 'react-native-device-info';
 const deviceName = DeviceInfo.getDeviceName();
 const SignUp = ({navigation}) => {
@@ -31,7 +32,7 @@ const SignUp = ({navigation}) => {
   // });
 
   const fetchSignUpApi = async () => {
-    return await fetch('http://grow-backend.herokuapp.com/api/register', {
+    return await fetch(`${BaseUrl}/register`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -76,9 +77,6 @@ const SignUp = ({navigation}) => {
           onFocus={()=> setShowText(false) }
           onBlur={()=> setShowText(true) }
           autoCapitalize="words"
-          style={{
-            fontWeight: 'bold',
-          }}
           inputContainerStyle={{
             width: '95%',
             alignSelf: 'center',
@@ -93,9 +91,6 @@ const SignUp = ({navigation}) => {
           placeholder="Last Name"
           onFocus={()=> setShowText(false) }
           onBlur={()=> setShowText(true) }
-          style={{
-            fontWeight: 'bold',
-          }}
           inputContainerStyle={{
             width: '95%',
             alignSelf: 'center',
@@ -110,9 +105,6 @@ const SignUp = ({navigation}) => {
           placeholder="E-mail or Username"
           onFocus={()=> setShowText(false) }
           onBlur={()=> setShowText(true) }
-          style={{
-            fontWeight: 'bold',
-          }}
           inputContainerStyle={{
             width: '95%',
             alignSelf: 'center',
@@ -128,9 +120,6 @@ const SignUp = ({navigation}) => {
           onFocus={()=> setShowText(false) }
           onBlur={()=> setShowText(true) }
           secureTextEntry={true}
-          style={{
-            fontWeight: 'bold',
-          }}
           inputContainerStyle={{
             width: '95%',
             alignSelf: 'center',
@@ -146,9 +135,6 @@ const SignUp = ({navigation}) => {
           onFocus={()=> setShowText(false) }
           onBlur={()=> setShowText(true) }
           secureTextEntry={true}
-          style={{
-            fontWeight: 'bold',
-          }}
           inputContainerStyle={{
             width: '95%',
             alignSelf: 'center',

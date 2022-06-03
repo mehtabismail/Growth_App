@@ -39,7 +39,8 @@
     "react-native-vector-icons": "^9.0.0",
     "react-redux": "^7.2.6",
     "redux": "^4.1.2",
-    "rn-vertical-slider": "^2.0.2"
+    "rn-vertical-slider": "^2.0.2",
+    "yabai": "^0.0.10"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -16,16 +16,33 @@ import {useSelector} from 'react-redux';
 import {useGetUserProfileQuery} from '../../Redux/Services/Profile';
 import Shadow from '../../Components/Shadow';
 import Skeleton from '../../Components/Skeleton';
+import {getProfile} from '../../Services/Profile';
 
 const Profle = () => {
-  // var [isLoading, setLoading] = useState(false);
-
   const {children} = useSelector(state => state.children);
-  const responseInfo = useGetUserProfileQuery();
-  console.log(responseInfo);
+  var [profileData, setProfileData] = useState(null);
+  var [loading, setLoading] = useState(true);
+  const token = useSelector(state => state?.login?.token);
+  console.log(token, 'token is getting ...');
+  useEffect(() => {
+    getProfile(token, success, fail);
+  }, []);
+
+  const success = data => {
+    console.log(data, 'success');
+    setProfileData(data?.data);
+    setLoading(false);
+  };
+
+  const fail = data => {
+    console.log(data, 'fail');
+    setLoading(false);
+  };
   return (
     <View style={styles.container}>
-      {responseInfo.isLoading === true ? <Skeleton /> : (
+      {loading === true ? (
+        <Skeleton />
+      ) : profileData !== null ? (
         <View style={{flex: 1}}>
           <View
             style={{
@@ -55,7 +72,7 @@ const Profle = () => {
                 fontWeight: 'bold',
                 color: 'black',
               }}>
-              {`${responseInfo.data.data.first_name} ${responseInfo.data.data.last_name}`}
+              {`${profileData.first_name} ${profileData.last_name}`}
             </Text>
           </View>
           <View
@@ -66,7 +83,7 @@ const Profle = () => {
               paddingBottom: metrics.doubleBasePadding,
             }}>
             <Text style={{fontSize: Fonts.size.medium, color: 'black'}}>
-              {responseInfo.data.data.email}
+              {profileData.email}
             </Text>
           </View>
           <View
@@ -94,10 +111,13 @@ const Profle = () => {
                   <TouchableOpacity>
                     <Card
                       key={item.user_id}
-                      containerStyle={[{
-                        marginBottom:metrics.baseMargin,
-                        borderRadius: metrics.regularMargin,
-                      }, Shadow.shadow]}>
+                      containerStyle={[
+                        {
+                          marginBottom: metrics.baseMargin,
+                          borderRadius: metrics.regularMargin,
+                        },
+                        Shadow.shadow,
+                      ]}>
                       <Card.Title style={{fontSize: Fonts.size.h6}}>
                         {item.item.name}
                       </Card.Title>
@@ -120,7 +140,8 @@ const Profle = () => {
                           color: 'black',
                           fontSize: Fonts.size.medium,
                         }}>
-                        DOB : {item.item.date_of_birth.toString().substring(0, 10)}
+                        DOB :{' '}
+                        {item.item.date_of_birth.toString().substring(0, 10)}
                       </Text>
                       <Text
                         style={{
@@ -136,7 +157,13 @@ const Profle = () => {
             />
           </View>
         </View>
-      )}
+      ) : profileData == null ? (
+        <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+          <Text style={{fontWeight: '600', Fonts: 18, color: 'black'}}>
+            No item fiund !
+          </Text>
+        </View>
+      ) : null}
     </View>
   );
 };

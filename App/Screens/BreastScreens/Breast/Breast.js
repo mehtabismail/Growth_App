@@ -10,6 +10,7 @@ import BreastStyles from './BreastStyles';
 import moment from 'moment';
 import Token from '../../../Redux/Services/Token';
 import { useSelector } from 'react-redux';
+import { BaseUrl } from '../../../Services/BaseUrl';
 
 const getData =() => {
   const {currentChild} = useSelector(state => state.children);
@@ -49,7 +50,7 @@ export default class Breast extends Component {
 
   render() {
     const fetchBreastFeedApi = async () => {
-      return await fetch('http://grow-backend.herokuapp.com/api/breast-feed', {
+      return await fetch(`${BaseUrl}/breast-feed`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',

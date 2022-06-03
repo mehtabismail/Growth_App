@@ -36,6 +36,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Feed from './Feed';
 import Analysis from './Analysis';
 import Skeleton from '../../Components/Skeleton';
+import {BaseUrl} from '../../Services/BaseUrl';
+import { setToken } from '../../Redux/Reducers/LoginReducer';
 
 // PROFILE-PAGE MAIN SCREEN
 const ProfilePage = props => {
@@ -57,17 +59,14 @@ const ProfilePage = props => {
   // FETCHING BABIES LIST
   const fetchBabiesList = async () => {
     let auth_token = await AsyncStorage.getItem('session_token');
-    let babyData = await fetch(
-      'http://grow-backend.herokuapp.com/api/profile/children',
-      {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${auth_token}`,
-        },
+    let babyData = await fetch(`${BaseUrl}/profile/children`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${auth_token}`,
       },
-    )
+    })
       .then(response => response.json())
       .catch(error => {
         alert(error);
@@ -78,17 +77,15 @@ const ProfilePage = props => {
       props.navigation.replace(navigationStrings.ADDCHILD);
     } else {
       const baby = babyData.data[0].name;
-    if (currentChild === null) {
-      console.log('current child is null so, : ');
-      await dispatch(setCurrentChild(babyData.data[0]));
+      if (currentChild === null) {
+        console.log('current child is null so, : ');
+        await dispatch(setCurrentChild(babyData.data[0]));
+      }
+      setBabiesList(babyData.data);
+      setProfileName(baby);
+      dispatchingChildren(babyData);
+      setLoading(false);
     }
-    setBabiesList(babyData.data);
-    setProfileName(baby);
-    dispatchingChildren(babyData);
-    setLoading(false);
-    }
-
-    
   };
 
   const dispatchingChildren = data => {
@@ -97,8 +94,20 @@ const ProfilePage = props => {
     console.log('current child : ', currentChild);
   };
 
+  const successToken = (data) => {
+    console.log(data, 'session token=======getting data');
+    dispatch(setToken(data));
+  }
+
+  const settingToken = async (successToken) => {
+    var sessionToken = await AsyncStorage.getItem('session_token');
+    if(!!sessionToken){
+      successToken(sessionToken);
+    }
+  };
   useEffect(() => {
     fetchBabiesList();
+    settingToken(successToken);
   }, []);
 
   /* PROFILE CONTAINER */
@@ -146,9 +155,9 @@ const ProfilePage = props => {
                     onRequestClose={() => {
                       setModalVisible(!modalVisible);
                     }}>
-                    <TouchableOpacity 
-                    onPress={() => setModalVisible(false)}
-                     style={styles.centeredView}>
+                    <TouchableOpacity
+                      onPress={() => setModalVisible(false)}
+                      style={styles.centeredView}>
                       <View style={styles.modalView}>
                         <View>
                           <Text style={styles.modalText}>
@@ -278,7 +287,7 @@ const ProfilePage = props => {
   // MAIN SCREEN RENDERING
   return (
     <SafeAreaView style={styles.SafeAreaViewContainer}>
-     <View style={styles.container}>
+      <View style={styles.container}>
         {loading == true ? (
           <Skeleton />
         ) : (

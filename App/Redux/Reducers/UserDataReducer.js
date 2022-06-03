@@ -1,8 +1,9 @@
 import {createSlice, PayloadAction, createAsyncThunk} from '@reduxjs/toolkit';
+import { BaseUrl } from '../../Services/BaseUrl';
 
 export const userData = createAsyncThunk('User_Data/userData', async () => {
   console.log('thunk : ');
-  // return fetch('http://grow-backend.herokuapp.com/api/profile', {
+  // return fetch(`${BaseUrl}/profile`, {
   //   method: 'GET',
   //   headers: {
   //     Accept: 'application/json',
@@ -14,7 +15,7 @@ export const userData = createAsyncThunk('User_Data/userData', async () => {
   //   .then(response => console.log(response));
 
   const response = await fetch(
-    'http://grow-backend.herokuapp.com/api/profile',
+    `${BaseUrl}/profile`,
     {
       method: 'GET',
       headers: {

@@ -1,9 +1,10 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import { BaseUrl } from '../../Services/BaseUrl';
 
 export const sleepLog = createAsyncThunk('Sleeping/sleepLog', async (obj) => {
   console.log('thunk : ');
   const response = await fetch(
-    'http://grow-backend.herokuapp.com/api/sleep-log',
+    `${BaseUrl}/sleep-log`,
     {
       method: 'POST',
       headers: {

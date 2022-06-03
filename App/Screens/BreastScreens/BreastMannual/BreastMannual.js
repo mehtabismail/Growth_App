@@ -11,6 +11,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import navigationStrings from '../../../Constants/navigationStrings';
 import Token from '../../../Redux/Services/Token';
 import { useSelector } from 'react-redux';
+import { BaseUrl } from '../../../Services/BaseUrl';
 
 const BreastMannual = ({navigation}) => {
 
@@ -38,7 +39,7 @@ const BreastMannual = ({navigation}) => {
 
   const fetchBreastFeedApi = async () => {
     console.log('pressed');
-    return await fetch('http://grow-backend.herokuapp.com/api/breast-feed', {
+    return await fetch(`${BaseUrl}/breast-feed`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

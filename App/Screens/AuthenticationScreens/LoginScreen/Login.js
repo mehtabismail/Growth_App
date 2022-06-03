@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { BaseUrl } from '../../../Services/BaseUrl';
 
 /* REACT NATIVE BUILT IN LIBRARY COMPONENTS */
 import {
@@ -42,7 +43,7 @@ const Login = ({navigation}) => {
 
   /* LOGIN API INTEGRATION WITH FETCH() */
   const fetchLoginApi = async () => {
-    return await fetch('http://grow-backend.herokuapp.com/api/login', {
+    return await fetch(`${BaseUrl}/login`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -71,12 +72,12 @@ const Login = ({navigation}) => {
 
   const dispatchData = async data => {
     console.log('saving data to redux');
-    await dispatch(setCurrentUser(data.user));
-    await dispatch(setToken(data.token));
+     dispatch(setCurrentUser(data.user));
+     dispatch(setToken(data.token));
   };
 
   const asyncStoreData = async data => {
-    console.log(data.token, "dubugging the token for testing the component")
+    console.log(data.token, 'dubugging the token for testing the component');
     try {
       await AsyncStorage.setItem('session_token', data.token);
       await AsyncStorage.setItem('isLogin', 'true');
@@ -85,7 +86,6 @@ const Login = ({navigation}) => {
       console.log(e);
     }
   };
-
 
   const TextInputs = () => {
     return (
@@ -96,8 +96,8 @@ const Login = ({navigation}) => {
         }}>
         <Input
           placeholder="E-mail or Username"
-          onFocus={()=> setShowText(false) }
-          onBlur={()=> setShowText(true) }
+          onFocus={() => setShowText(false)}
+          onBlur={() => setShowText(true)}
           // style={{
           //   fontWeight: 'bold',
           // }}
@@ -113,8 +113,8 @@ const Login = ({navigation}) => {
         />
         <Input
           placeholder="Password"
-          onFocus={()=> setShowText(false) }
-          onBlur={()=> setShowText(true) }
+          onFocus={() => setShowText(false)}
+          onBlur={() => setShowText(true)}
           secureTextEntry={true}
           // style={{
           //   fontWeight: 'bold',
@@ -264,7 +264,7 @@ const Login = ({navigation}) => {
 
   return (
     <View style={{flex: 1}}>
-    <ActivityIndicator
+      <ActivityIndicator
         animating={isLoading}
         size="large"
         style={{position: 'absolute', top: '40%', left: '40%'}}
@@ -291,71 +291,71 @@ const Login = ({navigation}) => {
           right: 0,
           borderBottomRightRadius: 600,
         }}></View>
-      {
-        showText === true ? <View style={{position: 'absolute', top: '10%', left: '8%'}}>
-        <Text
-          style={{
-            fontSize: Fonts.size.h3,
-            color: Colors.secondary,
-            fontWeight: 'bold',
-          }}>
-          Growth
-        </Text>
-        <View
-          style={{
-            borderWidth: 2,
-            borderColor: Colors.secondary,
-            marginTop: 10,
-          }}></View>
-      </View>: null
-      }
-      <View style={{flex: 1, marginTop: '-60%'}}>
-        {/* SIGN IN SIGN UP TEXT */}
-       {
-         showText === true ?  <View
-          style={{
-            // height:"30%",
-            justifyContent: 'flex-end',
-            alignItems: 'flex-end',
-          }}>
+      {showText === true ? (
+        <View style={{position: 'absolute', top: '10%', left: '8%'}}>
+          <Text
+            style={{
+              fontSize: Fonts.size.h3,
+              color: Colors.secondary,
+              fontWeight: 'bold',
+            }}>
+            Growth
+          </Text>
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
+              borderWidth: 2,
+              borderColor: Colors.secondary,
+              marginTop: 10,
+            }}></View>
+        </View>
+      ) : null}
+      <View style={{flex: 1, marginTop: '-60%'}}>
+        {/* SIGN IN SIGN UP TEXT */}
+        {showText === true ? (
+          <View
+            style={{
+              // height:"30%",
+              justifyContent: 'flex-end',
+              alignItems: 'flex-end',
             }}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate(navigationStrings.SIGN_UP);
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
               }}>
-              <Text
-                style={{
-                  fontWeight: '200',
-                  fontSize: Fonts.size.h6,
-                  color: Colors.secondary,
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate(navigationStrings.SIGN_UP);
                 }}>
-                Sign Up
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text
-                style={{
-                  fontWeight: '700',
-                  fontSize: Fonts.size.h6,
-                  color: Colors.primary,
-                  marginLeft: metrics.baseMargin,
-                  marginRight: 5,
-                }}>
-                Sign In
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={{
+                    fontWeight: '200',
+                    fontSize: Fonts.size.h6,
+                    color: Colors.secondary,
+                  }}>
+                  Sign Up
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Text
+                  style={{
+                    fontWeight: '700',
+                    fontSize: Fonts.size.h6,
+                    color: Colors.primary,
+                    marginLeft: metrics.baseMargin,
+                    marginRight: 5,
+                  }}>
+                  Sign In
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>: null
-       }
+        ) : null}
         <View
           style={{
             flex: 1,
             justifyContent: 'center',
-            paddingTop:metrics.basePadding
+            paddingTop: metrics.basePadding,
           }}>
           {TextInputs()}
           <View
