@@ -8,10 +8,12 @@ import Colors from '../../Themes/Colors';
 import navigationStrings from '../../Constants/navigationStrings';
 import {useCreateSleepingLogMutation} from '../../Redux/Services/SleepLog';
 import { useSelector } from 'react-redux';
+import { postSleepLog } from '../../Services/SleepLog';
 
 const Sleeping = ({navigation}) => {
 
   const {currentChild} = useSelector(state => state.children);
+  const {token} = useSelector(state => state?.login);
 
   var [minute, setMinute] = useState(0);
   var [second, setSecond] = useState(0);
@@ -21,21 +23,29 @@ const Sleeping = ({navigation}) => {
   var [pressed, setPressed] = useState(false);
   var [pressCount, setPressCount] = useState(0);
   var [secTime, setSecTime] = useState(0);
+  var[loading, setLoading] = useState(false);
   var [minTime, setMinTime] = useState(0);
   var [currentDate, setCurrentDate] = useState(
     moment().utcOffset('+05:30').format('YYYY-MM-DD hh:mm:ss a'),
   );
   const [isActive, setIsActive] = useState(false);
 
-  // REDUX-TOOLKIT RTK QUERY
-  const [createSleepLog, responseInfo] = useCreateSleepingLogMutation();
-  console.log(responseInfo)
-
   function toggle() {
     if (pressed < 2) {
       setIsActive(!isActive);
     }
   }
+
+  const success = data => {
+    console.log(data, 'success');
+    setLoading(false);
+    navigation.popToTop();
+  };
+
+  const fail = data => {
+    console.log(data, 'fail');
+    setLoading(false);
+  };
 
   useEffect(() => {
     let interval = null;
@@ -58,7 +68,7 @@ const Sleeping = ({navigation}) => {
     <SafeAreaView>
       <View style={styles.container}>
       {/* LOADING INDICATOR */}
-      {responseInfo.isLoading == true ? (
+      {loading == true ? (
           <ActivityIndicator
             animating={true}
             size="large"
@@ -283,14 +293,14 @@ const Sleeping = ({navigation}) => {
                 }
 
                 if (pressCount >= 2) {
-                await createSleepLog({
+                await postSleepLog(token, {
                   child_id: currentChild.id,
                   begin_time: beginDate.toString(),
                   end_time: endDate.toString(),
                   disruption: 'no disruption',
                   total_time: minute.toString(),
-                });
-                  navigation.popToTop();
+                }, success, fail);
+                  
                 }
               }}
             />

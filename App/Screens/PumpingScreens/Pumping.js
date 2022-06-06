@@ -10,15 +10,16 @@ import moment from 'moment';
 import {useCreatePumpingMutation} from '../../Redux/Services/Pumping';
 import Shadow from '../../Components/Shadow';
 import { useSelector } from 'react-redux';
+import { postPumping } from '../../Services/Pumping';
 
 const Pumping = ({navigation}) => {
 
   const {currentChild} = useSelector(state => state.children);
-
-  const [createPumping, responseInfo] = useCreatePumpingMutation();
-  console.log(responseInfo);
+  const {token} = useSelector(state => state?.login);
+  
 
   var [pressed, setPressed] = useState(0);
+  var[loading, setLoading] = useState(false);
   var [beginDate, setBeginDate] = useState();
   var [endDate, setEndDate] = useState();
   var [currentDate, setCurrentDate] = useState(
@@ -57,12 +58,23 @@ const Pumping = ({navigation}) => {
     return () => clearInterval(interval);
   }, [isActive, seconds]);
 
+  const success = data => {
+    console.log(data, 'success');
+    setLoading(false);
+    navigation.popToTop();
+  };
+
+  const fail = data => {
+    console.log(data, 'fail');
+    setLoading(false);
+  };
+
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: Colors.backgroundColor}}>
       <View style={styles.container}>
       {/* LOADING INDICATOR */}
-      {responseInfo.isLoading == true ? (
+      {loading == true ? (
           <ActivityIndicator
             animating={true}
             size="large"
@@ -329,7 +341,7 @@ const Pumping = ({navigation}) => {
                   );
                 }
                 if (pressed >= 2) {
-                  await createPumping({
+                  await postPumping(token, {
                     child_id: currentChild.id,
                     begin_time: beginDate,
                     end_time: endDate,
@@ -338,8 +350,8 @@ const Pumping = ({navigation}) => {
                     amount_for_right: right.toString(),
                     total_amount: total.toString(),
                     engorgement: false,
-                  });
-                  navigation.popToTop();
+                  }, success, fail);
+                  // navigation.popToTop();
                 }
                 setPressed(pressed => pressed + 1);
                 toggle();

@@ -293,9 +293,12 @@ const CommunityForum = ({navigation}) => {
           </View>
         </View>
       ) : communityForumData.length === 0 ? (
-        <View>
-          <Text>Item not found</Text>
-        </View>
+        <View
+            style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+            <Text style={{fontWeight: '600', Fonts: 18, color: 'black'}}>
+              No item fiund !
+            </Text>
+          </View>
       ) : null}
     </View>
   );

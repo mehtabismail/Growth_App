@@ -16,17 +16,29 @@ import Shadow from '../../Components/Shadow';
 import {useCreateDiaperLogMutation} from '../../Redux/Services/Diaper';
 import {setCurrentChild} from '../../Redux/Reducers/ChildReducer';
 import {useSelector} from 'react-redux';
+import { postDiaper, postDiaperLog } from '../../Services/Diaper';
 
 const Diaper = ({navigation}) => {
+  const {token} = useSelector(state => state?.login);
   const {currentChild} = useSelector(state => state.children);
 
-  const data = ['Clean', 'Poo', 'Pee', 'Mixed'];
+  const data = ['clean', 'poo', 'pee', 'mixed'];
   var [selected, setSelected] = useState(null);
+  var[loading, setLoading] = useState(false);
 
-  const [createDiaperLog, responseInfo] = useCreateDiaperLogMutation();
-  console.log(responseInfo);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   var [time, setTime] = useState();
+
+  const success = data => {
+    console.log(data, 'success');
+    setLoading(false);
+    navigation.popToTop();
+  };
+
+  const fail = data => {
+    console.log(data, 'fail');
+    setLoading(false);
+  };
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -43,7 +55,7 @@ const Diaper = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={{flex: 1, backgroundColor: Colors.background}}>
-        {responseInfo.isLoading === true ? (
+        {loading === true ? (
           <ActivityIndicator
             animating={true}
             size="large"
@@ -176,13 +188,12 @@ const Diaper = ({navigation}) => {
               buttonStyle={(Shadow.shadow, styles.buttonContainer)}
               titleStyle={[Fonts.style.buttonText, {color: Colors.secondary}]}
               onPress={async () => {
-                await createDiaperLog({
+                await postDiaperLog(token, {
                   child_id: currentChild.id,
                   time: time,
                   what_was_in: selected,
-                });
-                navigation.popToTop();
-
+                }, success, fail);
+                
               }}
             />
           </View>

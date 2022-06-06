@@ -18,12 +18,11 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {useCreateBottleFeedMutation} from '../../Redux/Services/BottleFeed';
 import {useSelector} from 'react-redux';
 import navigationStrings from '../../Constants/navigationStrings';
+import { postBottleFeed } from '../../Services/Bottle';
 
 const Bottle = ({navigation}) => {
-  const [createBottleFeed, responseInfo] = useCreateBottleFeedMutation();
-  console.log(responseInfo);
 
-  const {currentUser, token} = useSelector(state => state.login);
+  const {currentUser, token} = useSelector(state => state?.login);
   const {currentChild} = useSelector(state => state.children);
 
 
@@ -33,6 +32,20 @@ const Bottle = ({navigation}) => {
   var [time, setTime] = useState();
   var [mode, setMode] = useState('date');
   var [number, setNumber] = useState(0);
+  var [loading, setLoading] = useState(false)
+
+  console.log(token, 'token is getting ...');
+
+  const success = data => {
+    console.log(data, 'success');
+    setLoading(false);
+    navigation.popToTop();
+  };
+
+  const fail = data => {
+    console.log(data, 'fail');
+    setLoading(false);
+  };
 
   const selectDate = () => {
     setMode((mode = 'date'));
@@ -61,7 +74,7 @@ const Bottle = ({navigation}) => {
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <ActivityIndicator
-          animating={responseInfo.isLoading}
+          animating={loading}
           size="large"
           style={{position: 'absolute', top: '40%', left: '40%'}}
         />
@@ -96,7 +109,9 @@ const Bottle = ({navigation}) => {
                 editable={false}
                 inputStyle={{fontSize: Fonts.size.medium}}
                 rightIcon={
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => {
+                selectDate();
+              }}>
                     <Image
                       style={BottleStyles.caretDownImage}
                       source={require('../../assets/caret-down.png')}
@@ -250,14 +265,15 @@ const Bottle = ({navigation}) => {
             buttonStyle={(Shadow.shadow, BottleStyles.buttonContainer)}
             titleStyle={[Fonts.style.buttonText, {color: Colors.secondary}]}
             onPress={async () => {
-              await createBottleFeed({
+              setLoading(true);
+              await postBottleFeed(token, {
                 child_id: currentChild.id,
                 time: time,
                 type: 'formula',
                 unit: 'ml',
                 amount: number.toString(),
-              });
-              navigation.popToTop();
+              }, success, fail);
+              
             }}
           />
         </View>
