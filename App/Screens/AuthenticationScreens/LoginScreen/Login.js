@@ -49,6 +49,7 @@ const Login = ({navigation}) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({email: email, password: password}),
+      //
     })
       .then(async response => response.json())
       .then(async json => {
